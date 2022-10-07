@@ -1,0 +1,1882 @@
+@media (max-width: 1400px) {
+   
+    .objectCandidates .all_info form .left{
+        width: 75%;
+       
+    }
+    .objectCandidates .all_info form .right {
+        width: 25%;
+       
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center
+    }
+    .objectCandidates .all_info form .img{
+       width: 90%;
+    }
+    .objectCandidates .all_info form .bot{
+        width: 90%;
+    }
+    .objectCandidates .docs .doc_item_1  {
+        width: 36% !important;
+    }
+    .objectCandidates .docs .doc_item_2  {
+        width: 35% !important;
+    }
+    .objectCandidates .docs .doc_item_3  {
+        width: 36% !important;
+    }
+    .objectCandidates .docs .doc_item_4  {
+        width: 36% !important;
+    }
+    
+
+
+    .wrapper {
+        max-width: 1140px;
+    }
+    .btn.edit {
+        margin: 0;
+    }
+    .all_info .left {
+        width: 43%;
+    }
+    .all_info .right {
+        width: 33.3%;
+    }
+    .all_info .box{
+        width: 100%;
+    }
+    .all_info .files .box{
+        margin-bottom: 0;
+    }
+    .exams .citi .box{
+        padding: 0;
+    }
+    .all_info form .docs .box {
+        width: 100%;
+        margin: 0;
+    }
+    .all_info form .item select{
+        width: calc(100% - 15px);
+    }
+    .exams .citi .box .left {
+        width: 38%;
+    }
+    .exams .citi .box .bottom{
+        width: 32%;
+    }
+    .exams .citi .box .right {
+        width: 30%;
+    }
+    .serch .box{
+        width: 100%;
+    }
+    .articl .item {
+        width: 28%;
+    }
+    .sostav .item:first-child {
+        width: 40%;
+        margin: 0 20px 20px 0;
+    }
+    .sostav .item {
+        width: 19%;
+        margin: 0 20px 20px 0;
+    }
+    .sostav .item:nth-child(3) {
+        width: 13%;
+    }
+    .sostav .item:last-child {
+        width: 22%;
+    }
+    .vopros .table table td .edit{
+        display: block;
+        margin: 0 auto 5px auto;
+    }
+    .vopros .table table td .remove{
+        display: block;
+        margin: 0 auto 5px auto;
+    }
+    .audioplayer {
+        width: 45%;
+    }
+    .subtest .item {
+        width: 17.5%;
+    }
+    .subtest .box:first-child .item:first-child {
+        width: 42.5%;
+    }
+    textarea{
+        width: calc(100% - 26px);
+    }
+    .subtest .col .panel .variant .folder {
+        width: 91%;
+    }
+    .level .box,
+    .level .item{
+        width: 100%;
+    }
+    
+    .serch .box input.dats {
+        width: 15%;
+    }
+    .logs .box input.dats{
+        width: 20.4%;
+    }
+    .logs .box select {
+        width: 18.7% !important;
+        
+    }
+    .filial_add .left .item select {
+        width: 100%;
+    }
+    .filial_add .box.mini .item {
+        width: 48%;
+    }
+    .filial_add .right .files{
+        width: 61%;
+    }
+    .filial_add .box.mini {
+        width: 61%;
+    }
+    .message .left .mail .name {
+        width: 74%;
+        margin-left: 5%;
+    }
+    .widget_graf .box .left {
+        width: 41%;
+    }
+    .widget_graf .box .right {
+        width: 59%;
+    }
+    .widget_subtest table td:first-child {
+        width: 50%;
+    }
+    .all_infos .box .left .lf {
+        width: 100%;
+    }
+    .all_infos .box .left .lr {
+        width: 100%;
+    }
+    .all_infos .box .left .lr ul li span {
+        width: 28%;
+    }
+    .all_infos .box .left {
+        width: 66%;
+    }
+    .all_infos .right {
+        width: 26%;
+        padding: 46px 20px 25px 20px;
+    }
+    .all_infos .mail_info .box .item .name{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .all_infos .mail_info .box .box {
+        margin-top: 0;
+    }
+    .all_infos .mail_info .box .right .box{
+        width: 93%;
+    }
+    .all_infos .govor_all .box .item .name{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .all_infos .govor_all .box .left .item + .item {
+        min-height: 230px;
+    }
+    .all_infos .govor_all .box .right .box{
+        width: 93%;
+    }
+    .grup_test .table table td:nth-child(2) {
+        width: 11%;
+    }
+    .grup_test .grup_test_1 .matrica .box .left {
+        width: 32%;
+        padding: 15px 25px;
+    }
+    .grup_test .grup_test_1 .matrica .box .right .box {
+        margin: 0;
+        width: 100%;
+    }
+    .grup_test .grup_test_1 .matrica .box .right .table {
+        width: 100%;
+    }
+    .colap .body_colp .box .lf {
+        width: 57%;
+    }
+    .colap .body_colp .box ul li span {
+        width: 35%;
+    }
+    .ege_fil .serch .box input.dats {
+        width: 29%;
+    }
+    .ege_fil .serch .box:first-child {
+        width: 86%;
+    }
+    .ege_fil .doc_fil .doc_svo .bot .def,
+    .ege_fil .doc_fil .doc_svo .bot .btn{
+        padding: 10px 25px;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box {
+        padding: 0 20px;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .left .box .item .box .item .name {
+        margin-right: 2px;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .left .box .item .box .item {
+        margin: 0 10px 0 0;
+    }
+    .grup_test_1 .box .name{
+        margin: 0 90px 0 0;
+    }
+
+    .object .sostav .box .item_1{
+        width: 50% !important;
+       
+    }
+    .object .sostav .box .item_2{
+        width: 48% !important;
+    }
+}
+@media (max-width: 1199px) {
+    
+    .wrapper {
+        max-width: 960px;
+    }
+    .all_info .left {
+        width: 48%;
+    }
+    .all_info .right {
+        width: 40%;
+    }
+    .all_info .avatar {
+        width: 150px;
+        margin-bottom: 0;
+    }
+    .exams .citi .box .left {
+        width: 45%;
+    }
+    .exams .patent .citi .box .right {
+        width: 36%;
+    }
+    .all_info form .item {
+        width: 49%;
+    }
+    .all_info form .left {
+        width: 63%;
+        margin: 0;
+    }
+    .all_info form .item select {
+        width: calc(100% - 5px);
+    }
+    .all_info form .bot {
+        width: 47%;
+    }
+    .all_info form .bot button{
+        padding: 3px 0 3px 30px;
+    }
+    .all_info form .img img {
+        width: 95%;
+    }
+    .all_info form .docs .item:nth-child(1) {
+        width: 14%;
+    }
+    .all_info form .docs .item:nth-child(3) {
+        width: 35%;
+    }
+    .all_info form .docs .item:nth-child(4) {
+        width: 27%;
+    }
+    .all_info form .docs .item .sp input {
+        width: calc(100% - 43px);
+    }
+    .all_info form .docs .item .files .file{
+        width: calc(100% - 22px);
+    }
+    .all_info form .docs .item .files{
+        width: 125px;
+    }
+    .exams .citi .box .bottom {
+        width: 20%;
+        height: fit-content;
+    }
+    .exams .citi .box .bottom .btn.def{
+        width: 100%;
+        text-align: center;
+        display: block;
+        margin-bottom: 5px;
+    }
+    .exams .citi .box .right {
+        width: 35%;
+    }
+    .serch .box select{
+        max-width: 200px;
+        margin-right: 5px;
+    }
+    .sostav .item:first-child {
+        width: 100%;
+        margin: 0 0 20px 0;
+    }
+    .sostav .item {
+        width: 32%;
+    }
+    .sostav .item:nth-child(3) {
+        width: 32%;
+    }
+    .sostav .item:last-child {
+        width: 31.5%;
+    }
+    .vopros .table table td:nth-child(2) {
+        width: 55%;
+    }
+    .vopros .table table td a{
+        width: 95%;
+    }
+    .subtest .item {
+        width: 27%;
+        margin-bottom: 20px;
+    }
+    .subtest .item:last-child{
+        width: 100%;
+    }
+    .subtest .col .panel .top_panel .delete{
+        margin: 10px 0 0 0;
+    }
+    .subtest .col .panel .top_panel .delete.left {
+        margin: 0 0 0 auto;
+    }
+    .subtest .col .panel .variant .folder {
+        width: 90%;
+    }
+    .object{
+        max-width: 93%;
+        padding: 27px 20px 30px 20px;
+    }
+    .object .box{
+        width: 100%;
+    }
+    .serch .box input.dats {
+        width: 17%;
+    }
+
+    .logs .box input.dats{
+        width: 17.4%;
+    }
+    .logs .box select {
+        width: 19.3% !important;
+        
+    }
+    .filial.head + .serch .box select {
+        margin-right: 20px;
+    }
+    .filial_add .right .files {
+        width: 72%;
+    }
+    .message .left .mail .name {
+        width: 70%;
+    }
+    .message .right {
+        width: 70%;
+    }
+    .message .right .mail{
+        padding: 9px 20px;
+    }
+    .message .left .serch .lupa{
+        right: 10px;
+    }
+    .widget_category,
+    .widget_state,
+    .widget_filials,
+    .widget_graf,
+    .widget_level,
+    .widget_subtest,
+    .widget_faq,
+    .widget_grup,
+    .widget_zayvka,
+    .widget_integrace,
+    .widget_arhiv,
+    .widget_users,
+    .widget_sertifikat,
+    .widget_otchet,
+    .widget_suport,
+    .widget_open{
+        width: calc(100% - 51px);
+        min-height: auto;
+    }
+    .all_infos .right {
+        width: 31%;
+    }
+    .all_infos .box .left {
+        width: 60%;
+    }
+    .all_infos .mail_info .box .item .file{
+        margin-right: 5px;
+    }
+    .all_infos .govor_all .box .left .item .audioplayer {
+        width: 92%;
+    }
+    .head .bot {
+        width: auto;
+    }
+    .grup_test_1 .box .title {
+        margin: 0 25px 0 0;
+    }
+    .grup_test_1 .box .name{
+        margin: 0 25px 0 0;
+    }
+    .grup_test_1 .box .def{
+        margin-right: 5px;
+        width: 23%;
+    }
+    .grup_test .grup_test_1 .matrica .box .left .box .item .name{
+        width: 42%;
+    }
+    .grup_test .grup_test_1 .matrica .box .left .box .item .box .item{
+        margin: 0 10px 0 0;
+    }
+    .box_end .right .head .bot {
+        width: auto;
+    }
+    .box_end .left {
+        width: 100%;
+        margin-top: 0;
+    }
+    .box_end .left .menu ul{
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .box_end .left .menu ul li {
+        width: 14.2%;
+    }
+    .box_end .left .menu ul li .sub_menu li {
+        width: 100%;
+    }
+    .box_end .right {
+        width: 100%;
+    }
+    .ege_fil .serch .box:first-child {
+        width: 84%;
+    }
+    .ege_fil .doc_fil .doc_svo .box .files .rem {
+        width: 86%;
+    }
+    .object .sostav .box .item:first-child {
+        width: 50%;
+        margin: 0 20px 20px 0;
+    }
+    .object .sostav .box {
+        justify-content: space-between;
+    }
+    .object .sostav .box .item:first-child,
+    .object .sostav .box .item:nth-child(3),
+    .object .sostav .box .item,
+    .object .sostav .box .item:last-child{
+        width: 48%;
+        margin: 0 0 20px 0;
+    }
+    .object .sostav .box .item{
+        width: 33% !important;  
+          
+     }
+
+
+     .objectCandidates .all_info form .left{
+       
+        width: 65%;
+    }
+    
+    .objectCandidates .all_info form .right {
+        width: 35%;       
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center
+    }
+    .objectCandidates .sostav .box .item{
+        width: 90% !important;
+
+    }
+    .objectCandidates .all_info form .img{
+       width: 90%;
+    }
+    .objectCandidates .all_info form .bot{
+        width: 90%;
+    }
+    .objectCandidates .docs .doc_item_1  {
+        width: 36% !important;
+    }
+    .objectCandidates .docs .doc_item_2  {
+        width: 35% !important;
+    }
+    .objectCandidates .docs .doc_item_3  {
+        width: 36% !important;
+    }
+    .objectCandidates .docs .doc_item_4  {
+        width: 36% !important;
+    }
+    .objectCandidates .dats{
+        width: 12.5%;
+        margin-right: 20px;
+        background: #fff url("../img/calendar.svg") 96% 50% no-repeat !important;
+    }
+
+    .objectCandidates .all_info form .docs .uploads .item{
+       margin-left: 10px;
+    }
+    .objectCandidates .all_info form .docs .uploads .item{
+        width: 100% !important;
+    }
+
+
+
+    }
+
+
+
+@media (max-width: 991px) {
+    .wrapper {
+        max-width: 720px;
+    }
+    header .box .logo {
+        margin: 8px 0;
+    }
+    .mobile{
+        display: block;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+    .mobile span{
+        width: 30px;
+        height: 2px;
+        margin-bottom: 5px;
+        display: block;
+        background: #fff;
+    }
+    .mobile span:last-child{
+        margin-bottom: 0;
+    }
+    #main_menu{
+        display: none;
+        width: 100%;
+    }
+    .lk .right a:after{
+        margin: 0 0 0 21px;
+    }
+    header{
+        margin: 0 0 16px 0;
+    }
+    .lk .right a{
+        height: 55px;
+    }
+    header .box .menu ul li {
+        width: 100%;
+    }
+    header .box .menu ul li a{
+        justify-content: center;
+    }
+    .all_info .left {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .all_info .right {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .all_info .right .spisok .item .name {
+        width: 30.5%;
+    }
+    .exams .citi .box .left {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .exams .citi .box .right {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .exams .citi .box.rezult .left {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .exams .citi .box.rezult .right {
+        width: 100%;
+    }
+    .exams .patent .citi .box .right {
+        width: 100%;
+    }
+    .exams .patent .citi .box .bottom {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .exams .patent .citi .box .box .right {
+        width: 100%;
+    }
+    .all_info form .left {
+        width: 100%;
+    }
+    .all_info form .right {
+        width: 60%;
+    }
+    .all_info form .docs .item:nth-child(1),
+    .all_info form .docs .item:nth-child(2),
+    .all_info form .docs .item:nth-child(3),
+    .all_info form .docs .item:nth-child(4){
+        width: 49%;
+        margin-bottom: 20px;
+    }
+    .all_info form .docs .item:nth-child(1) select{
+        max-width: 100%;
+    }
+    .all_info form .docs .item .add_doc{
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+    .all_info form .botom{
+        margin: 20px 0 0 0;
+    }
+    .exams .citi .box .bottom {
+        width: 100%;
+    }
+    .exams .citi .box .bottom .btn.def {
+        width: fit-content;
+        margin-right: 10px;
+    }
+    .exams .citi .box .bottom{
+        justify-content: flex-start;
+    }
+    .all_info form .item select{
+        max-width: 100%;
+    }
+    .head .bot {
+        width: auto;
+    }
+    .serch .box input{
+        width: calc(80% - 25px);
+    }
+    .serch .box .lup{
+        right: 20%;
+    }
+    .serch .box .btn{
+        width: 15%;
+    }
+    .serch .box select {
+        max-width: 49%;
+        margin: 0 0 10px 0;
+    }
+    .serch {
+        margin-bottom: 20px;
+    }
+    .articl .item {
+        width: 42%;
+    }
+    .sostav .item {
+        width: 100%;
+        margin: 0 0 20px 0;
+    }
+    .sostav .item:nth-child(3) {
+        width: 100%;
+        margin: 0 0 20px 0;
+    }
+    .sostav .item:last-child {
+        width: 100%;
+    }
+    .vopros .table table td:nth-child(2) {
+        width: 45%;
+    }
+    .vopros_edit form .box input{
+        width: 40%;
+    }
+    .vopros_edit form .box label.blue {
+        padding: 0 19px 0 0;
+    }
+    .audioplayer {
+        margin: 0 10px 0 0;
+        width: 54%;
+    }
+    .vopros_edit form .audi .box .delete{
+        margin: 0 0 0 auto;
+    }
+    .subtest .item,
+    .subtest .box:nth-child(2) .item:nth-child(1),
+    .subtest .box:nth-child(2) .item:nth-child(2),
+    .subtest .box:first-child .item:first-child{
+        width: 100%;
+    }
+    .subtest .col {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .subtest .col .panel .top_panel .delete {
+        margin: 0 0 0 auto;
+    }
+    .object .box .item {
+        width: 32%;
+    }
+    .object .box .item .rezet{
+        margin: 10px 0 0 0;
+    }
+    .serch .box input.dats {
+        width: 100%;
+        margin-bottom: 10px;
+        background: #fff url('../img/calendar.svg') 97% 50% no-repeat;
+        margin-right: 0;
+    }
+
+    .logs .box input.dats{
+        width: 100%;
+       
+    }
+  
+    .logs .box select {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+
+        
+    }
+    .filial.head + .serch .box select {
+        margin-right: 0;
+        max-width: 100%;
+    }
+    .filial.head + .serch .box select + select {
+        max-width: 100%;
+        margin-bottom: 0;
+    }
+    .filial.head .bot {
+        width: auto;
+    }
+    .filial_add .left {
+        width: 100%;
+    }
+    .filial_add .right {
+        width: 100%;
+    }
+    .filial_add .right .img{
+        margin: 0;
+    }
+    .filial_add .box{
+        margin-bottom: 20px;
+    }
+    .filial_add .box.mini {
+        width: 100%;
+    }
+    .filial_add .right .files {
+        width: 235px;
+    }
+    .message .left {
+        border-right: 0;
+        width: 100%;
+    }
+    .message .right {
+        width: 100%;
+    }
+    .all_infos .box .left {
+        width: 100%;
+    }
+    .all_infos .right {
+        width: 100%;
+    }
+    .all_infos ul li span,
+    .all_infos .box .left .lr ul li span {
+        width: 45.4%;
+    }
+    .all_infos .mail_info .box .left,
+    .all_infos .govor_all .box .left{
+        border-right: 0;
+        width: 100%;
+        border-bottom: 1px solid #D9D9D9;
+    }
+    .all_infos .mail_info .box .right,
+    .all_infos .govor_all .box .right{
+        width: 100%;
+    }
+    .all_infos .govor_all .box .left .item + .item {
+        min-height: auto;
+        margin-bottom: 20px;
+    }
+    .all_infos .govor_all .box .left .item .audioplayer {
+        width: 95%;
+        margin: 10px 0 20px 0;
+    }
+    .grup_test .table table {
+        width: 1200px;
+    }
+    .grup_test .table{
+        overflow-x: scroll;
+    }
+    .grup_test_1 .box .title {
+        margin: 0 69px 0 0;
+    }
+    .grup_test_1 .box .name {
+        margin: 0 90px 0 0;
+    }
+    .grup_test .grup_test_1 .matrica .box .right .box .title{
+        width: auto;
+    }
+    .box_end .left .menu ul li {
+        width: 20%;
+    }
+    .box_end .left .menu ul{
+        justify-content: flex-start;
+    }
+    .colap .body_colp .box .lf {
+        width: 100%;
+    }
+    .colap .body_colp .box .lr {
+        width: 100%;
+    }
+    .colap .body_colp .box .lr ul li span {
+        width: 35%;
+    }
+    .colap .body_colp .box .files{
+        margin: 32px 0;
+    }
+    .ege_fil .serch .box:first-child {
+        width: 100%;
+    }
+    .ege_fil .doc_fil .doc_svo .box .item {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .ege_fil .doc_fil .doc_svo .box .coment {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .ege_fil .doc_fil .doc_svo .box .files {
+        width: 100%;
+    }
+    .ege_fil .doc_fil .doc_svo .bot {
+        margin: 17px 0;
+    }
+    .ege_fil .doc_fil .doc_svo .box .files .rem {
+        width: 230px;
+    }
+    .ege_fil .doc_fil .doc_svo .bot .def,
+    .ege_fil .doc_fil .doc_svo .bot .btn{
+        margin-bottom: 10px;
+    }
+    .ege_fil .doc_fil .doc_svo .bot .dise{
+        height: 41px;
+    }
+    .ege_fil .doc_fil .doc_svo .info .error{
+        margin: -10px 10px -10px auto;
+        width: 35%;
+    }
+    .all_info form .botom .btn.delete{
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 21px 25px;
+        margin-bottom: 20px;
+       justify-content: center;
+    }
+    .object .sostav .box .item{
+        width: 100% !important;        
+     }
+
+     .objectCandidates .all_info form .left{
+        
+        width: 65%;
+    }
+    
+    .objectCandidates .all_info form .right {
+        width: 35%;
+       
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center
+    }
+    .objectCandidates .sostav .box .item{
+        width: 90% !important;
+        
+
+    }
+    .objectCandidates .all_info form .img{
+       width: 90%;
+    }
+    .objectCandidates .all_info form .bot{
+        width: 90%;
+    }
+    .objectCandidates .docs .doc_item_1  {
+        width: 36% !important;
+    }
+    .objectCandidates .docs .doc_item_2  {
+        width: 36% !important;
+    }
+    .objectCandidates .docs .doc_item_3  {
+        width: 36% !important;
+    }
+    .objectCandidates .docs .doc_item_4  {
+        width: 36% !important;
+    }
+    .objectCandidates .dats{
+        width: 12.5%;
+        margin-right: 20px;
+        background: #fff url("../img/calendar.svg") 96% 50% no-repeat !important;
+    }
+
+    .objectCandidates .all_info form .docs .uploads .item{
+       margin-left: 10px;
+    }
+    .objectCandidates .all_info form .docs .uploads {
+       flex:30% ;
+       max-width: 100%;
+            
+        
+    }
+    .objectCandidates .all_info form .docs .uploads .item{
+        width: 30% !important;
+        
+       
+    }
+    .objectCandidates .all_info form .docs .box{
+        display: flex;
+        flex-wrap: wrap;
+        
+        
+       
+    }
+}
+
+@media (max-width: 767px) {
+    .wrapper {
+        max-width: 540px;
+    }
+    .all_info .files .box {
+        flex-direction: column;
+    }
+    .all_info .files .box .file{
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: auto;
+    }
+    .all_info form .item {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .all_info form .box {
+        margin-bottom: 0;
+    }
+    .all_info form .item .select {
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
+    }
+    .all_info form .left .box:nth-child(2) {
+        margin-bottom: 0;
+    }
+    .all_info form .item .select:last-child{
+        margin-bottom: 0;
+    }
+    .all_info form .right {
+        width: 100%;
+    }
+    .all_info form .img{
+        margin: 0;
+    }
+    .all_info form .bot {
+        margin-top: 30px;
+    }
+    .all_info form .docs .item:nth-child(1),
+    .all_info form .docs .item:nth-child(2),
+    .all_info form .docs .item:nth-child(3),
+    .all_info form .docs .item:nth-child(4) {
+        width: 100%;
+    }
+    .all_info form .docs .item:nth-child(1){
+        margin-bottom: 0;
+    }
+    .all_info form .docs .item:nth-child(2){
+        display: flex;
+        flex-direction: column;
+    }
+    .all_info form .docs .item:nth-child(2) .files{
+        order: -1;
+        margin-bottom: 20px;
+        margin-top: 10px;
+    }
+    .exams .citi .info{
+        padding: 18px;
+        justify-content: center;
+    }
+    .exams .citi .info .proverka {
+        background: url('../img/sync_ok.svg') 0 50% no-repeat;
+        margin: 15px 0 0 0;
+        width: 100%;
+        height: 42px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .exams .citi .info .proverka.arhiv {
+        background: url('../img/archive.svg') 0 50% no-repeat;
+    }
+    .serch .box .btn {
+        width: 20%;
+    }
+    .serch .box input {
+        width: calc(73% - 25px);
+    }
+    .serch .box .lup {
+        right: 27%;
+    }
+    .articl .item {
+        width: 93%;
+    }
+    .articl .item .spisok li span{
+        width: 25%;
+    }
+    .vopros .panel .left .delete{
+        padding: 5px 0 5px 30px;
+        margin: 0 0 0 15px;
+    }
+    .vopros .panel .add{
+        padding: 2px 0 5px 30px;
+        letter-spacing: 0;
+    }
+    .vopros .panel .left .chek label{
+        padding: 0 0 0 30px;
+    }
+    .vopros .panel{
+        padding: 27px 10px 19px 10px;
+    }
+    .vopros .table {
+        padding: 9px 10px;
+        overflow-y: scroll;
+    }
+    .vopros .table table {
+        width: 1200px;
+    }
+    .vopros .table table td:nth-child(2) {
+        width: 62%;
+    }
+    .vopros_edit .bread .breadcrumb .breadcrumb-item a:after {
+        margin: 0;
+    }
+    .vopros_edit form .box input {
+        width: 81.7%;
+        margin: 0;
+    }
+    .vopros_edit form .add{
+        margin-top: 20px;
+    }
+    .audioplayer {
+        margin: 0 0 20px 0;
+        width: 100%;
+    }
+    .subtest .col .panel {
+        padding: 20px;
+    }
+    .subtest .col .panel .variant .folder {
+        width: 89%;
+    }
+    .subtest .botom {
+        margin: 30px 0 0 0;
+    }
+    .subtest .botom .otmena{
+        margin-right: auto;
+    }
+    .object {
+        max-width: 90%;
+    }
+    .object .box .item {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .object .box:first-child .item:last-child {
+        width: 100%;
+    }
+    .object .panel .table table {
+        width: 800px;
+    }
+    .object .panel .table.moduls::-webkit-scrollbar{
+        height: 7px;
+    }
+    .level .box .item {
+        width: 100%;
+    }
+    .filial_add .left .item {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .filial_add .left .box {
+        margin-bottom: 0;
+    }
+    .filial_add .box.mini .item {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .filial_add .box.mini {
+        margin-bottom: 0;
+    }
+    .filial_add .zag span{
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    .registret{
+        width: 95%;
+    }
+    .registret form {
+        width: 90%;
+    }
+    .all_infos ul li span, .all_infos .box .left .lr ul li span {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .all_infos ul li{
+        margin-bottom: 10px;
+    }
+    .all_infos .box .left .lf {
+        margin-bottom: 20px;
+    }
+    .all_infos .right ul li span {
+        width: 100%;
+    }
+    .grup_test .panel .left .chek label{
+        padding: 0 0 0 30px;
+    }
+    .grup_test .panel .left .delete{
+        padding: 5px 0 5px 25px;
+        letter-spacing: 0;
+        margin: -5px 0 0 10px;
+    }
+    .grup_test .panel .left{
+        width: 100%;
+    }
+    .grup_test .panel .left .arhiv{
+        margin: -6px 0 0 auto;
+        padding: 5px 0 5px 30px;
+    }
+    .grup_test .grup_test_1 .matrica .box .right table {
+        width: 600px;
+    }
+    .box_end .left .menu ul li {
+        width: 25%;
+    }
+    .ege_fil .serch .box input.dats {
+        width: 100%;
+    }
+    .ege_fil .serch .box select {
+        max-width: 49%;
+    }
+    .ege_fil .serch .box select:last-child {
+        max-width: 49%;
+    }
+    .ege_fil .serch .box .btn {
+        width: 20%;
+    }
+    .ege_fil .serch .box input {
+        width: calc(76% - 43px);
+    }
+    .ege_fil .serch .box .lup {
+        right: 26%;
+    }
+    .ege_fil .doc_fil .doc_svo .bot .def,
+    .ege_fil .doc_fil .doc_svo .bot .btn {
+        margin-bottom: 10px;
+        width: 100%;
+        margin-right: 0;
+        justify-content: center;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka .nomer{
+        margin-left: 10px;
+    }
+    .ege_fil .doc_fil .doc_svo .bot .dise{
+        width: 100%;
+    }
+    .ege_fil .doc_fil .doc_svo .info .error {
+        margin: 0 0 20px auto;
+        width: 73%;
+        text-align: left;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka.red{
+        margin-left: auto;
+    }
+    .ege_fil .doc_fil .doc_svo .table table {
+        width: 1200px;
+    }
+    .ege_fil .doc_fil .doc_svo .table{
+        overflow-x: scroll;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .left{
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .right {
+        width: 100%;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .right .box .title{
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .right .box .down {
+        margin: 0;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .right table {
+        width: 600px;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .right .table {
+        margin: 56px 0 0 0;
+        width: 100%;
+    }
+    .object .sostav .box .item:first-child,
+    .object .sostav .box .item:nth-child(3),
+    .object .sostav .box .item,
+    .object .sostav .box .item:last-child{
+        width: 100%;
+    }
+
+ 
+    .levelshow .spisok .name{
+        width: 20% !important; 
+    }
+   
+}
+
+
+
+
+
+
+
+
+
+@media (max-width: 575px) {
+    .wrapper {
+        max-width: 92%;
+    }
+    .head{
+        flex-direction: column;
+    }
+    .head h1{
+        margin-bottom: 10px;
+    }
+    .btn.edit {
+        padding: 10px 20px;
+        line-height: 20px;
+    }
+    .all_info .spisok .item .name{
+        width: 100%;
+        margin-bottom: 7px;
+    }
+    .all_info .right .spisok .item .name {
+        width: 100%;
+    }
+    .all_info .spisok {
+        margin: 0;
+    }
+    .all_info .avatar {
+        width: 100%;
+    }
+    .exams .citi .box .name{
+        width: 100%;
+        margin-bottom: 7px;
+    }
+    .exams .citi .box.rezult .left{
+        flex-direction: column;
+    }
+    .exams .citi .box.rezult .right {
+        overflow: scroll;
+    }
+    .exams .citi .box.rezult table {
+        width: 600px;
+    }
+    .exams .patent .citi .box .bottom .btn{
+        padding: 13px 0;
+    }
+    .all_info form .img img {
+        width: 100%;
+    }
+    .all_info form .img {
+        width: 100%;
+    }
+    .all_info form .bot {
+        margin-top: 20px;
+        width: 100%;
+    }
+    .all_info form .docs .item .add_doc {
+        text-align: left;
+    }
+    .all_info form .botom .btn.otmena{
+        margin-right: 0;
+    }
+    .all_info form .botom .btn.save {
+        padding: 21px 25px;
+    }
+    .all_info form .botom .btn.otmena {
+        margin-right: auto;
+        padding: 21px 25px;
+    }
+    .all_info form .botom {
+        margin: 0;
+    }
+    .exams .citi .info .proverka{
+        flex-wrap: wrap;
+        height: auto;
+        background: url('../img/sync_ok.svg') 0 10% no-repeat;
+    }
+    .exams .citi .info .proverka .nomer {
+        margin-left: -37px;
+        width: calc(100% + 20px);
+        margin-top: 10px;
+    }
+    .exams .citi .box .bottom .btn.def {
+        width: 100%;
+        margin-right: 0;
+    }
+    .exams .citi .info .proverka.arhiv {
+        background: url('../img/archive.svg') 0 0 no-repeat;
+    }
+    .exams .citi .info .proverka.arhiv .nomer {
+        margin-left: -37px;
+    }
+    .all_info form .item select,
+    .all_info form .docs .item:nth-child(1) select{
+        width: 100%;
+    }
+    .serch .box .btn {
+        width: 27%;
+    }
+    .serch .box input {
+        width: calc(65% - 25px);
+    }
+    .serch .box .lup {
+        display: none;
+    }
+    .serch .box select {
+        max-width: 100%;
+    }
+    .sostav .botom .otmena{
+        margin-right: auto;
+        padding: 21px 20px;
+    }
+    .sostav .botom .save {
+        padding: 21px 20px;
+    }
+    .sostav{
+        padding: 0;
+    }
+    .sostav .item input{
+        width: calc(100% - 22px);
+    }
+    .sostav .item label{
+        width: auto;
+    }
+    .vopros .panel .left .chek {
+        margin-bottom: 10px;
+    }
+    .vopros .panel .left .delete {
+        margin: 0 0 20px 0;
+        width: 100%;
+        text-align: left;
+    }
+    .vopros_edit {
+        padding: 10px;
+    }
+    .vopros_edit form .box input {
+        width: 73.3%;
+    }
+    .vopros_edit .botom .otmena{
+        margin-right: auto;
+        padding: 21px 40px;
+    }
+    .vopros_edit .botom .save {
+        padding: 21px 40px;
+    }
+    .vopros_edit form .box select{
+        max-width: 100%;
+    }
+    .vopros_edit form .audi {
+        padding: 0 0 15px 0;
+    }
+    .vopros_edit form .audi .box span{
+        margin: 10px 0 0 0;
+    }
+    .vopros_edit .bread {
+        margin-left: 0;
+    }
+    .subtest .col .panel .btn{
+        width: 100%;
+    }
+    .subtest .col .panel .top_panel .delete {
+        margin: 10px 0 0 0;
+    }
+    .subtest .col .panel .variant .folder {
+        width: 85%;
+    }
+    .subtest .col .panel .variant .folder .text .txt{
+        width: 85%;
+    }
+    .subtest .col .panel .top_panel .delete.left {
+        margin: 10px 0 0 0;
+    }
+    .subtest .col .panel .variant .folder .fol .sub_folder{
+        padding: 0;
+    }
+    .subtest .col .panel .variant .folder .fol .sub_folder .item .name{
+        width: 70%;
+    }
+    .subtest .botom .otmena,
+    .subtest .botom .save{
+        padding: 21px 30px;
+    }
+    .object {
+        max-width: 85%;
+    }
+    .object .box .lup{
+        display: none;
+    }
+    .object .box .btn{
+        width: 30%;
+    }
+    .object .box input {
+        width: calc(59% - 11px);
+    }
+    .object .botom {
+        margin: 30px 0 0 0;
+    }
+    .object .botom .otmena{
+        margin-right: auto;
+        padding: 21px 35px;
+    }
+    .object .botom .save {
+        padding: 21px 35px;
+    }
+    .level .botom .otmena {
+        margin-right: auto;
+        padding: 21px 30px;
+    }
+    .level .botom .save {
+        padding: 21px 30px;
+    }
+    .filial_add {
+        padding: 35px 20px;
+    }
+    .filial_add .right .img {
+        width: 100%;
+    }
+    .filial_add .botom .otmena {
+        margin-right: auto;
+        padding: 21px 30px;
+    }
+    .filial_add .botom .save {
+        padding: 21px 30px;
+    }
+    .message .right .mail .name {
+        width: 82%;
+    }
+    .message .right .otpr .btn {
+        margin: 10px 0 0 0;
+        width: 100%;
+    }
+    footer .box .left {
+        margin-bottom: 16px;
+        text-align: center;
+        width: 100%;
+    }
+    footer .box .right {
+        text-align: center;
+        width: 100%;
+    }
+    footer .box .right ul li {
+        margin-bottom: 16px;
+    }
+    .widget_category .left,
+    .widget_category .right{
+        width: 100%;
+    }
+    .widget_state .top_panel select{
+        width: 100%;
+        margin: 10px 0 10px auto;
+    }
+    .widget_state .box{
+        margin: 0;
+    }
+    .widget_state .box .item {
+        width: 50%;
+        margin-bottom: 10px;
+    }
+    .widget_filials table,
+    .widget_level table,
+    .widget_subtest table,
+    .widget_faq table,
+    .widget_grup table,
+    .widget_zayvka table,
+    .widget_integrace table,
+    .widget_arhiv table,
+    .widget_users table,
+    .widget_sertifikat table,
+    .widget_otchet table,
+    .widget_suport table,
+    .widget_open table{
+        width: 600px;
+    }
+    .widget_filials .table,
+    .widget_level .table,
+    .widget_subtest .table,
+    .widget_faq .table,
+    .widget_grup .table,
+    .widget_zayvka .table,
+    .widget_integrace .table,
+    .widget_arhiv .table,
+    .widget_users .table,
+    .widget_sertifikat .table,
+    .widget_otchet .table,
+    .widget_suport .table,
+    .widget_open .table{
+        overflow-y: scroll;
+    }
+    .widget_graf .box .left {
+        width: 100%;
+    }
+    .widget_graf .box .right {
+        width: 100%;
+        margin: 0;
+    }
+    .widget_state .top_panel a,
+    .widget_filials .top_panel a,
+    .widget_graf .top_panel a,
+    .widget_level .top_panel a,
+    .widget_subtest .top_panel a,
+    .widget_faq .top_panel a,
+    .widget_grup .top_panel a,
+    .widget_zayvka .top_panel a,
+    .widget_integrace .top_panel a,
+    .widget_arhiv .top_panel a,
+    .widget_users .top_panel a,
+    .widget_sertifikat .top_panel a,
+    .widget_otchet .top_panel a,
+    .widget_suport .top_panel a,
+    .widget_open .top_panel a{
+        margin: 10px auto 0 auto;
+        width: 100%;
+        text-align: center;
+    }
+    .widget_category .title,
+    .widget_state .title,
+    .widget_filials .title,
+    .widget_graf .title,
+    .widget_level .title,
+    .widget_subtest .title,
+    .widget_faq .title,
+    .widget_grup .title,
+    .widget_zayvka .title,
+    .widget_integrace .title,
+    .widget_arhiv .title,
+    .widget_users .title,
+    .widget_sertifikat .title,
+    .widget_otchet .title,
+    .widget_suport .title,
+    .widget_open .title{
+        margin: 10px auto 0 auto;
+        width: 100%;
+        text-align: center;
+    }
+    .all_infos {
+        padding: 20px;
+        margin: 0;
+    }
+    .all_infos .top_box .title {
+        margin-bottom: 20px;
+        text-align: center;
+        width: 100%;
+    }
+    .all_infos .top_box a{
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .bread.mini .breadcrumb .breadcrumb-item a:after {
+        margin: 0 5px;
+    }
+    .all_infos .right {
+        padding: 20px;
+    }
+    .all_infos .mail_info .title{
+        padding: 0;
+    }
+    .all_infos .mail_info .box .item{
+        padding: 0;
+    }
+    .all_infos .mail_info .box .left,
+    .all_infos .govor_all .box .left{
+        padding: 20px;
+    }
+    .all_infos .mail_info .box .item .file {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    .all_infos .mail_info .download{
+        width: 100%;
+        justify-content: center;
+    }
+    .all_infos .mail_info .box .right{
+        padding: 20px;
+    }
+    .all_infos .mail_info .box .right .box {
+        width: 100%;
+    }
+    .all_infos .mail_info .box .box .ocen{
+        padding: 0;
+        width: 100%;
+    }
+    .all_infos .mail_info .box .box .ocen input {
+        width: 100%;
+        margin: 10px 0;
+    }
+    .all_infos .mail_info .box .box .max{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .all_infos .mail_info .box .textar {
+        padding: 20px 0 0 0;
+    }
+    .all_infos .mail_info .box .botom{
+        margin: 20px 0 0 0;
+    }
+    .all_infos .mail_info .box .botom .otmena{
+        margin-right: auto;
+        padding: 21px 20px;
+    }
+    .all_infos .mail_info .box .botom .save {
+        padding: 21px 20px;
+    }
+    .all_infos .govor_all .title{
+        padding: 0;
+    }
+    .all_infos .govor_all .box .item{
+        padding: 0;
+    }
+    .all_infos .govor_all .box .left .item .audioplayer {
+        width: 100%;
+    }
+    .all_infos .govor_all .download{
+        width: 100%;
+        justify-content: center;
+    }
+    .all_infos .mail_info .box .right,
+    .all_infos .govor_all .box .right {
+        width: 100%;
+        padding: 20px;
+    }
+    .all_infos .govor_all .box .right .box {
+        width: 100%;
+    }
+    .all_infos .govor_all .box .box .ocen{
+        width: 100%;
+        padding: 0;
+    }
+    .all_infos .govor_all .box .box .ocen input {
+        width: 100%;
+        margin: 10px 0;
+    }
+    .all_infos .govor_all .box .box .max{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .all_infos .govor_all .box .textar {
+        padding: 10px 0 0 0;
+    }
+    .all_infos .govor_all .box .botom{
+        margin: 20px 0 0 0;
+    }
+    .all_infos .govor_all .box .botom .otmena{
+        margin-right: auto;
+        padding: 21px 20px;
+    }
+    .all_infos .govor_all .box .botom .save {
+        padding: 21px 20px;
+    }
+    .head .bot {
+        margin-bottom: 20px;
+    }
+    .grup_test .panel .left .delete{
+        margin: 5px 0;
+    }
+    .grup_test .panel .left .arhiv {
+        margin: 0;
+    }
+    .grup_test_1{
+        padding: 0 15px;
+    }
+    .grup_test .grup_test_1 .matrica .box {
+        padding: 8px 15px 0 15px;
+        margin: 0;
+    }
+    .grup_test .grup_test_1 .matrica .box .right .box .edit{
+        margin: 10px 0 0 0;
+    }
+    .grup_test .grup_test_1 .matrica .box .right .table{
+        margin: 30px 0 0 0;
+    }
+    .box_end .left .menu ul li {
+        width: 50%;
+    }
+    .box_end .left{
+        margin-bottom: 20px;
+    }
+    .colap .body_colp .box ul li span {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .colap .body_colp .box .lr ul li span {
+        width: 100%;
+    }
+    .colap .body_colp .box .files .file{
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+    .colap .body_colp .box .img {
+        margin: 20px 0 0 0;
+        width: 100%;
+    }
+    .ege_fil .serch .box select {
+        max-width: 100%;
+    }
+    .ege_fil .serch .box select:last-child {
+        max-width: 100%;
+    }
+    .ege_fil .serch .box .btn {
+        width: 30%;
+    }
+    .ege_fil .serch .box input {
+        width: calc(65% - 43px);
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka{
+        margin: 20px 0 0 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .ege_fil .doc_fil .doc_svo .info{
+        padding: 18px;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka.arhiv {
+        background: url('../img/archive.svg') 0 50% no-repeat;
+    }
+    .ege_fil .doc_fil .doc_svo {
+        margin-bottom: 0;
+    }
+    .ege_fil .doc_fil .doc_svo .box .item ul li span{
+        width: 100%;
+        display: block;
+        margin-bottom: 10px;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka .nomer {
+        margin-left: auto;
+        width: 40%;
+        text-align: center;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka.treb {
+        background: url('../img/treb.svg') 0 50% no-repeat;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka.pro {
+        background: url('../img/pro.svg') 0 50% no-repeat;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka {
+        background: url('../img/sync_ok.svg') 0 50% no-repeat;
+    }
+    .ege_fil .doc_fil .doc_svo .info .error {
+        margin: 10px 0 0 0;
+        width: 100%;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka.red {
+        background: url('../img/red.svg') 0 50% no-repeat;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka.new {
+        background: url('../img/new.svg') 0 50% no-repeat;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .left .box .item .name{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .left .box .item .text{
+        width: 100%;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .left .box .item:last-child .name {
+        width: 100%;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .left .box .item .box .item {
+        align-items: baseline;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .right .box .down {
+        margin: 0 auto 10px auto;
+    }
+    .ege_fil .doc_fil .doc_svo .matrica .box .right .box .edit{
+        margin: 0 auto;
+        width: 183px;
+    }
+    .ege_fil .doc_fil .doc_svo .bot.bots .add{
+        margin-left: 0;
+    }
+    .ege_fil .doc_fil .doc_svo .info .proverka span{
+        width: 45%;
+    }
+    .object .sostav .botom {
+        justify-content: space-between;
+        margin: 0;
+    }
+    .object .sostav .botom .otmena{
+        margin-right: 0;
+        padding: 21px 15px;
+    }
+    .object .sostav .botom .save {
+        padding: 21px 15px;
+    }
+
+   .usereditaccess .box{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100% !important;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    }
+    .usereditaccess .docs  .item{
+        width: 100% !important;
+        padding: 0px 0px 0px 0px;
+        
+    }
+  
+    .all_info form .botom .btn.delete{
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 21px 25px;
+        margin-bottom: 20px;
+       justify-content: center;
+    }
+    .levelshow .spisok .item {
+        flex-wrap: wrap;
+        
+    }
+    .levelshow .spisok .name{
+        width: 100% !important; 
+    }
+     .levellist span{
+        width: 50% !important;
+        
+    }
+    .objectCandidates .all_info form .docs .uploads .item{
+        width: 100% !important;
+        
+       
+    }
+    .objectCandidates .all_info form .docs .box .doc_upload_btn{
+        width: 100%;
+    }
+    
+}
