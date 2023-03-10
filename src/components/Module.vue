@@ -1,178 +1,174 @@
 <template>
     <div class="wrapper">
-    <div class="head mini">
-        <h1>МОДУЛИ</h1>
-        <div class="bot">
-            <router-link to="Module/Add" class="add">Создать модуль</router-link>
-        </div>
-    </div>
-    <div class="serch">
-        <form>
-            <div class="box">
-                <input type="text" class="serch_in" value="" placeholder="Поиск по названию">
-                <span class="lup"></span>
-                <button type="button" class="btn">Поиск</button>
+        <div class="head mini">
+            <h1>МОДУЛИ</h1>
+            <div class="bot">
+                <router-link to="Module/Add" class="add">Создать модуль</router-link>
             </div>
-            <div class="box">
-               <select>
-                    <option value="" disabled selected>Выбрать уровень</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <select>
-                    <option value="" disabled selected>Выбрать статус</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <div class="bot">
-                    <button type="button" class="rezet">Сбросить фильтры</button>
+        </div>
+        <div class="serch">
+            <form>
+                <div class="box">
+                    <input type="text" class="serch_in" v-model="filter.moduleName" placeholder="Поиск по названию">
+                    <span class="lup"></span>
+                    <button type="button" class="btn" @click="searchModules">Поиск</button>
+                </div>
+                <div class="box">
+                    <select v-model="filter.level">
+                        <option value="" disabled selected>Выбрать уровень</option>
+                        <option v-for="({ id, title }, index) in levels" :key="index" :value="id">{{ title }}</option>
+
+                    </select>
+                    <select v-model="filter.status">
+                        <option value="" disabled selected>Выбрать статус</option>
+                        <option v-for="({ key, value }, index) in statuses" :key="index" :value="key">{{ value }}
+                        </option>
+                    </select>
+                    <div class="bot">
+                        <button type="button" class="rezet" @click="resetFilter">Сбросить фильтры</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="grup_test">
+            <div class="panel">
+                <div class="left">
+                    <div class="chek">
+                        <input type="checkbox" id="all" value="" class="checkbox">
+                        <label for="all">Выбрать все</label>
+                    </div>
+                    <button type="button" class="delete" @click="deleteSelectedItems">Удалить выбранные</button>
+                    <button type="button" class="arhiv">Архивировать</button>
                 </div>
             </div>
-        </form>
-    </div>
-    <div class="grup_test">
-        <div class="panel">
-            <div class="left">
-                <div class="chek">
-                    <input type="checkbox" id="all" value="" class="checkbox">
-                    <label for="all">Выбрать все</label>
-                </div>
-                <button type="button" class="delete">Удалить выбранные</button>
-                <button type="button" class="arhiv">Архивировать</button>
+            <div class="table">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th></th>
+                            <th>Название модуля</th>
+                            <th>Уровень</th>
+                            <th>Дата создания</th>
+                            <th>Создатель</th>
+                            <th>Описание</th>
+                            <th>Статус</th>
+                        </tr>
+                        <tr v-for="item in modules" :key="item.id">
+                            <td>
+                                <input type="checkbox" :id="item.id" v-model="item.isSelected" class="checkbox">
+                                <label :for="item.id"></label>
+                            </td>
+                            <td>
+                                <button class="link" @click="editModule(item)">{{ item.title }}</button>
+                            </td>
+                            <td>{{ item.examLevel.title }}</td>
+                            <td>{{ item.date }}</td>
+                            <td>{{ item.createdBy.name + ' ' + item.createdBy.family }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.status }}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
+            <act-pagination :totalPages="paging.totalPages" :perPage="this.defaultPaging.pageSize"
+                :currentPage="currentPage" :maxVisibleButtons="this.defaultPaging.maxVisibleButtons"
+                @pagechanged="onPageChange" />
         </div>
-        <div class="table">
-            <table>
-                <tbody>
-                <tr>
-                    <th></th>
-                    <th>Название модуля</th>
-                    <th>Уровень</th>  
-                    <th>Дата создания</th>
-                    <th>Создатель</th>                   
-                    <th>Описание</th>                   
-                    <th>Статус</th>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="all_1" value="" class="checkbox">
-                        <label for="all_1"></label>
-                    </td>
-                    <td>
-                        <button class="link">Название модуля</button>
-                    </td>
-                    <td>Патент</td>
-                    <td>10.12.2021</td>
-                    <td>Кулебяка Г.В.</td>
-                    <td>время прохождения 30 мин,общая оценка 70 баллов</td>
-                    <td>Активна</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="all_2" value="" class="checkbox">
-                        <label for="all_2"></label>
-                    </td>
-                    <td>
-                        <button class="link">Название модуля</button>
-                    </td>
-                    <td>Патент</td>
-                    <td>10.12.2021</td>
-                    <td>Кулебяка Г.В.</td>
-                    <td>время прохождения 30 мин,общая оценка 70 баллов</td>
-                    <td>Активна</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="all_3" value="" class="checkbox">
-                        <label for="all_3"></label>
-                    </td>
-                    <td>
-                        <button class="link">Название модуля</button>
-                    </td>
-                    <td>Патент</td>
-                    <td>10.12.2021</td>
-                    <td>Кулебяка Г.В.</td>
-                    <td>время прохождения 30 мин,общая оценка 70 баллов</td>
-                    <td>Активна</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="all_4" value="" class="checkbox">
-                        <label for="all_4"></label>
-                    </td>
-                    <td>
-                        <button class="link">Название модуля</button>
-                    </td>
-                    <td>Патент</td>
-                    <td>10.12.2021</td>
-                    <td>Кулебяка Г.В.</td>
-                    <td>время прохождения 30 мин,общая оценка 70 баллов</td>
-                    <td>Активна</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="all_5" value="" class="checkbox">
-                        <label for="all_5"></label>
-                    </td>
-                    <td>
-                        <button class="link">Название модуля</button>
-                    </td>
-                    <td>Патент</td>
-                    <td>10.12.2021</td>
-                    <td>Кулебяка Г.В.</td>
-                    <td>время прохождения 30 мин,общая оценка 70 баллов</td>
-                    <td>Активна</td>
-                </tr>
-               
-               
-              
-              
-                </tbody>
-            </table>
-        </div>
-            <div class="pagin">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="prev page-link" href="#"><img src="@/assets/img/arrow1.svg" alt=""></a>
-                    </li>
-                    <li class="page-item active">
-                        <span class="page-link current">1</span>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">4</a>
-                    </li>
-                    <li class="page-item">
-                        <span class="page-link">...</span>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">11</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">12</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="nextpage-link" href="#"><img src="@/assets/img/arrow2.svg" alt=""></a>
-                    </li>
-                </ul>
-            </div>
     </div>
-</div>
 </template>
 
 <script>
-    export default {
-        name:"AdminModule"
+import router from '@/router';
+import { mapActions, mapGetters } from 'vuex';
+import ActPagination from './elementComponents/ActPagination.vue';
+export default {
+    name: "AdminModule",
+    components: {
+        ActPagination
+    },
+    data() {
+        return {
+            filter: {
+                level: '',
+                status: '',
+                moduleName: '',
+                page: 1,
+            },
+            currentPage: 1,
+        }
+    },
+    mounted() {
+        this.fetchModules({
+            level: this.filter.level || null,
+            status: this.filter.status || null,
+            moduleName: this.filter.moduleName || null,
+            page: 1,
+            pageSize: this.defaultPaging.pageSize
+
+        })
+        this.fetchLevels({})
+    },
+    methods: {
+        ...mapActions({
+            fetchModules: 'fetchModules',
+            fetchLevels: 'getLevels',
+            setModuleToEdit: 'setModuleToEdit',
+            deleteExamModules: 'deleteExamModules'
+        }),
+        editModule(item) {
+            this.setModuleToEdit(item)
+            router.push('/Module/Edit')
+        },
+        async searchModules() {
+            await this.fetchModules({
+                level: this.filter.level || null,
+                status: this.filter.status || null,
+                moduleName: this.filter.moduleName || null,
+                page: 1,
+                pageSize: this.defaultPaging.pageSize
+            })
+        },
+        async resetFilter() {
+            this.filter = { page: 1, pageSize: this.defaultPaging.pageSize }
+            await this.fetchModules(this.filter)
+        },
+        async onPageChange(page) {
+            await this.fetchModules({
+                level: this.filter.level || null,
+                status: this.filter.status || null,
+                moduleName: this.filter.moduleName || null,
+                page: page,
+                pageSize: this.defaultPaging.pageSize
+
+            })
+            this.currentPage = page
+        },
+        async deleteSelectedItems() {
+            const selectedItems= this.modules.filter(x => x.isSelected).map(x => x.id)
+            if (selectedItems && selectedItems.length) {
+                const result = await this.Swal.fire(this.getSwalDeleteDialog.prompt)
+                if (result.isConfirmed) {
+                    await this.deleteExamModules(selectedItems)
+                    await this.onPageChange(this.currentPage)
+                    this.Swal.fire(this.getSwalDeleteDialog.successDelete)
+                }
+
+            }
+
+        }
+    },
+    computed: {
+        ...mapGetters({
+            statuses: 'getStatusField',
+            levels: 'getExamLevels',
+            modules: 'getModules',
+            defaultPaging: 'getDefaultPaging',
+            paging: 'getPaging',
+            getSwalDeleteDialog:'getSwalDeleteDialog'
+        })
     }
+}
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

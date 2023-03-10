@@ -105,6 +105,10 @@ const routes = [
             path:"Add",
             component:AdminLevelAdd
           },
+          {
+            path:"Edit",
+            component:AdminLevelAdd
+          },
 
         ]
 
@@ -126,6 +130,10 @@ const routes = [
           {
             path:"Add",
             component:AdminModuleAdd
+          },
+          {
+            path:"Edit",
+            component:AdminModuleAdd
           }
         ]
         },
@@ -146,6 +154,10 @@ const routes = [
             {
               path:"Add",
               component:AdminSubjectAdd
+            },
+            {
+              path:"Edit",
+              component:AdminSubjectAdd
             }
           ]
           },
@@ -161,7 +173,7 @@ const routes = [
               },
               {
                 path:":id",
-                component:AdminQuestionsList
+                component:AdminQuestionsList,
               },
               {
                 path:"Add",
@@ -178,7 +190,7 @@ const routes = [
                     component:AdminQuestionAddVideo
                   },
                   {
-                    path:"Select",
+                    path:"Text",
                     component:AdminQuestionAddSelect
                   },
                 ]
@@ -189,6 +201,18 @@ const routes = [
                   {
                     path:"Audio",
                     component:AdminQuestionAddAudio
+                  },
+                  {
+                    path:"Text",
+                    component:AdminQuestionAddSelect
+                  },
+                  {
+                    path:"Video",
+                    component:AdminQuestionAddVideo
+                  },
+                  {
+                    path:"Letter",
+                    component:AdminQuestionAddLetter
                   }
                 ]
               }
@@ -216,7 +240,7 @@ const routes = [
               meta: {  header: true },
               children:[
                 {
-                  path: "",
+                  path: "AdminCandidates",
                   component:AdminCandidates, 
                 },
                 {

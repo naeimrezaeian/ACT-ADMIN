@@ -1147,13 +1147,16 @@ header .box .menu ul li a:hover:after{
     justify-content: center;
     align-items: center;
     border-radius: 5px;
+    cursor: pointer;
 }
 .pagin .pagination .page-item .page-link:hover{
     color: #919191;
+    cursor: pointer;
 }
 .pagin .pagination .page-item.active .page-link{
     background: #0079C1;
     color: #fff;
+    cursor: default;
 }
 .checkbox{
     display: none;

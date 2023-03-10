@@ -11,12 +11,12 @@
       <div class="wrapper">
         <div class="registret">
           <div class="title">АВТОРИЗАЦИЯ</div>
-          <form  :class="{ error: formError }" @submit.prevent="checkForm">
+          <form  :class="{ error: error }" @submit.prevent="checkForm">
             <input
               type="text"              
               placeholder="Введите логин"
               name="login"
-              v-model="login"
+              v-model="username"
               
             />
             <div class="password">
@@ -35,7 +35,7 @@
                 @click="show_hide_password"
               ></a>
             </div>
-            <div class="error">Неправильный логин или пароль</div>
+            <div class="error" v-if="error">{{error }}</div>
             <div class="box">
               <button type="submit" class="btn">Войти</button>
               <button type="button" class="def">Забыли пароль?</button>
@@ -67,32 +67,29 @@
 </template>
 
 <script>
+import { mapGetters,mapActions } from 'vuex'
 export default {
   name: "AdminLogin",
   data() {
     return {
       errors: [],
       formError: false,
-      login:null,
+      username:null,
       password:null,     
       passwordFieldType: "password",
       passwordShow: false,
     };
   },
   components: {},
-
+  computed:{
+    ...mapGetters({error:'getError',loading:'getLoading'})
+  },
   methods: {
-    checkForm() {
-        console.log("Form")
-        if(!this.login || !this.password){
-            this.formError=true
-        }else{
-            this.formError=false
-            this.$router.push('Dashboard')
-        }
-
-        
-        
+    ...mapActions({login:'adminLogin'}),
+    async checkForm() {
+      const { username, password } = this;
+      console.log({username,password})
+      await this.login({username,password})
     },
     show_hide_password() {
       this.passwordFieldType =
