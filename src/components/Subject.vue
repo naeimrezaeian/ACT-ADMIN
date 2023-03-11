@@ -36,7 +36,7 @@
             <div class="panel">
                 <div class="left">
                     <div class="chek">
-                        <input type="checkbox" id="all" value="" class="checkbox">
+                        <input type="checkbox" id="all" v-model="selectAllSubtests" class="checkbox">
                         <label for="all">Выбрать все</label>
                     </div>
                     <button type="button" class="delete" @click="deleteSelectedItems">Удалить выбранные</button>
@@ -98,7 +98,8 @@ export default {
                 status: '',
                 page: 1,
             },
-            currentPage: 1
+            currentPage: 1,
+            selectAll:false
         }
     },
     async mounted() {
@@ -156,7 +157,18 @@ export default {
             defaultPaging: 'getDefaultPaging',
             paging: 'getPaging',
             getSwalDeleteDialog:'getSwalDeleteDialog'
-        })
+        }),
+        selectAllSubtests:{
+            get(){
+                return this.selectAll
+            },
+            set(newVal){
+                this.selectAll=newVal
+                this.subtests.forEach(item=>{
+                    item.isSelected=newVal
+                })
+            }
+        }
     }
 
 }

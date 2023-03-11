@@ -13,7 +13,8 @@
                     </div>
                     <div class="item">
                         <label for="time">Время прохождения</label>
-                        <input type="time" placeholder="_ _ : _ _" id="time" onfocus="(this.type='time')" v-model="time" step="3600">
+                        <input type="time" placeholder="_ _ : _ _" id="time" onfocus="(this.type='time')" v-model="time"
+                            step="3600">
                     </div>
                     <div class="item">
                         <label for="col">Количество баллов</label>
@@ -57,130 +58,78 @@
                         <label for="video">Видео запись</label>
                         <select id="video" v-model="cameraRecord">
                             <option value="" disabled selected>Автоматический</option>
-                            <option v-for="item in boolTypes" :key="item.key" :value="item.key">{{item.value}}</option>
+                            <option v-for="item in boolTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="item">
                     <label for="text">Описание</label>
-                    <editor id="tiny" :init="Tinyconfig" :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh" v-model="subtest.desc">
+                    <editor id="tiny" :init="Tinyconfig" :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
+                        v-model="subtest.desc">
                     </editor>
                 </div>
-                <div class="box">
+                <div class="box" v-if="isEditMode">
                     <div class="col">
                         <div class="title">Выбор варианта</div>
                         <div class="panel">
                             <div class="top_panel">
                                 <div class="chek">
-                                    <input type="checkbox" id="all" value="" class="checkbox">
+                                    <input type="checkbox" id="all" v-model="selectAllVariants" class="checkbox">
                                     <label for="all">Выбрать все</label>
                                 </div>
-                                <button type="button" class="delete">Удалить выбранные из варианта</button>
+                                <button type="button" class="delete" @click="removeSelectedVariants">Удалить выбранные из варианта</button>
                             </div>
-                            <div class="variant">
+                            <div class="variant" v-for="item in subtestVariants" :key="item.id ?? item.nId">
                                 <div class="chek">
-                                    <input type="checkbox" id="chek_1" value="" class="checkbox">
-                                    <label for="chek_1"></label>
+                                    <input type="checkbox" :id="item.id ?? item.nId" v-model="item.isSelected"
+                                        class="checkbox">
+                                    <label :for="item.id ?? item.nId"></label>
                                 </div>
                                 <div class="folder">
-                                    <div class="fol">
-                                        <div class="zag">Вариант 1</div>
-                                        <button type="button" class="edit"></button>
+                                    <div class="fol" v-if="!item.toggleEditMode">
+                                        <div class="zag">{{ item.title }}</div>
+                                        <button type="button" class="edit" @click="toggleVariantEdit(item)"></button>
                                     </div>
-                                    <div class="text">
-                                        <div class="txt">Вопрос 1. Продолжение текста вопроса, возможно длинное, может быть
-                                            даже в две строки</div>
-                                        <button type="button" class="edit"></button>
+                                    <div class="fol" v-else>
+                                        <input type="input" v-model="item.title" />
+                                        <button type="button" class="edit" @click="toggleVariantEdit(item)"></button>
                                     </div>
-                                    <button type="button" class="add">Добавить вариант</button>
+                                    <div class="text" v-for="(question, index) in item.questions" :key="question.id">
+                                        <div class="txt">{{ question?.question?.questionTexts[0]?.questionTitle }}</div>
+                                        <button type="button" class="delete"
+                                            @click="removeQuestionFromVariant(item, index)"></button>
+                                    </div>
+
                                 </div>
 
                             </div>
+                            <button type="button" class="add" @click="addNewVariant">Добавить вариант</button>
                         </div>
                     </div>
                     <div class="col">
                         <div class="title">Выбор вопроса</div>
                         <div class="panel">
                             <div class="top_panel">
-                                <div class="chek">
-                                    <input type="checkbox" id="all_1" value="" class="checkbox">
-                                    <label for="all_1">Выбрать все</label>
-                                </div>
-                                <button type="button" class="delete left">Удалить выбранные</button>
                             </div>
-                            <div class="variant">
-                                <div class="chek">
-                                    <input type="checkbox" id="chek_2" value="" class="checkbox">
-                                    <label for="chek_2"></label>
-                                </div>
+                            <div class="variant" v-for="item in questionBase" :key="item.id">
                                 <div class="folder">
                                     <div class="fol">
-                                        <div class="zag">База вопросов 1</div>
+                                        <div class="zag">{{ item.title }}</div>
                                         <div class="sub_folder">
-                                            <div class="item">
+                                            <div class="item" v-for="question in item.examQuestions" :key="question.id">
                                                 <div class="chek">
-                                                    <input type="checkbox" id="chek_3" value="" class="checkbox" checked>
-                                                    <label for="chek_3"></label>
+                                                    <input type="checkbox" :id="question.id" v-model="question.isSelected"
+                                                        class="checkbox">
+                                                    <label :for="question.id"></label>
                                                 </div>
-                                                <div class="name">Вопрос 1. Продолжение текста вопроса, возможно длинное,
-                                                    может быть даже в две строки</div>
-                                                <button type="button" class="edit"></button>
-                                            </div>
-                                            <div class="item">
-                                                <div class="chek">
-                                                    <input type="checkbox" id="chek_4" value="" class="checkbox">
-                                                    <label for="chek_4"></label>
-                                                </div>
-                                                <div class="name">Вопрос 2. Продолжение текста вопроса, возможно длинное,
-                                                    может быть даже в две строки</div>
-                                                <button type="button" class="edit"></button>
-                                            </div>
-                                            <div class="item">
-                                                <div class="chek">
-                                                    <input type="checkbox" id="chek_5" value="" class="checkbox">
-                                                    <label for="chek_5"></label>
-                                                </div>
-                                                <div class="name">Вопрос 3. Продолжение текста вопроса, возможно длинное,
-                                                    может быть даже в две строки</div>
-                                                <button type="button" class="edit"></button>
+                                                <div class="name">{{ question.questionTexts[0].questionTitle }}</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="variant">
-                                <div class="chek">
-                                    <input type="checkbox" id="chek_6" value="" class="checkbox">
-                                    <label for="chek_6"></label>
-                                </div>
-                                <div class="folder">
-                                    <div class="fol">
-                                        <div class="zag">База вопросов 2</div>
-                                        <div class="sub_folder">
-                                            <div class="item">
-                                                <div class="chek">
-                                                    <input type="checkbox" id="chek_7" value="" class="checkbox">
-                                                    <label for="chek_7"></label>
-                                                </div>
-                                                <div class="name">Вопрос 1. Продолжение текста вопроса, возможно длинное,
-                                                    может быть даже в две строки</div>
-                                                <button type="button" class="edit"></button>
-                                            </div>
-                                            <div class="item">
-                                                <div class="chek">
-                                                    <input type="checkbox" id="chek_8" value="" class="checkbox">
-                                                    <label for="chek_8"></label>
-                                                </div>
-                                                <div class="name">Вопрос 2. Продолжение текста вопроса, возможно длинное,
-                                                    может быть даже в две строки</div>
-                                                <button type="button" class="edit"></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="add show_popup" rel="popup1">Добавить вопросы</button>
-                                </div>
-                            </div>
-                            <button type="button" class="btn">Добавить выбранное к варианту</button>
+                            <button type="button" class="btn" @click="addQuestionsToVariants">Добавить выбранное к
+                                варианту</button>
                         </div>
                     </div>
                 </div>
@@ -366,19 +315,22 @@ export default {
     data() {
         return {
             Tinyconfig,
-            subtest:{
-                status:'active',
-                cameraRecord:false,
-                maxTime:0,
-                examModule:{
-                    
+            selectAll: false,
+            subtest: {
+                status: 'active',
+                cameraRecord: false,
+                maxTime: 0,
+                examModule: {
+
                 }
             }
         }
     },
-    mounted(){
-        if(this.$route.fullPath.endsWith("/Edit")){
-            this.subtest=this.editSubtest
+    async mounted() {
+        if (this.isEditMode) {
+            this.subtest = this.editSubtest
+            await this.getSubtestVariatns(this.subtest.id)
+            await this.getQuestionBases({ subtestId: this.subtest.id, page: 0, pageSize: 0, includeQuestions: true })
         }
     },
     components: {
@@ -391,32 +343,100 @@ export default {
             statuses: 'getStatusField',
             subtestTypes: 'getSubtestTypes',
             boolTypes: 'getBoolTypes',
-            editSubtest:'getEditSubtest'
+            editSubtest: 'getEditSubtest',
+            subtestVariants: 'getSubtestVariants',
+            questionBase: 'getQuestionBase'
+
         }),
-        cameraRecord:{
-            get(){
-                return this.subtest.cameraRecord.toString()
+        selectAllVariants: {
+            get() {
+                return this.selectAll
             },
-            set(newVal){
-                this.subtest.cameraRecord=this.$convertToBool(newVal)
+            set(newVal) {
+                this.selectAll = newVal
+                this.subtestVariants.forEach(variant => {
+                    variant.isSelected = newVal
+                })
             }
         },
-        time:{
-            get(){
+        cameraRecord: {
+            get() {
+                return this.subtest.cameraRecord.toString()
+            },
+            set(newVal) {
+                this.subtest.cameraRecord = this.$convertToBool(newVal)
+            }
+        },
+        time: {
+            get() {
                 return this.$convertToTime(this.subtest.maxTime)
             },
-            set(newVal){
-                this.subtest.maxTime=this.$convertToMinutes(newVal)
+            set(newVal) {
+                this.subtest.maxTime = this.$convertToMinutes(newVal)
+            }
+        },
+        isEditMode: {
+            get() {
+                return this.$route.fullPath.toLocaleLowerCase().endsWith("edit")
             }
         }
     },
-    methods:{
-        ...mapActions({editCurrentSubtest:'editSubtest',addSubtest:'addNewSubtest'}),
-        async saveShanges(){
-            this.$route.fullPath.endsWith("/Edit")?
-            await this.editCurrentSubtest(this.subtest):
-            await this.addSubtest(this.subtest)
-
+    methods: {
+        ...mapActions({
+            editCurrentSubtest: 'editSubtest',
+            addSubtest: 'addNewSubtest',
+            getSubtestVariatns: 'fetchSubtestVariants',
+            getQuestionBases: 'fetchQuestionBases',
+            updateSubtestVariant: 'updateSubtestVariant'
+        }),
+        toggleVariantEdit(item) {
+            if (!item.toggleEditMode) {
+                item.toggleEditMode = false
+            }
+            item.toggleEditMode = !item.toggleEditMode
+        },
+        addNewVariant() {
+            this.subtestVariants.push({
+                nId: `variant${this.subtestVariants.length} `,
+                title: '',
+                subtestId: this.subtest.id,
+                questions: [],
+                toggleEditMode: true
+            })
+        },
+        removeSelectedVariants() {
+            console.log(this.subtestVariants.filter(item => !item.isSelected))
+            const items=this.subtestVariants.filter(item => !item.isSelected)
+            this.subtestVariants.splice(0,this.subtestVariants.length)
+            this.subtestVariants.push(...items)
+        },
+        removeQuestionFromVariant(variant, questionIndex) {
+            variant.questions.splice(questionIndex, 1)
+        },
+        addQuestionsToVariants() {
+            var selectedVariants = this.subtestVariants.filter(item => item.isSelected)
+            var selectedQuestions = []
+            this.questionBase.forEach(questions => {
+                selectedQuestions.push(...questions.examQuestions.filter(item => item.isSelected))
+            })
+            selectedVariants.forEach(variant => {
+                selectedQuestions.forEach(question => {
+                    variant.questions.push({
+                        variantId: variant.id,
+                        questionId: question.id,
+                        question: question
+                    })
+                })
+                variant.isSelected = false
+            });
+        },
+        async saveShanges() {
+            this.isEditMode ?
+                await this.editCurrentSubtest(this.subtest) :
+                await this.addSubtest(this.subtest)
+            if (this.isEditMode) {
+                this.updateSubtestVariant({ subtestId: this.subtest.id, variants: this.subtestVariants })
+            }
         }
     }
 

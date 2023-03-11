@@ -11,6 +11,7 @@ export default{
                 filter.module? `ExamModuleId=${filter.module}`: null,
                 filter.subtest? `SubtestId=${filter.subtest}`:null,
                 filter.status ? `status=${filter.status}` : null,
+                filter.includeQuestions? `includeQuestions=true`:`includeQuestions=false`,
                 filter.page?`page=${filter.page}`:null,
                 filter.pageSize?`pageSize=${filter.pageSize}`:null
               ]

@@ -34,7 +34,7 @@
             <div class="panel">
                 <div class="left">
                     <div class="chek">
-                        <input type="checkbox" id="all" value="" class="checkbox">
+                        <input type="checkbox" id="all" v-model="selectAllModules" class="checkbox">
                         <label for="all">Выбрать все</label>
                     </div>
                     <button type="button" class="delete" @click="deleteSelectedItems">Удалить выбранные</button>
@@ -96,6 +96,7 @@ export default {
                 page: 1,
             },
             currentPage: 1,
+            selectAll:false
         }
     },
     mounted() {
@@ -166,7 +167,18 @@ export default {
             defaultPaging: 'getDefaultPaging',
             paging: 'getPaging',
             getSwalDeleteDialog:'getSwalDeleteDialog'
-        })
+        }),
+        selectAllModules:{
+            get(){
+                return this.selectAll
+            },
+            set(newVal){
+                this.selectAll=newVal
+                this.modules.forEach(element => {
+                    element.isSelected=newVal
+                });
+            }
+        }
     }
 }
 </script>

@@ -12,7 +12,7 @@
             <div class="panel">
                 <div class="left">
                     <div class="chek">
-                        <input type="checkbox" id="all" value="" class="checkbox">
+                        <input type="checkbox" id="all" v-model="selectAllQuestions" class="checkbox">
                         <label for="all">Выбрать все</label>
                     </div>
                     <button type="button" class="delete" @click="deleteSelectedItems">Удалить выбранные</button>
@@ -41,8 +41,7 @@
                             <td>{{ item.type }}</td>
                             <td>{{ item.status }}</td>
                             <td>
-                                <button type="button" class="edit"></button>
-                                <button type="button" class="remove"></button>
+                                <router-link :to="{ path: 'Edit/' + item.type }" @click="setQuestionToEdit(item)" class="edit"></router-link>
                             </td>
                         </tr>
                         <!-- <tr>
@@ -143,6 +142,7 @@ export default {
         return {
             questionBase: null,
             currentPage: 1,
+            selectAll:false
         }
     },
     async mounted() {
@@ -156,7 +156,18 @@ export default {
             defaultPaging: 'getDefaultPaging',
             paging: 'getPaging',
             getSwalDeleteDialog:'getSwalDeleteDialog'
-        })
+        }),
+        selectAllQuestions:{
+            get(){
+                return this.selectAll
+            },
+            set(newVal){
+                this.selectAll=newVal
+                this.questions.forEach(element => {
+                    element.isSelected=newVal
+                });
+            }
+        }
     },
     methods: {
         ...mapActions({
