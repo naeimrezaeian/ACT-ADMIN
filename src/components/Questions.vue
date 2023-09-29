@@ -123,7 +123,8 @@
                             <label for="model">Модуль</label>
                             <select id="model" v-model="newQuestionBase.subtest.examModuleId">
                                 <option value="" disabled selected>Модуль 1</option>
-                                <option v-for="item in modules" :key="item.id" :value="item.id">{{ item.title }}</option>
+                                <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}
+                                </option>
                             </select>
                         </div>
 
@@ -132,7 +133,8 @@
                             <label for="uroven">Субтест</label>
                             <select id="uroven" v-model="newQuestionBase.subtestId">
                                 <option value="" disabled selected>Выбрать Субтест</option>
-                                <option v-for="item in subtests" :key="item.id" :value="item.id">{{ item.title }}</option>
+                                <option v-for="item in moudleSubtests" :key="item.id" :value="item.id">{{ item.title }}
+                                </option>
                             </select>
                         </div>
 
@@ -198,8 +200,18 @@ export default {
             subtestTypes: 'getSubtestTypes',
             defaultPaging: 'getDefaultPaging',
             paging: 'getPaging',
-            getSwalDeleteDialog:'getSwalDeleteDialog'
-        })
+            getSwalDeleteDialog: 'getSwalDeleteDialog'
+        }),
+        levelModules: {
+            get() {
+                return this.modules.filter(x => x.examLevelId === this.newQuestionBase.subtest.examModule.examLevelId)
+            }
+        },
+        moudleSubtests: {
+            get() {
+                return this.subtests.filter(x => x.examModuleId == this.newQuestionBase.subtest.examModuleId)
+            }
+        }
     },
     methods: {
         ...mapActions({
@@ -210,7 +222,7 @@ export default {
             createNewQuestionBase: 'addNewQuestionBase',
             editQuestionBase: 'editQuestionBase',
             setCurrentQuestionBase: 'setSelectedQuestionBase',
-            deleteQuestionBase:'deleteQuestionBase'
+            deleteQuestionBase: 'deleteQuestionBase'
         }),
         async searchQuestions() {
             await this.getQuestionBases(this.filter)
@@ -260,6 +272,19 @@ export default {
 
 
 
+        }
+    },
+    watch: {
+        'newQuestionBase.subtest.examModule.examLevelId': function (_, oldVal) {
+            if (!oldVal) {
+                this.newQuestionBase.subtest.examModuleId = ''
+                this.newQuestionBase.subtestId = ''
+            }
+        },
+        'newQuestionBase.subtest.examModuleId': function (_, oldVal) {
+            if (!oldVal) {
+                this.newQuestionBase.subtestId = ''
+            }
         }
     }
 }

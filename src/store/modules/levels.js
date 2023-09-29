@@ -12,8 +12,8 @@ export default{
     actions:{
         async getLevels({commit},filter){
             const params = [
-                filter.page?`page=${filter.page}`:null,
-                filter.pageSize?`pageSize=${filter.pageSize}`:null
+                filter?.page?`page=${filter.page}`:null,
+                filter?.pageSize?`pageSize=${filter.pageSize}`:null
               ].filter(param => param !== null)
               .join('&');
             const response= await httpClient.get(`/api/admin/examlevels?${params}`)

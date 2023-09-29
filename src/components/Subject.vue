@@ -20,7 +20,7 @@
                     </select>
                     <select v-model="filter.examModuleId">
                         <option value="" disabled selected>Выбрать модуль</option>
-                        <option v-for="item in modules" :key="item.id" :value="item.id">{{ item.title }}</option>
+                        <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.status">
                         <option value="" disabled selected>Выбрать статус</option>
@@ -99,7 +99,7 @@ export default {
                 page: 1,
             },
             currentPage: 1,
-            selectAll:false
+            selectAll: false
         }
     },
     async mounted() {
@@ -156,20 +156,31 @@ export default {
             statuses: 'getStatusField',
             defaultPaging: 'getDefaultPaging',
             paging: 'getPaging',
-            getSwalDeleteDialog:'getSwalDeleteDialog'
+            getSwalDeleteDialog: 'getSwalDeleteDialog'
         }),
-        selectAllSubtests:{
-            get(){
+        levelModules: {
+            get() {
+                return this.modules.filter(x => x.examLevelId === this.filter.examLevelId)
+            }
+        },
+        selectAllSubtests: {
+            get() {
                 return this.selectAll
-            },
-            set(newVal){
-                this.selectAll=newVal
-                this.subtests.forEach(item=>{
-                    item.isSelected=newVal
+            }
+            ,
+            set(newVal) {
+                this.selectAll = newVal
+                this.subtests.forEach(item => {
+                    item.isSelected = newVal
                 })
             }
         }
-    }
+    },
+    watch: {
+        'filter.examLevelId': function () {
+            this.filter.examModuleId = ''
+        },
+    },
 
 }
 </script>

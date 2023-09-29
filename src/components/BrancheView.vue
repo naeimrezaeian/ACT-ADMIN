@@ -3,7 +3,7 @@
     <div class="box_end">
       <div class="right">
         <div class="head">
-          <h1>НАЗВАНИЕ ФИЛИАЛА</h1>
+          <h1>{{ selectedBranch.shortName }}</h1>
           <div class="bot">
             <button type="button" @click="addGroup" class="add">
               Добавить группу
@@ -15,15 +15,15 @@
             <div class="title">Карточка филиала</div>
           </div>
           <div class="body_colp" id="top_colp">
-            <button type="button" class="edit">Редактировать</button>
+            <router-link to="Edit" class="edit">Редактировать</router-link>
             <div class="box">
               <div class="lf">
                 <div class="title">Общая информация</div>
                 <ul>
-                  <li><span>Полное название</span> Филиал №1 ШОМП Москва</li>
-                  <li><span>Короткое название</span> Филиал 1</li>
-                  <li><span>Тип филиала</span> ПЛЦТ</li>
-                  <li><span>Код филиала</span> 1-3345</li>
+                  <li><span>Полное название</span> {{ selectedBranch.name }}</li>
+                  <li><span>Короткое название</span> {{ selectedBranch.shortName }}</li>
+                  <li><span>Тип филиала</span> {{ selectedBranch.branchType }}</li>
+                  <li><span>Код филиала</span> {{ selectedBranch.branchCode }}</li>
                 </ul>
               </div>
               <div class="lr">
@@ -42,16 +42,15 @@
               <div class="lf">
                 <div class="title">Реквезиты</div>
                 <ul>
-                  <li><span>Город</span> Москва</li>
+                  <li><span>Город</span> {{ selectedBranch.city }}</li>
                   <li>
-                    <span>Факт. адрес</span> 113167, Москва, Ленинский проспект,
-                    9/3
+                    <span>Факт. адрес</span> {{ selectedBranch.actualAddress }}
                   </li>
                   <li>
-                    <span>Юр. адрес</span> 145678, Мытищи, Зеленая улица, 2с6
+                    <span>Юр. адрес</span> {{ selectedBranch.legalAddress }}
                   </li>
-                  <li><span>ИНН</span> 1234567890</li>
-                  <li><span>КПП</span> 1234567890</li>
+                  <li><span>ИНН</span> {{ selectedBranch.tin }}</li>
+                  <li><span>КПП</span> {{ selectedBranch.checkpoint }}</li>
                 </ul>
               </div>
               <div class="lr">
@@ -87,70 +86,26 @@
           <div class="serch">
             <form>
               <div class="box">
-                <input
-                  type="text"
-                  placeholder="Выбрать период"
-                  onfocus="(this.type='date')"
-                  class="dats"
-                />
-                <select>
+                <input type="text" placeholder="Выбрать период" onfocus="(this.type='date')" class="dats"
+                  v-model="filter.examDate" />
+                <select v-model="filter.examLevelId">
                   <option value="" disabled selected>Гражданство</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
+                  <option v-for="item in selectedBranch.branchExamLevels" :key="item.id" :value="item.id">
+                    {{ item.examLevelTitle }}</option>
                 </select>
-                <select>
+                <select v-model="filter.status">
                   <option value="" disabled selected>Выбрать статус</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
+                  <option v-for="item in examStatus" :key="item.key" :value="item.key">{{ item.value }}</option>
                 </select>
               </div>
               <div class="box">
-                <input
-                  type="text"
-                  class="serch_in"
-                  value=""
-                  placeholder="Напишите запрос для поиска"
-                />
+                <input type="text" class="serch_in" placeholder="Напишите запрос для поиска" v-model="filter.comment" />
                 <span class="lup"></span>
-                <button type="button" class="btn">Поиск</button>
+                <button type="button" class="btn" @click="searchBranchExams">Поиск</button>
               </div>
             </form>
           </div>
-          <div class="doc_fil">
-            <div class="doc_svo">
-              <div class="info">
-                <div class="name">Гражданство</div>
-                <div class="proverka arhiv">
-                  <span>В архиве</span>
-                  <span class="nomer">№ 1-3325</span>
-                </div>
-              </div>
-              <div id="svo-1">
-                <div class="box">
-                  <div class="item">
-                    <ul>
-                      <li><span>Ответственный:</span> Длиннаяфамилия И.О.</li>
-                      <li><span>Дата проведения:</span> 22.04.2021</li>
-                      <li><span>Кол-во тестируемых:</span> 7</li>
-                    </ul>
-                  </div>
-                  <div class="coment">
-                    <div class="name">Комменатрий</div>
-                    <div class="text">Текстовый комментарий к карточке</div>
-                  </div>
-                  <div class="files">
-                    <div class="name">Загружено:</div>
-                    <a class="file" href="#">Акт 1.pdf</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button class="calaps" onclick="$('#svo-1').slideToggle()">
-              Свернуть
-            </button>
-          </div>
+          <ExamGroup v-for="item in branchExams" :key="item.id" :examGroup="item" />
           <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
@@ -463,34 +418,20 @@
                 </div>
                 <div class="item">
                   <label for="date">Дата рождения</label>
-                  <input
-                    type="text"
-                    placeholder="__.__.____"
-                    onfocus="(this.type='date')"
-                    id="date"
-                    name="date"
-                    class="dats"
-                  />
+                  <input type="text" placeholder="__.__.____" onfocus="(this.type='date')" id="date" name="date"
+                    class="dats" />
                 </div>
                 <div class="item">
                   <label for="sprav">Справка для пересдачи</label>
-                  <input
-                    type="text"
-                    id="sprav"
-                    name="sprav"
-                    value=""
-                    placeholder="Номер справки"
-                  />
+                  <input type="text" id="sprav" name="sprav" value="" placeholder="Номер справки" />
                 </div>
               </div>
             </div>
             <div class="right">
               <div class="img">
                 <img src="@/assets/img/ava.svg" alt="" />
-                <span
-                  >Фотография в формате .jpg, .jpeg или .png. Размер не более
-                  2мб</span
-                >
+                <span>Фотография в формате .jpg, .jpeg или .png. Размер не более
+                  2мб</span>
               </div>
               <div class="bot">
                 <button type="button" class="add">Сделать фото</button>
@@ -514,14 +455,8 @@
                 <div class="item doc_item_2">
                   <div select="select">
                     <label for="date_v">Дата выдачи</label>
-                    <input
-                      type="text"
-                      placeholder="__.__.____"
-                      onfocus="(this.type='date')"
-                      id="date_v"
-                      name="date_v"
-                      class="dats"
-                    />
+                    <input type="text" placeholder="__.__.____" onfocus="(this.type='date')" id="date_v" name="date_v"
+                      class="dats" />
                   </div>
                 </div>
                 <div class="item doc_item_3">
@@ -578,11 +513,24 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import AdminCandidateMetrica from "./elementComponents/CandidateMetrica.vue";
+import ExamGroup from "./ExamGroup.vue";
 export default {
   name: "AdminBrancheView",
   components: {
     AdminCandidateMetrica,
+    ExamGroup
+  },
+  data() {
+    return {
+      filter: {
+        status: "",
+        examLevelId: "",
+        examDate: "",
+        comment: "",
+      }
+    }
   },
   mounted() {
     let self = this;
@@ -596,29 +544,95 @@ export default {
       self.$Jquery("body").removeClass("hide");
     });
   },
+  computed: {
+    ...mapGetters({
+      selectedBranch: "getSelectedBranch",
+      examStatus: "getExamStatus",
+      branchExams: "getBranchExams"
+    }),
+  },
   methods: {
-    addGroup() {
-      this.Swal.fire({
-        
+    ...mapActions({ getBranchExams: "fetchBranchExams", addBranchExam: "createBranchExam" }),
+    async searchBranchExams() {
+      await this.getBranchExams(this.filter);
+    },
+    async addGroup() {
+      let self = this;
+      var responsibleElement = `<select id="responsible">
+        <option value disabled>Выбрать ответственного</option>
+      ${this.selectedBranch.branchSystemUsers.map((user) => {
+        return `<option value="${user.userId}">${user.fullName}</option>`
+      }).join("")}
+        </select>`
+
+      await this.Swal.fire({
+
         input: "select",
+        html:
+          '<input id="examDate" type="text" placeholder="Дата экзамена" onfocus="(this.type=\'date\')" class="dats" />' +
+          '<input id="comment"  type="text" placeholder="Комменатрий" />' +
+          responsibleElement,
         inputOptions: {
-          SRB: "Вид на жительство",
-          UKR: "Патент",
-          HRV: "Гражданство",
+          ...this.selectedBranch.branchExamLevels.reduce((acc, level) => {
+            acc[level.examLevelId] = level.examLevelTitle;
+            return acc;
+          }, {}),
         },
         inputPlaceholder: "Выбрать уровень",
         showCancelButton: true,
         confirmButtonText: 'Сохранить',
         confirmButtonColor: '#0079C1',
-        cancelButtonText:'Отменить', 
-           
-       
+        cancelButtonText: 'Отменить',
+        preConfirm: async () => {
+          let examDate = document.getElementById("examDate").value;
+          const comment = document.getElementById("comment").value;
+          const examLevelId = document.querySelector(".swal2-select").value;
+          const responsibleId = document.getElementById("responsible").value;
+
+          if (!examDate) {
+            self.Swal.showValidationMessage("Введите дату экзамена");
+            return;
+          }
+          const now = new Date();
+          examDate = new Date(document.getElementById("examDate").value);
+
+          if (examDate <= now) {
+            self.Swal.showValidationMessage("Дата экзамена должна быть больше текущей даты");
+            return;
+          }
+
+          if (!comment) {
+            self.Swal.showValidationMessage("Введите комментарий");
+            return;
+          }
+          if (!responsibleId) {
+            self.Swal.showValidationMessage("Выберите ответственного");
+            return;
+          }
+          if (!examLevelId) {
+            self.Swal.showValidationMessage("Выберите уровень");
+            return;
+          }
+          const result = await self.addBranchExam({
+            examDate,
+            comment,
+            responsibleId,
+            examLevelId,
+            branchId: self.selectedBranch.id
+          });
+          if (!result) {
+            self.Swal.showValidationMessage("Ошибка при добавлении");
+            return;
+          }
+          return [examDate, responsibleId, comment, examLevelId];
+        },
+
 
       });
     },
+
   },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

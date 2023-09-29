@@ -3,6 +3,7 @@ import router from '@/router'
 export default{
     state:{
         user:{},
+        usersNotInBranch:[],
         error: '',
         loading: false,
     },
@@ -30,6 +31,15 @@ export default{
             commit('updateOnError', { error: 'Ошибка соединения к серверу', loading: false })
         }
             
+        },
+        async getUsersNotInBranch({commit},data){
+            const response=await httpClient.get(`/api/admin/users/GetUsersNotInBranches${data?.branchId ? `?branchId=${data.branchId}` : ''}`)
+            if(response.status===200){
+                commit("updateUsersNotInBranch",response.data.result)
+            }
+            else{
+                console.log(response)
+            }
         }
 
     },
@@ -40,6 +50,9 @@ export default{
         },
         updateLoggedinUser(state,data){
             state.user=data
+        },
+        updateUsersNotInBranch(state,data){
+            state.usersNotInBranch=data
         }
     },
     getters:{
@@ -51,6 +64,9 @@ export default{
         },
         getLoading(state){
             return state.loading
+        },
+        getUsersNotInBranch(state){
+            return state.usersNotInBranch
         }
 
     }

@@ -59,6 +59,10 @@ const routes = [
             path:"Add",
             component:AdminUserAdd
           },
+          {
+            path:"Edit",
+            component:AdminUserAdd
+          },
 
         ]
         
@@ -80,6 +84,11 @@ const routes = [
           },
           {
             path:"Add",
+            component:AdminBrancheAdd,
+           
+          },
+          {
+            path:"Edit",
             component:AdminBrancheAdd,
            
           },

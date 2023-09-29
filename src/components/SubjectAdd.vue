@@ -14,7 +14,7 @@
                     <div class="item">
                         <label for="time">Время прохождения</label>
                         <input type="time" placeholder="_ _ : _ _" id="time" onfocus="(this.type='time')" v-model="time"
-                            step="3600">
+                            step="60">
                     </div>
                     <div class="item">
                         <label for="col">Количество баллов</label>
@@ -37,7 +37,7 @@
                         <label for="model">Модуль</label>
                         <select id="model" v-model="subtest.examModuleId">
                             <option value="" disabled selected>Выбрать модуль</option>
-                            <option v-for="item in modules" :key="item.id" :value="item.id">{{ item.title }}</option>
+                            <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}</option>
                         </select>
                     </div>
                     <div class="item">
@@ -49,9 +49,10 @@
                     </div>
                     <div class="item">
                         <label for="tip_p">Тип проверки</label>
-                        <select id="tip_p" v-model="subtest.status">
+                        <select id="tip_p" v-model="subtest.checkType">
                             <option value="" disabled selected>Автоматический</option>
-                            <option v-for="item in statuses" :key="item.key" :value="item.key">{{ item.value }}</option>
+                            <option v-for="item in subtesCheckType" :key="item.key" :value="item.key">{{ item.value }}
+                            </option>
                         </select>
                     </div>
                     <div class="item">
@@ -77,7 +78,8 @@
                                     <input type="checkbox" id="all" v-model="selectAllVariants" class="checkbox">
                                     <label for="all">Выбрать все</label>
                                 </div>
-                                <button type="button" class="delete" @click="removeSelectedVariants">Удалить выбранные из варианта</button>
+                                <button type="button" class="delete" @click="removeSelectedVariants">Удалить выбранные из
+                                    варианта</button>
                             </div>
                             <div class="variant" v-for="item in subtestVariants" :key="item.id ?? item.nId">
                                 <div class="chek">
@@ -91,11 +93,11 @@
                                         <button type="button" class="edit" @click="toggleVariantEdit(item)"></button>
                                     </div>
                                     <div class="fol" v-else>
-                                        <input type="input" v-model="item.title" />
+                                        <input type="input" v-model="item.title" @keyup.enter="toggleVariantEdit(item)" />
                                         <button type="button" class="edit" @click="toggleVariantEdit(item)"></button>
                                     </div>
                                     <div class="text" v-for="(question, index) in item.questions" :key="question.id">
-                                        <div class="txt">{{ question?.question?.questionTexts[0]?.questionTitle }}</div>
+                                        <div class="txt" v-html="question?.question?.questionTexts[0]?.questionTitle"></div>
                                         <button type="button" class="delete"
                                             @click="removeQuestionFromVariant(item, index)"></button>
                                     </div>
@@ -317,7 +319,7 @@ export default {
             Tinyconfig,
             selectAll: false,
             subtest: {
-                status: 'active',
+                checkType: 'auto',
                 cameraRecord: false,
                 maxTime: 0,
                 examModule: {
@@ -330,7 +332,7 @@ export default {
         if (this.isEditMode) {
             this.subtest = this.editSubtest
             await this.getSubtestVariatns(this.subtest.id)
-            await this.getQuestionBases({ subtestId: this.subtest.id, page: 0, pageSize: 0, includeQuestions: true })
+            await this.getQuestionBases({ status: 'active', subtest: this.subtest.id, page: 0, pageSize: 0, includeQuestions: true })
         }
     },
     components: {
@@ -345,8 +347,8 @@ export default {
             boolTypes: 'getBoolTypes',
             editSubtest: 'getEditSubtest',
             subtestVariants: 'getSubtestVariants',
-            questionBase: 'getQuestionBase'
-
+            questionBase: 'getQuestionBase',
+            subtesCheckType: 'getSubtestCheckType'
         }),
         selectAllVariants: {
             get() {
@@ -357,6 +359,11 @@ export default {
                 this.subtestVariants.forEach(variant => {
                     variant.isSelected = newVal
                 })
+            }
+        },
+        levelModules: {
+            get() {
+                return this.modules.filter(x => x.examLevelId === this.subtest.examModule.examLevelId)
             }
         },
         cameraRecord: {
@@ -405,9 +412,8 @@ export default {
             })
         },
         removeSelectedVariants() {
-            console.log(this.subtestVariants.filter(item => !item.isSelected))
-            const items=this.subtestVariants.filter(item => !item.isSelected)
-            this.subtestVariants.splice(0,this.subtestVariants.length)
+            const items = this.subtestVariants.filter(item => !item.isSelected)
+            this.subtestVariants.splice(0, this.subtestVariants.length)
             this.subtestVariants.push(...items)
         },
         removeQuestionFromVariant(variant, questionIndex) {
@@ -438,7 +444,13 @@ export default {
                 this.updateSubtestVariant({ subtestId: this.subtest.id, variants: this.subtestVariants })
             }
         }
-    }
+    },
+    watch: {
+        'subtest.examModule.examLevelId': function (_, oldVal) {
+            if (oldVal)
+                this.subtest.examModuleId = ''
+        },
+    },
 
 }
 </script>

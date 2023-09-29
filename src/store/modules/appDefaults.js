@@ -2,66 +2,136 @@ export default {
     state: {
         statusField: [{
             key: 'active',
-            value: 'Enable'
+            value: 'Активен'
         },
         {
             key: 'disable',
-            value: 'Disable'
+            value: 'Не активен'
         }
         ],
-        subtestTypes:[{
-                key:'text',
-                value:'Text'
-            },
-            {
-                key:'letter',
-                value:'Letter'
-            },
-            {
-                key:'audio',
-                value:'Audio'
-            },
-            {
-                key:'video',
-                value:'Video'
-            }
-        ],
-        boolTypes:[{
-            key:'false',
-            value:'False'
+        subtestTypes: [{
+            key: 'text',
+            value: 'Тест'
         },
         {
-            key:'true',
-            value:'True'
-        }],
-        defaultPaging:{pageSize:10,maxVisibleButtons:5},
-        paging:{},
-        swalDeleteDialogConfig:{
-        prompt:{
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            key: 'letter',
+            value: 'Письмо'
         },
-        successDelete:{
-            title: 'Deleted!',
-            text: 'Your file has been deleted.',
-            icon: 'success',
+        {
+            key: 'audio',
+            value: 'Аудио'
+        },
+        {
+            key: 'video',
+            value: 'Видео'
         }
-    }
+        ],
+        boolTypes: [{
+            key: 'false',
+            value: 'Выключить'
+        },
+        {
+            key: 'true',
+            value: 'Включить'
+        }],
+        subtestCheckType: [
+            {
+                key: 'auto',
+                value: 'Автоматический'
+            },
+            {
+                key: 'manual',
+                value: 'Ручной'
+            }
+        ],
+        branchUserType: [{
+            key: 'superAdmin',
+            value: 'Главный ответственный'
+        },
+        {
+            key: 'admin',
+            value: 'Ответственное лицо'
+        },
+        {
+            key: 'official',
+            value: 'Официальное лицо'
+        },
+        {
+            key: 'checker',
+            value: 'Проверяющий'
+        }],
+        branchType: [{
+            key: 'master',
+            value: 'Мастер',
+        },
+        {
+            key: 'slave',
+            value: 'Слейв'
+        }],
+        examStatus: [{
+            key: 'new',
+            value: 'Новая',
+            cssClass: 'proverka new'
+        },
+        {
+            key: 'onVerification',
+            value: 'На проверке (акты)',
+            cssClass: 'proverka pro'
+        },
+        {
+            key: 'VerificationCompleted',
+            value: 'Проверка завершена',
+            cssClass: 'proverka'
+        },
+        {
+            key: 'Acts',
+            value: 'Требуются акты',
+            cssClass: 'proverka treb'
+        },
+        {
+            key: 'Archived',
+            value: 'В архиве',
+            cssClass: 'proverka arhiv'
+        },
+        {
+            key: 'Rejected',
+            value: 'Отклонено',
+            cssClass: 'proverka red'
+        },
+        ],
+        defaultPaging: { pageSize: 10, maxVisibleButtons: 5 },
+        paging: {},
+        swalDeleteDialogConfig: {
+            prompt: {
+                title: 'Вы действительно хотите удалить данные?',
+                text: "После удаления восстановить данные будет невозможно!",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Отменить',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Удалить'
+            },
+            successDelete: {
+                title: 'Deleted!',
+                text: 'Your file has been deleted.',
+                icon: 'success',
+            }
+        }
     },
-    mutations:{
-        updatePaging:(state,data)=>state.paging=data
+    mutations: {
+        updatePaging: (state, data) => state.paging = data
     },
-    getters:{
-        getStatusField:(state)=>state.statusField,
-        getSubtestTypes:(state)=>state.subtestTypes,
-        getBoolTypes:(state)=>state.boolTypes,
-        getDefaultPaging:(state)=>state.defaultPaging,
-        getPaging:(state)=>state.paging,
-        getSwalDeleteDialog:(state)=>state.swalDeleteDialogConfig
+    getters: {
+        getStatusField: (state) => state.statusField,
+        getSubtestTypes: (state) => state.subtestTypes,
+        getBoolTypes: (state) => state.boolTypes,
+        getDefaultPaging: (state) => state.defaultPaging,
+        getPaging: (state) => state.paging,
+        getSwalDeleteDialog: (state) => state.swalDeleteDialogConfig,
+        getBranchUserType: (state) => state.branchUserType,
+        getBranchType: (state) => state.branchType,
+        getExamStatus: (state) => state.examStatus,
+        getSubtestCheckType: (state) => state.subtestCheckType
     }
 }

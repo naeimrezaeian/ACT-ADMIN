@@ -5,15 +5,21 @@ import modules from './modules/modules';
 import appDefaults from './modules/appDefaults';
 import subtests from './modules/subtests';
 import questionBase from './modules/questionBases';
-import questions from './modules/questions'
+import questions from './modules/questions';
+import branch from "./modules/branch";
+import branchExam from "./modules/branchExam";
+import error from "./modules/error";
 export default new createStore({
-    modules:{
+    modules: {
         appDefaults,
         user,
         levels,
         modules,
         subtests,
         questionBase,
-        questions
+        questions,
+        branch,
+        branchExam,
+        error
     }
 })
