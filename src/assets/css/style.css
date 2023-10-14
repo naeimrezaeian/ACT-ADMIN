@@ -1731,7 +1731,7 @@ header .box .menu ul li a:hover:after {
 }
 
 .vopros_edit form .audi .box audio {
-    display: none;
+    /*display: none;*/
 }
 
 .vopros_edit form .audi .box .edit {
@@ -2631,6 +2631,11 @@ input[type=date]::-webkit-calendar-picker-indicator {
 
 .serch .box input.dats::placeholder {
     color: #000000;
+}
+
+.serch .box .inputFilter {
+    width: 200px;
+    margin-right: 20px;
 }
 
 .filial.head+.serch .box select {

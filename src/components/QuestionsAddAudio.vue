@@ -32,14 +32,17 @@
                     </select>
                 </div>
                 <div class="audi">
-                    <div class="box">
-                        <button type="button" class="add">Загрузить аудио</button>
+                    <div class="box" v-if="!newQuestion.fileId">
+                        <button type="input" class="add" @click.prevent="selectFile">Загрузить аудио</button>
+                        <input type="file" ref="fileInput" style="display: none;" accept=".mp3,.wav,.ogg"
+                            @change="onFileSelected" multiple="false" />
                         <span>Загрузите файл в формате mp3, wav, ogg</span>
                     </div>
-                    <div class="box">
-                        <audio controls="controls">
-                            <source src="https://webref.ru/example/audio/music.mp3" type="audio/mpeg" />
+                    <div class="box" v-if="newQuestion.fileId">
+                        <audio ref="audioPlayer" controls="controls">
+                            <source type="audio/mpeg" />
                         </audio>
+                        <button type="button" class="delete" @click="removeQuestionFile(index)">Удалить</button>
                     </div>
                 </div>
                 <div v-for="(question, index) in newQuestion.questionTexts" :key="question.id" class="audi">
@@ -96,7 +99,6 @@ export default {
         return {
             Tinyconfig,
             questionBase: null,
-
             newQuestion: {
                 questionType: 'audio',
                 status: 'active',
@@ -114,8 +116,10 @@ export default {
         }
     },
     mounted() {
+
         this.questionBase = this.getSelectedQuestionBase
         if (this.$route.fullPath.toLocaleLowerCase().endsWith('edit/audio')) {
+            this.downloadQuestionFile(this.getSelectedQuestion.fileId)
             this.newQuestion = this.getSelectedQuestion
         }
     },
@@ -123,7 +127,7 @@ export default {
         ...mapGetters({ getSelectedQuestionBase: 'getSelectedQuestionBase', getSelectedQuestion: 'getSelectedQuestion' })
     },
     methods: {
-        ...mapActions({ addQuestion: 'addQuestion', editQuestion: 'editQuestion' }),
+        ...mapActions({ addQuestion: 'addQuestion', editQuestion: 'editQuestion', downloadAudioFile: 'downloadFile', uploadAudioFile: 'uploadFile' }),
         addNewAnswerOption(question) { question.answers.push({ answer: '' }) },
         addNewQuestion() {
             this.newQuestion.questionTexts.push({
@@ -133,12 +137,31 @@ export default {
                 }]
             })
         },
+        removeQuestionFile() { this.newQuestion.fileId = null },
         removequestion(index) { this.newQuestion.questionTexts.splice(index, 1) },
         async saveShanges() {
             this.newQuestion.questionBaseId = this.questionBase.id
             this.$route.fullPath.toLocaleLowerCase().endsWith('edit/audio') ?
                 await this.editQuestion(this.newQuestion) :
                 await this.addQuestion(this.newQuestion)
+        },
+        selectFile() {
+            this.$refs.fileInput.click();
+        },
+        onFileSelected() {
+            const file = this.$refs.fileInput.files[0];
+            this.uploadAudioFile(file).then((result) => {
+                this.newQuestion.fileId = result
+                this.downloadQuestionFile(result)
+            })
+        },
+        downloadQuestionFile(fileId) {
+            this.downloadAudioFile(fileId).then((result) => {
+                const blob = new Blob([result.data], { type: 'audio/mpeg' })
+                var url = URL.createObjectURL(blob)
+                this.$refs.audioPlayer.src = url
+                this.$refs.audioPlayer.load()
+            })
         }
     }
 

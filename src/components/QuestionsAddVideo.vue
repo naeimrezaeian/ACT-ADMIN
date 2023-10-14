@@ -32,14 +32,17 @@
                     </select>
                 </div>
                 <div class="audi">
-                    <div class="box">
-                        <button type="button" class="add">Загрузить аудио</button>
-                        <span>Загрузите файл в формате mp3, wav, ogg</span>
+                    <div class="box" v-if="!newQuestion.fileId">
+                        <button type="button" class="add" @click.prevent="selectFile">Загрузить аудио</button>
+                        <span>Загрузите файл в формате mp4, avi, mkv</span>
+                        <input type="file" ref="fileInput" style="display: none;" accept=".mp4,.avi,.mkv"
+                            @change="onFileSelected" multiple="false" />
                     </div>
-                    <div class="box">
-                        <audio controls="controls">
-                            <source src="https://webref.ru/example/audio/music.mp3" type="audio/mpeg" />
-                        </audio>
+                    <div class="box" v-if="newQuestion.fileId">
+                        <video ref="videoPlayer" style="height:250px ;" controls="controls">
+                            <source />
+                        </video>
+                        <button type="button" class="delete" @click="removeQuestionFile(index)">Удалить</button>
                     </div>
                 </div>
                 <div v-for="(question, index) in newQuestion.questionTexts" :key="question.id" class="audi">
@@ -117,6 +120,7 @@ export default {
     mounted() {
         this.questionBase = this.getSelectedQuestionBase
         if (this.$route.fullPath.toLocaleLowerCase().endsWith('edit/video')) {
+            this.downloadQuestionFile(this.getSelectedQuestion.fileId)
             this.newQuestion = this.getSelectedQuestion
         }
     },
@@ -124,7 +128,7 @@ export default {
         ...mapGetters({ getSelectedQuestionBase: 'getSelectedQuestionBase', getSelectedQuestion: 'getSelectedQuestion' })
     },
     methods: {
-        ...mapActions({ addQuestion: 'addQuestion', editQuestion: 'editQuestion' }),
+        ...mapActions({ addQuestion: 'addQuestion', editQuestion: 'editQuestion', downloadVideoFile: 'downloadFile', uploadVideoFile: 'uploadFile' }),
         addNewAnswerOption(question) { question.answers.push({ answer: '' }) },
         addNewQuestion() {
             this.newQuestion.questionTexts.push({
@@ -134,12 +138,31 @@ export default {
                 }]
             })
         },
+        removeQuestionFile() { this.newQuestion.fileId = null },
         removequestion(index) { this.newQuestion.questionTexts.splice(index, 1) },
         async saveShanges() {
             this.newQuestion.questionBaseId = this.questionBase.id
             this.$route.fullPath.toLocaleLowerCase().endsWith('edit/video') ?
                 await this.editQuestion(this.newQuestion) :
                 await this.addQuestion(this.newQuestion)
+        },
+        selectFile() {
+            this.$refs.fileInput.click();
+        },
+        onFileSelected() {
+            const file = this.$refs.fileInput.files[0];
+            this.uploadVideoFile(file).then((result) => {
+                this.newQuestion.fileId = result
+                this.downloadQuestionFile(result)
+            })
+        },
+        downloadQuestionFile(fileId) {
+            this.downloadVideoFile(fileId).then((result) => {
+                const blob = new Blob([result.data], { type: 'video/mpeg' })
+                var url = URL.createObjectURL(blob)
+                this.$refs.videoPlayer.src = url
+                this.$refs.videoPlayer.load()
+            })
         }
     }
 }

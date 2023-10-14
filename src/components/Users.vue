@@ -1,180 +1,112 @@
 <template>
     <div class="wrapper">
-       
-    <div class="head filial">
-        <h1>ПОЛЬЗОВАТЕЛИ</h1>
-        <div class="botuser">
-            <router-link :to="{ path: 'Users/Add'}" class="add" >Добавить пользователя </router-link>
-        </div>
-    </div>
-    <div class="serch">
-        <form>
-            <div class="box">
-                <select>
-                    <option value="" disabled selected>Выбрать статус</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <select>
-                    <option value="" disabled selected>Выбрать город</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>    
-                    <option value="3">3</option>
-                </select>
-                <select>
-                    <option value="" disabled selected>Выбрать филиал</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
+
+        <div class="head filial">
+            <h1>ПОЛЬЗОВАТЕЛИ</h1>
+            <div class="botuser">
+                <router-link :to="{ path: 'Users/Add' }" class="add">Добавить пользователя </router-link>
             </div>
-            <div class="box">
-                <input type="text" class="serch_in" value="" placeholder="Поиск по фамилии">
-                <span class="lup"></span>
-                <button type="button" class="btn">Поиск</button>
+        </div>
+        <div class="serch">
+            <form>
+                <div class="box">
+                    <select v-model="filter.status">
+                        <option value="" disabled selected>Выбрать статус</option>
+                        <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
+                    </select>
+                    <input type="text" class="inputFilter" placeholder="Выбрать город" v-model="filter.city">
+                    <select v-model="filter.branch">
+                        <option value="" disabled selected>Выбрать филиал</option>
+                        <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode + '-' +
+                            item.name }}</option>
+                    </select>
+                </div>
+                <div class="box">
+                    <input type="text" class="serch_in" placeholder="Поиск по фамилии" v-model="filter.name">
+                    <span class="lup"></span>
+                    <button type="button" class="btn">Поиск</button>
+                </div>
+            </form>
+        </div>
+        <div class="vopros">
+            <div class="table filials">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>ФИО</th>
+                            <th>Город</th>
+                            <th>Филиал</th>
+                            <th>email</th>
+                            <th>Роль в системе</th>
+                            <th>Статус </th>
+                        </tr>
+                        <tr v-for="item in adminUsers" :key="item.id">
+                            <td>
+                                <router-link :to="`Users/Edit`" @click="editUser(item)">{{ item.fullname }}</router-link>
+                            </td>
+                            <td>{{ item.city }}</td>
+                            <td v-if="item.role == adminRoleTypes[0].key">-</td>
+                            <td v-else>{{ item.branchSystemUsers[0]?.branchName }}</td>
+                            <td>{{ item.email }}</td>
+                            <td>{{ adminRoleTypes.find(x => x.key === item.role)?.value }}</td>
+                            <td>{{ statusTypes.find(x => x.key === item.status)?.value }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </form>
-    </div>
-    <div class="vopros">
-        <div class="table filials">
-            <table>
-                <tbody>
-                <tr>
-                    <th>ФИО</th>
-                    <th>Город</th>
-                    <th>Филиал</th>
-                    <th>email</th>
-                    <th>Роль в системе</th>
-                    <th>Статус </th>
-                </tr>
-                <tr>
-                    <td>
-                        <router-link to="Users/1" >Козырева Анна Владимировна</router-link>
-                    </td>
-                    <td>Москва</td>                    
-                    <td>Филиал №1</td>                  
-                    <td>ana_vladirovna200@exam.ru</td>
-                    <td>Администратор</td>
-                    <td>Активный</td>
-                </tr>
-                <tr>
-                    <td>
-                        <router-link to="Users/2">Белов Михаил Тимофеевич</router-link>
-                    </td>
-                    <td>Санкт-Петербург</td>                    
-                    <td>Филиал №2</td>                  
-                    <td>ivanovav@exam.ru              </td>
-                    <td>Пользователь   </td>
-                    <td>Требуется проверка</td>
-                </tr>
-                <tr>
-                    <td>
-                        <router-link to="Users/3">Козырева Анна Владимировна</router-link>
-                    </td>
-                    <td>Москва</td>                    
-                    <td>Филиал №1</td>                  
-                    <td>ana_vladirovna200@exam.ru</td>
-                    <td>Администратор</td>
-                    <td>Активный</td>
-                </tr>
-                <tr>
-                    <td>
-                        <router-link to="Users/4">Белов Михаил Тимофеевич</router-link>
-                    </td>
-                    <td>Санкт-Петербург</td>                    
-                    <td>Филиал №2</td>                  
-                    <td>ivanovav@exam.ru              </td>
-                    <td>Пользователь   </td>
-                    <td>Требуется проверка</td>
-                </tr>
-                <tr>
-                    <td>
-                        <router-link to="Users/5">Козырева Анна Владимировна</router-link>
-                    </td>
-                    <td>Москва</td>                    
-                    <td>Филиал №1</td>                  
-                    <td>ana_vladirovna200@exam.ru</td>
-                    <td>Администратор</td>
-                    <td>Активный</td>
-                </tr>
-                <tr>
-                    <td>
-                        <router-link to="Users/6">Белов Михаил Тимофеевич</router-link>
-                    </td>
-                    <td>Санкт-Петербург</td>                    
-                    <td>Филиал №2</td>                  
-                    <td>ivanovav@exam.ru              </td>
-                    <td>Пользователь   </td>
-                    <td>Требуется проверка</td>
-                </tr>
-                <tr>
-                    <td>
-                        <router-link to="Users/7">Козырева Анна Владимировна</router-link>
-                    </td>
-                    <td>Москва</td>                    
-                    <td>Филиал №1</td>                  
-                    <td>ana_vladirovna200@exam.ru</td>
-                    <td>Администратор</td>
-                    <td>Активный</td>
-                </tr>
-                <tr>
-                    <td>
-                        <router-link to="Users/8">Белов Михаил Тимофеевич</router-link>
-                    </td>
-                    <td>Санкт-Петербург</td>                    
-                    <td>Филиал №2</td>                  
-                    <td>ivanovav@exam.ru              </td>
-                    <td>Пользователь   </td>
-                    <td>Требуется проверка</td>
-                </tr>
-                
-                </tbody>
-            </table>
+            <act-pagination :totalPages="paging.totalPages" :perPage="this.defaultPaging.pageSize"
+                :currentPage="filter.currentPage" :maxVisibleButtons="this.defaultPaging.maxVisibleButtons"
+                @pagechanged="onPageChange" />
+
         </div>
-        <div class="pagin">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="prev page-link" href="#"><img src="img/arrow1.svg" alt=""></a>
-                </li>
-                <li class="page-item active">
-                    <span class="page-link current">1</span>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">4</a>
-                </li>
-                <li class="page-item">
-                    <span class="page-link">...</span>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">11</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">12</a>
-                </li>
-                <li class="page-item">
-                    <a class="nextpage-link" href="#"><img src="img/arrow2.svg" alt=""></a>
-                </li>
-            </ul>
-        </div>
-        
+
     </div>
-    
-</div>
 </template>
 
 <script>
-    export default {
-        name:'AdminUsers',
+import { mapActions, mapGetters } from 'vuex'
+import ActPagination from './elementComponents/ActPagination.vue';
+export default {
+    name: 'AdminUsers',
+    components: {
+        ActPagination
+    },
+    data() {
+        return {
+            filter: {
+                status: '',
+                city: '',
+                branch: '',
+                name: '',
+                currentPage: 1
+            }
+        }
+    },
+    async mounted() {
+        await this.getAllBranches()
+        await this.getAdminUsers({ page: 1, pageSize: this.defaultPaging.pageSize })
+    },
+    methods: {
+        ...mapActions({ fetchAllRoles: 'getAllRoles', getAllBranches: 'fetchSimplifiedBranches', getAdminUsers: 'getAllAdminUsers', setUserToEdit: 'setUserToEdit' }),
+        async search() {
+            await this.getAdminUsers({ page: this.filter.currentPage, pageSize: this.defaultPaging.pageSize, ...this.filter })
+        },
+        async onPageChange(page) {
+            await this.getAdminUsers({ page: page, pageSize: this.defaultPaging.pageSize, ...this.filter })
+            this.filter.currentPage = page
+        },
+        editUser(user) {
+            this.setUserToEdit(user)
+        }
+
+    },
+    computed: {
+        ...mapGetters({
+            allRoles: 'getAllRoles', branches: 'getSimplifiedBranches', statusTypes: 'getStatusField', adminUsers: 'getAdminUsers', defaultPaging: 'getDefaultPaging',
+            paging: 'getPaging', adminRoleTypes: 'getBranchUserType'
+        })
     }
+}
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

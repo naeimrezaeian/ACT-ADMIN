@@ -99,6 +99,30 @@ export default {
             cssClass: 'proverka red'
         },
         ],
+        sexType: [
+            {
+                key: 'male',
+                value: 'Мужской'
+            },
+            {
+                key: 'female',
+                value: 'Женский'
+            }
+        ],
+        adminRoleTypes: [
+            {
+                key: 'superAdmin',
+                value: 'Супер администратор'
+            },
+            {
+                key: 'branchAdmin',
+                value: 'Системный администратор'
+            },
+            {
+                key: 'teacher',
+                value: 'Преподаватель'
+            }
+        ],
         defaultPaging: { pageSize: 10, maxVisibleButtons: 5 },
         paging: {},
         swalDeleteDialogConfig: {
@@ -132,6 +156,8 @@ export default {
         getBranchUserType: (state) => state.branchUserType,
         getBranchType: (state) => state.branchType,
         getExamStatus: (state) => state.examStatus,
-        getSubtestCheckType: (state) => state.subtestCheckType
+        getSubtestCheckType: (state) => state.subtestCheckType,
+        getSexTypes: (state) => state.sexType,
+        getAdminRoleTypes: (state) => state.adminRoleTypes
     }
 }

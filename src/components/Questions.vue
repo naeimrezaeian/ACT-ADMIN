@@ -60,7 +60,7 @@
                         </li>
                         <li>
                             <span>Всего</span>
-                            <strong>9 вопросов</strong>
+                            <strong>{{ item.examQuestions.length }} вопросов</strong>
                         </li>
                         <li>
                             <span>Тип</span>

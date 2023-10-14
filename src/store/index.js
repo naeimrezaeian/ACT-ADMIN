@@ -8,6 +8,7 @@ import questionBase from './modules/questionBases';
 import questions from './modules/questions';
 import branch from "./modules/branch";
 import branchExam from "./modules/branchExam";
+import fileUpload from "./modules/fileService";
 import error from "./modules/error";
 export default new createStore({
     modules: {
@@ -20,6 +21,7 @@ export default new createStore({
         questions,
         branch,
         branchExam,
+        fileUpload,
         error
     }
 })
