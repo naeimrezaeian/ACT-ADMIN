@@ -11,7 +11,8 @@
 <script>
 export default {
   name: 'LoadingAnimate',
-  props:['loadingAnim']
+  props:['loadingAnim'],
+  
 }
 
 </script>

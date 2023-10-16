@@ -10,6 +10,7 @@ import branch from "./modules/branch";
 import branchExam from "./modules/branchExam";
 import fileUpload from "./modules/fileService";
 import error from "./modules/error";
+import loader from "./modules/loader";
 export default new createStore({
     modules: {
         appDefaults,
@@ -22,6 +23,7 @@ export default new createStore({
         branch,
         branchExam,
         fileUpload,
-        error
+        error,
+        loader
     }
 })

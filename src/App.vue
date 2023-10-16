@@ -1,5 +1,6 @@
 <template>
   <Error />
+  <Loading :loadingAnim="showLoading"/>
   <AdminHeader v-if="$route.meta.header == true" />
   <router-view />
 </template>
@@ -7,14 +8,26 @@
 <script>
 import AdminHeader from './components/Header.vue'
 import Error from './components/ErrorMessage.vue'
+import Loading from './components/LoadingAnimate.vue'
+import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
+
 export default {
 
   name: 'App',
   components: {
     AdminHeader,
-    Error
+    Error,
+    Loading
+  },
 
-  }
+  computed: {
+    ...mapState('loader', ['showLoading'])
+  },
+
+  methods: {
+    ...mapActions('loader', ['hide', 'show'])
+  },
 }
 </script>
 
