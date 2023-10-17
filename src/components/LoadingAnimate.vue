@@ -1,5 +1,5 @@
 <template>
-    <div class="loading" v-if="loadingAnim">
+    <div class="loading" v-if="loading">
         <div class="half-circle-spinner">
             <div class="circle circle-1"></div>
             <div class="circle circle-2"></div>
@@ -11,7 +11,7 @@
 <script>
 export default {
   name: 'LoadingAnimate',
-  props:['loadingAnim'],
+  props:['loading'],
   
 }
 

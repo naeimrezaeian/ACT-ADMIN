@@ -1,6 +1,6 @@
 <template>
   <Error />
-  <Loading :loadingAnim="showLoading"/>
+  <Loading :loading="showLoading"/>
   <AdminHeader v-if="$route.meta.header == true" />
   <router-view />
 </template>
