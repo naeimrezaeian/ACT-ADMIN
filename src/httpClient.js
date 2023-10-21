@@ -1,10 +1,19 @@
 import axios from "axios";
 import router from "./router";
 import store from "./store";
+import { mapActions } from "vuex";
 const requestFetch = axios.create({
     baseURL: 'https://api.rudn.site:7064/'
     // baseURL: 'https://localhost:7064/'
 });
+
+const loader = {
+    methods: {
+        ...mapActions('loader', ['hide', 'show']),
+
+    },
+}
+loader.methods.show();
 
 // requestFetch.interceptors.request.use((request)=>{
 //     return request
