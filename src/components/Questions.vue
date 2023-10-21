@@ -21,11 +21,11 @@
                     </select>
                     <select v-model="filter.module">
                         <option value="" disabled selected>Выбрать модуль</option>
-                        <option v-for="item in modules" :key="item.id" :value="item.id">{{ item.title }}</option>
+                        <option v-for="item in filterLevelModules" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.subtest">
                         <option value="" disabled selected>Выбрать субтест</option>
-                        <option v-for="item in subtests" :key="item.id" :value="item.id">{{ item.title }}</option>
+                        <option v-for="item in filterMoudleSubtests" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.status">
                         <option value="" disabled selected>Статус базы</option>
@@ -160,14 +160,21 @@ export default {
     },
     data() {
         return {
-            filter: {},
+            filter: {
+                level: '',
+                module: '',
+                subtest: '',
+                status: '',
+                page: 1
+            },
             newQuestionBase: {
                 subtest: {
                     examModuleId: '',
                     examModule: {
                         examLevelId: ''
                     }
-                }
+                },
+                subtestId: '',
             },
             isEdit: false,
             currentPage: 1,
@@ -207,9 +214,19 @@ export default {
                 return this.modules.filter(x => x.examLevelId === this.newQuestionBase.subtest.examModule.examLevelId)
             }
         },
+        filterLevelModules: {
+            get() {
+                return this.modules.filter(x => x.examLevelId === this.filter.level)
+            }
+        },
         moudleSubtests: {
             get() {
                 return this.subtests.filter(x => x.examModuleId == this.newQuestionBase.subtest.examModuleId)
+            }
+        },
+        filterMoudleSubtests: {
+            get() {
+                return this.subtests.filter(x => x.examModuleId == this.filter.module)
             }
         }
     },
@@ -228,7 +245,12 @@ export default {
             await this.getQuestionBases(this.filter)
         },
         async resetFilters() {
-            this.filter = {}
+            this.filter = {
+                level: '',
+                module: '',
+                subtest: '',
+                status: '',
+            }
             await this.getQuestionBases(this.filter)
         },
         async addNewQuestionBase() {
@@ -253,7 +275,8 @@ export default {
                     examModule: {
                         examLevelId: ''
                     }
-                }
+                },
+                subtestId: ''
             }
         },
         async onPageChange(page) {
