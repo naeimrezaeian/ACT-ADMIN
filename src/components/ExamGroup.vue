@@ -26,7 +26,7 @@
                     <div class="bot bots">
                         <button type="button" class="def">Протокол</button>
                         <button type="button" class="def">Список</button>
-                        <button type="button" class="add show_popup" rel="popup1">
+                        <button type="button" class="add show_popup" rel="editStudentPopup" @click="addUser(examGroup)">
                             Добавить пользователя
                         </button>
                     </div>
@@ -41,18 +41,19 @@
                                     <th>Миграционная карта</th>
                                     <th>Статус</th>
                                 </tr>
-                                <template v-for="(user, index) in [1, 2, 3]" :key="index">
-                                    <tr @click="toggleUserMetrica(`g1user-${index}`)">
-                                        <td>134-187</td>
-                                        <td>Макарев Р.В.</td>
-                                        <td>Гражданство</td>
-                                        <td>Узбекистан</td>
-                                        <td>АВ1234567890</td>
-                                        <td>Пройден</td>
+                                <template v-for="user in examGroup.userExamLevels" :key="user.id">
+                                    <tr @click="toggleUserMetrica(`g1user-${user.id}`)">
+                                        <td>{{ user.user.username }}</td>
+                                        <td>{{ user.user.fullName }}</td>
+                                        <td>{{ examGroup.examLevel.title }}</td>
+                                        <td>{{ user.user.nationality }}</td>
+                                        <td>{{ user.user.migrationCard }}</td>
+                                        <td>{{ userExamStatus.value }}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" class="non-pading">
-                                            <AdminCandidateMetrica :metricId="`g1user-${index}`" />
+                                            <AdminCandidateMetrica :metricId="`g1user-${user.id}`" :examGroup="examGroup"
+                                                :student="user" />
                                         </td>
                                     </tr>
                                 </template>
@@ -69,42 +70,45 @@
 </template>
 <script>
 import AdminCandidateMetrica from "./elementComponents/CandidateMetrica.vue";
-import { mapGetters } from 'vuex';
+//import EditStudentPopup from "./elementComponents/EditStudent.vue";
+import { mapGetters, mapActions } from 'vuex';
 export default {
     name: "ExamGroup",
     components: {
-        AdminCandidateMetrica
+        AdminCandidateMetrica,
+        //      EditStudentPopup,
     },
     props: {
         examGroup: {
             type: Object,
             required: true,
-        },
+        }
     },
-    mounted() {
-        let self = this;
-        this.$Jquery(".show_popup").click(function () {
-            var popup_id = self.$Jquery(this).attr("rel");
-            self.$Jquery("#" + popup_id).show();
-        });
-
-        this.$Jquery(".clouse").click(function () {
-            self.$Jquery(".popup").hide();
-            self.$Jquery("body").removeClass("hide");
-        });
+    data() {
+        return {
+            showAddUser: false,
+        }
     },
     computed: {
+
         examGroupStatus() {
             return this.getExamStatus.find((item) => item.key === this.examGroup.status);
         },
-        ...mapGetters({ getExamStatus: 'getExamStatus' }),
+        userExamStatus() {
+            return this.userExamStatus.find((item) => item.key === this.examGroup.status);
+        },
+        ...mapGetters({ getExamStatus: 'getExamStatus', userExamStatus: 'getUserExamStatus' }),
     },
     methods: {
+        ...mapActions({ setSelectedGroup: 'setSelectedBranchExam', changeEditStudentPopup: 'setShowEditStudentPopup' }),
         toggleUsers() {
             this.$Jquery(`#svo-${this.examGroup.id}`).slideToggle()
         },
         toggleUserMetrica(id) {
             this.$Jquery(`#${id}`).slideToggle()
+        },
+        addUser(group) {
+            this.changeEditStudentPopup({ show: true, student: {}, group })
         }
     },
 };

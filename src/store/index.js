@@ -10,10 +10,12 @@ import branch from "./modules/branch";
 import branchExam from "./modules/branchExam";
 import fileUpload from "./modules/fileService";
 import error from "./modules/error";
+import students from "./modules/students";
 export default new createStore({
     modules: {
         appDefaults,
         user,
+        students,
         levels,
         modules,
         subtests,
