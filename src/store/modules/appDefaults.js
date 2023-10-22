@@ -123,6 +123,43 @@ export default {
                 value: 'Преподаватель'
             }
         ],
+        documentTypes: [
+            {
+                key: 'birthCertificate',
+                value: 'Свидетельство о рождении'
+            },
+            {
+                key: 'passport',
+                value: 'Паспорт'
+            },
+            {
+                key: 'rightOfResidence',
+                value: 'Права'
+            }
+        ],
+        userExamStatus: [
+            {
+                key: 'created',
+                value: 'Новая'
+            },
+            {
+                key: 'active',
+                value: 'Активна'
+            },
+            {
+                key: 'passed',
+                value: 'Пройдена',
+
+            },
+            {
+                key: 'success',
+                value: 'Успешно',
+            },
+            {
+                key: 'failed',
+                value: 'Не успешно',
+            }
+        ],
         defaultPaging: { pageSize: 10, maxVisibleButtons: 5 },
         paging: {},
         swalDeleteDialogConfig: {
@@ -158,6 +195,8 @@ export default {
         getExamStatus: (state) => state.examStatus,
         getSubtestCheckType: (state) => state.subtestCheckType,
         getSexTypes: (state) => state.sexType,
-        getAdminRoleTypes: (state) => state.adminRoleTypes
+        getAdminRoleTypes: (state) => state.adminRoleTypes,
+        getDocumentTypes: (state) => state.documentTypes,
+        getUserExamStatus: (state) => state.userExamStatus
     }
 }
