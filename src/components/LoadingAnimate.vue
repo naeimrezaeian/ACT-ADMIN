@@ -21,11 +21,13 @@ export default {
 <style scoped>
 .loading{
     display: flex;
+    background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
     position: fixed;
+    z-index: 10;
 }
 
 .half-circle-spinner, .half-circle-spinner * {
@@ -51,12 +53,14 @@ export default {
   }
 
   .half-circle-spinner .circle.circle-1 {
-    border-top-color: #0079C1;
+    /* border-top-color: #0079C1; */
+    border-top-color: white;
     animation: half-circle-spinner-animation 1s infinite;
   }
 
   .half-circle-spinner .circle.circle-2 {
-    border-bottom-color: #0079C1;
+    /* border-bottom-color: #0079C1; */
+    border-top-color: white;
     animation: half-circle-spinner-animation 1s infinite alternate;
   }
 
