@@ -58,14 +58,15 @@
                         </div>
                         <div class="right">
                             <div class="img">
-                                <img src="@/assets/img/ava.svg" alt="" />
+                                <img :src="defaultProfileImageUrl" ref="profileImage" alt="" />
                                 <span>Фотография в формате .jpg, .jpeg или .png. Размер не более
                                     2мб</span>
                             </div>
                             <div class="bot">
-                                <button type="button" class="add">Сделать фото</button>
-                                <button type="button" class="down">Загрузить</button>
-                                <button type="button" class="remove">Удалить</button>
+                                <button type="button" class="down" @click.prevent="selectFile()">Загрузить</button>
+                                <input type="file" ref="fileInput" style="display: none;" accept=".jpg,.jpeg,.png"
+                                multiple="false" @change="onFileSelected()">
+                                <button type="button" class="remove" @click.prevent="deleteStudentProfileImage()">Удалить</button>
                             </div>
                         </div>
                         <div class="docs">
@@ -94,27 +95,12 @@
                                     <input type="text" id="cart" name="cart" v-model="student.migrationCard" />
                                 </div>
                             </div>
-                            <div class="box">
+                            <div class="box" v-for="item in attachments.files" :key="item" :value="item">
                                 <div class="uploads">
                                     <div class="item">
                                         <div class="files">
-                                            <button type="button" class="remove_pdf"></button>
-                                            <a class="file" href="#">Скан паспорта.pdf</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="uploads">
-                                    <div class="item">
-                                        <div class="files">
-                                            <button type="button" class="remove_pdf"></button>
-                                            <a class="file" href="#">Скан паспорта.pdf</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="uploads">
-                                    <div class="item">
-                                        <div class="files">
-                                            <button type="button" class="remove_pdf"></button>
+                                            <button type="button" class="remove_pdf"
+                                            @click.prevent="deleteAttachment()"></button>
                                             <a class="file" href="#">Скан паспорта.pdf</a>
                                         </div>
                                     </div>
@@ -122,7 +108,10 @@
                             </div>
                             <div class="box">
                                 <div class="item doc_upload_btn">
-                                    <button type="button" class="add_doc">
+                                    <input type="file" ref="attachment" accept=".jpg, .jpeg, .png, .pdf"
+                                    style="display: none;" @change="onAttachmentSelected()"
+                                    multiple="true">
+                                    <button type="button" class="add_doc" @click.prevent="addAttachment()">
                                         Загрузить документы
                                     </button>
                                 </div>
@@ -140,6 +129,14 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 export default {
+    data() {
+        return {
+            attachments: {
+                files:[],
+                pictures:[]
+            }
+        }
+    },
     computed: {
         ...mapGetters({
             examStatus: "getExamStatus",
@@ -147,13 +144,18 @@ export default {
             documentTypes: 'getDocumentTypes',
             student: 'getSelectedStudent'
         }),
+        defaultProfileImageUrl() {
+            return require(`@/assets/img/ava.svg`);
+        },
     },
     methods: {
         ...mapActions({
             addUserToGroup: 'addUserToBranchExam',
             editUserInGroup: 'editUserInBranchExam',
             getAllStudents: 'getAllStudents',
-            changeEditStudentPopup: 'setShowEditStudentPopup'
+            changeEditStudentPopup: 'setShowEditStudentPopup',
+            downloadImageFile: 'downloadFile',
+            uploadImageFile: 'uploadFile',
         }),
         closePopup() {
             this.changeEditStudentPopup({ show: false })
@@ -164,6 +166,43 @@ export default {
             this.closePopup()
             await this.getAllStudents({ groupId: groupId })
 
+        },
+        selectFile() {
+            this.$refs.fileInput.click();
+        },
+        addAttachment() {
+            this.$refs.attachment.click();
+        },
+        onFileSelected() {
+            const file = this.$refs.fileInput.files[0];
+            this.uploadImageFile(file).then((result)=>{
+                this.student.studentImageId = result;
+                this.downloadUserProfileImage(result)
+            })
+        },
+        onAttachmentSelected() {
+            for(let i=0;i<this.$refs.attachment.files.length;i++){
+                let file = this.$refs.attachment.files[i];
+                this.uploadImageFile(file).then((result)=>{
+                    this.attachments.files.push(file);
+                    console.log(result)
+                })
+            }
+        },
+        downloadUserProfileImage(fileId) {
+            this.downloadImageFile(fileId).then((result)=>{
+                const blob = new Blob([result.data], {type: 'image/*'});
+                var url = URL.createObjectURL(blob);
+                this.$refs.profileImage.src = url;
+            })
+        },
+        deleteStudentProfileImage(){
+            this.student.studentImageId = null;
+            this.$refs.profileImage.src = this.defaultProfileImageUrl;
+            this.$refs.fileInput.value = '';
+        },
+        deleteAttachment(){
+            this.$refs.attachment.value = '';
         },
     }
 }
