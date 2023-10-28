@@ -144,11 +144,16 @@ export default {
             user: {}
         }
     },
-    mounted() {
-        this.fetchAllRoles()
+    async mounted() {
+
         this.getAllBranches()
+        await this.fetchAllRoles()
         if (this.isEditMode) {
             this.user = this.getSelectedUser
+            this.user.userClaims.forEach(element => {
+                var item = this.allRoles.find(x => x.id === element.claimId)
+                item ? item.isSelected = true : item
+            });
             if (this.user.userImageId) {
                 this.downloadUserProfileImage(this.user.userImageId)
                 this.user.branchId = this.user?.branchSystemUsers[0]?.branchId
@@ -189,6 +194,8 @@ export default {
 
         },
         async saveChanges() {
+            var userRoles = this.allRoles.filter(x => x.isSelected).map(x => x.id)
+            this.user.userRoles = userRoles
             this.isEditMode ? await this.editSystemUser(this.user) : await this.addSystemUser(this.user)
         }
     },
