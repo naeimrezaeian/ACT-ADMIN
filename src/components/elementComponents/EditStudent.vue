@@ -95,8 +95,8 @@
                                     <input type="text" id="cart" name="cart" v-model="student.migrationCard" />
                                 </div>
                             </div>
-                            <div class="box" v-for="item in attachments.files" :key="item" :value="item">
-                                <div class="uploads">
+                            <div class="box">
+                                <div class="uploads" v-for="item in attachments.files" :key="item" :value="item">
                                     <div class="item">
                                         <div class="files">
                                             <button type="button" class="remove_pdf"
@@ -148,6 +148,9 @@ export default {
             return require(`@/assets/img/ava.svg`);
         },
     },
+    mounted() {
+        
+    },
     methods: {
         ...mapActions({
             addUserToGroup: 'addUserToBranchExam',
@@ -173,28 +176,25 @@ export default {
         addAttachment() {
             this.$refs.attachment.click();
         },
-        onFileSelected() {
+        async onFileSelected() {
             const file = this.$refs.fileInput.files[0];
-            this.uploadImageFile(file).then((result)=>{
-                this.student.studentImageId = result;
-                this.downloadUserProfileImage(result)
-            })
+            let result = await this.uploadImageFile(file)
+            this.student.userImageId = result;
+            this.downloadUserProfileImage(result)
         },
-        onAttachmentSelected() {
+        async onAttachmentSelected() {
             for(let i=0;i<this.$refs.attachment.files.length;i++){
                 let file = this.$refs.attachment.files[i];
-                this.uploadImageFile(file).then((result)=>{
-                    this.attachments.files.push(file);
-                    console.log(result)
-                })
+                let result = await this.uploadImageFile(file)
+                this.attachments.files.push(file);
+                console.log(result)
             }
         },
-        downloadUserProfileImage(fileId) {
-            this.downloadImageFile(fileId).then((result)=>{
-                const blob = new Blob([result.data], {type: 'image/*'});
-                var url = URL.createObjectURL(blob);
-                this.$refs.profileImage.src = url;
-            })
+        async downloadUserProfileImage(fileId) {
+            let result = await this.downloadImageFile(fileId)
+            const blob = new Blob([result.data], {type: 'image/*'});
+            let url = URL.createObjectURL(blob);
+            this.$refs.profileImage.src = url;
         },
         deleteStudentProfileImage(){
             this.student.studentImageId = null;
