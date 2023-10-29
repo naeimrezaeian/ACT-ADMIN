@@ -122,7 +122,7 @@
                         <div class="item">
                             <label for="model">Модуль</label>
                             <select id="model" v-model="newQuestionBase.subtest.examModuleId">
-                                <option value="" disabled selected>Модуль 1</option>
+                                <option value="" disabled selected>Выбрать модуль</option>
                                 <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}
                                 </option>
                             </select>
