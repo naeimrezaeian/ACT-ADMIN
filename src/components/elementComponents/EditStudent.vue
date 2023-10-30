@@ -29,8 +29,8 @@
                                         <label for="pol">Пол</label>
                                         <select name="pol" id="pol" v-model="student.sex">
                                             <option value="" disabled selected>Выбрать</option>
-                                            <option v-for="item in sexTypes" :key="item.key" :value="item.key">{{ item.value
-                                            }}</option>
+                                            <option v-for="item in sexTypes" :key="item.key" 
+                                            :value="item.key">{{ item.value}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -100,7 +100,7 @@
                                     <div class="item">
                                         <div class="files">
                                             <button type="button" class="remove_pdf"
-                                            @click.prevent="deleteAttachment()"></button>
+                                            @click.prevent="deleteAttachment(item)"></button>
                                             <a class="file" href="#">Скан паспорта.pdf</a>
                                         </div>
                                     </div>
@@ -108,7 +108,7 @@
                             </div>
                             <div class="box">
                                 <div class="item doc_upload_btn">
-                                    <input type="file" ref="attachment" accept=".jpg, .jpeg, .png, .pdf"
+                                    <input type="file" ref="userAttachments" accept=".jpg, .jpeg, .png, .pdf"
                                     style="display: none;" @change="onAttachmentSelected()"
                                     multiple="true">
                                     <button type="button" class="add_doc" @click.prevent="addAttachment()">
@@ -133,7 +133,6 @@ export default {
         return {
             attachments: {
                 files:[],
-                pictures:[]
             }
         }
     },
@@ -149,7 +148,10 @@ export default {
         },
     },
     mounted() {
-        
+        if(this.student.id){
+            this.downloadUserProfileImage(this.student.userImageId);
+            
+        }
     },
     methods: {
         ...mapActions({
@@ -174,7 +176,7 @@ export default {
             this.$refs.fileInput.click();
         },
         addAttachment() {
-            this.$refs.attachment.click();
+            this.$refs.userAttachments.click();
         },
         async onFileSelected() {
             const file = this.$refs.fileInput.files[0];
@@ -183,10 +185,11 @@ export default {
             this.downloadUserProfileImage(result)
         },
         async onAttachmentSelected() {
-            for(let i=0;i<this.$refs.attachment.files.length;i++){
-                let file = this.$refs.attachment.files[i];
+            for(let i=0;i<this.$refs.userAttachments.files.length;i++){
+                let file = this.$refs.userAttachments.files[i];
                 let result = await this.uploadImageFile(file)
                 this.attachments.files.push(file);
+                // this.student.
                 console.log(result)
             }
         },
@@ -197,12 +200,14 @@ export default {
             this.$refs.profileImage.src = url;
         },
         deleteStudentProfileImage(){
-            this.student.studentImageId = null;
+            this.student.userImageId = null;
             this.$refs.profileImage.src = this.defaultProfileImageUrl;
             this.$refs.fileInput.value = '';
         },
-        deleteAttachment(){
-            this.$refs.attachment.value = '';
+        deleteAttachment(val){
+            this.$refs.userAttachments.value = '';
+            let file = this.attachments.files.indexOf(val);
+            this.attachments.files.splice(this.attachments.files.indexOf(file),1);
         },
     }
 }
