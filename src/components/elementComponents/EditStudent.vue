@@ -66,7 +66,7 @@
                                 <button type="button" class="down" @click.prevent="selectFile()">Загрузить</button>
                                 <input type="file" ref="fileInput" style="display: none;" accept=".jpg,.jpeg,.png"
                                 multiple="false" @change="onFileSelected()">
-                                <button type="button" class="remove" @click.prevent="deleteStudentProfileImage()">Удалить</button>
+                                <button type="button" class="remove" @click.prevent="deleteProfileImage()">Удалить</button>
                             </div>
                         </div>
                         <div class="docs">
@@ -180,9 +180,9 @@ export default {
         },
         async onFileSelected() {
             const file = this.$refs.fileInput.files[0];
-            let result = await this.uploadImageFile(file)
+            let result = await this.uploadImageFile(file);
             this.student.userImageId = result;
-            this.downloadUserProfileImage(result)
+            this.downloadUserProfileImage(result);
         },
         async onAttachmentSelected() {
             for(let i=0;i<this.$refs.userAttachments.files.length;i++){
@@ -195,19 +195,18 @@ export default {
         },
         async downloadUserProfileImage(fileId) {
             let result = await this.downloadImageFile(fileId)
-            const blob = new Blob([result.data], {type: 'image/*'});
+            let blob = new Blob([result.data], {type: 'image/*'});
             let url = URL.createObjectURL(blob);
             this.$refs.profileImage.src = url;
         },
-        deleteStudentProfileImage(){
+        deleteProfileImage(){
             this.student.userImageId = null;
             this.$refs.profileImage.src = this.defaultProfileImageUrl;
             this.$refs.fileInput.value = '';
         },
         deleteAttachment(val){
             this.$refs.userAttachments.value = '';
-            let file = this.attachments.files.indexOf(val);
-            this.attachments.files.splice(this.attachments.files.indexOf(file),1);
+            this.attachments.files.splice(this.attachments.files.indexOf(val),1);
         },
     }
 }
