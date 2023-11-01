@@ -113,7 +113,8 @@
                     </div>
                     <div class="right">
                         <label>Загруженные файлы</label>
-                        <div v-for="item in attachments.files" :key="item" :value="item" class="files">
+                        <div v-for="item in branch.docs.toSpliced(img,1)" 
+                            :key="item" :value="item" class="files">
                             <button type="button" class="remove_pdf" @click.prevent="deleteAttachment(item)"></button>
                             <a class="file" href="#">Договор 1.pdf</a>
                         </div>
@@ -179,6 +180,7 @@
 </template>
 
 <script>
+import branch from '@/store/modules/branch';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -188,20 +190,19 @@ export default {
             selectAll: false,
             branch: {
                 id: null,
+                docs: [],
                 branchSystemUsers: [],
                 branchExamLevels: [],
             },
-            attachments: {
-                files:[]
-            }
         }
     },
     async mounted() {
         if (this.$route.fullPath.endsWith('Edit')) {
             this.branch = this.getSelectedBranch;
             this.levels = await this.getLevels();
-            // this.downloadUserProfileImage(this.usersNotInBranch.userImageId)
-            // console.log(this.usersNotInBranch.userImageId)
+            if(this.img){
+                this.downloadProfileImage(this.img.fileId);
+            }
         }
         await this.fetchUsersNotInBranch({ branchId: this.branch.id })
     },
@@ -229,6 +230,9 @@ export default {
         },
         defaultProfileImageUrl() {
             return require('@/assets/img/ava.svg');
+        },
+        img() {
+            return this.branch.docs.find(e => e.fileType === 'image');
         }
     },
     methods: {
@@ -283,35 +287,39 @@ export default {
         },
         async onFileSelected() {
             const file = this.$refs.fileInput.files[0];
-            let result = await this.uploadImageFile(file);
-            this.usersNotInBranch.userImageId = result;
-            this.downloadUserProfileImage(result);
+            let fileId = await this.uploadImageFile(file);
+            let obj = {fileId, fileType:'image'};
+            if(this.img){
+                this.branch.docs.splice(this.branch.docs.indexOf(this.img),1);
+            }
+            this.branch.docs.push(obj);
+            this.downloadProfileImage(fileId);
         },
         async onAttachmentSelected() {
             for(let i=0;i<this.$refs.branchAttachments.files.length;i++){
                 let file = this.$refs.branchAttachments.files[i];
-                let result = await this.uploadImageFile(file)
-                this.attachments.files.push(file);
-                // this.student.
-                console.log(result)
+                let fileId = await this.uploadImageFile(file)
+                let obj = {fileId, fileType:'pdf'};
+                this.branch.docs.push(obj);
+                console.log(branch.docs)
             }
         },
-        async downloadUserProfileImage(fileId) {
+        async downloadProfileImage(fileId) {
             let result = await this.downloadImageFile(fileId);
             let blob = new Blob([result.data], {type: 'image/*'});
             let url = URL.createObjectURL(blob);
             this.$refs.profileImage.src = url;
         },
         deleteProfileImage() {
-            this.usersNotInBranch.userImageId = null;
+            this.branch.docs.splice(this.img,1);
             this.$refs.profileImage.src = this.defaultProfileImageUrl;
             this.$refs.fileInput.value = '';
         },
         deleteAttachment(val) {
-            this.attachments.files.splice(this.attachments.files.indexOf(val),1);
+            this.branch.docs.splice(this.branch.docs.indexOf(val),1);
             this.$refs.branchAttachments.value = '';
         }
-    }
+    },
 }
 </script>
 

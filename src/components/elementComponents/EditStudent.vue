@@ -148,9 +148,8 @@ export default {
         },
     },
     mounted() {
-        if(this.student.id){
+        if(this.student.id && this.student.userImageId){
             this.downloadUserProfileImage(this.student.userImageId);
-            
         }
     },
     methods: {
