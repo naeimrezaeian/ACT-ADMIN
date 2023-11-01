@@ -180,7 +180,6 @@
 </template>
 
 <script>
-import branch from '@/store/modules/branch';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -301,7 +300,7 @@ export default {
                 let fileId = await this.uploadImageFile(file)
                 let obj = {fileId, fileType:'pdf'};
                 this.branch.docs.push(obj);
-                console.log(branch.docs)
+                console.log(this.branch.docs)
             }
         },
         async downloadProfileImage(fileId) {
