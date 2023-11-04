@@ -2136,6 +2136,7 @@ header .box .menu ul li a:hover:after {
 
 
 .popup {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -2147,6 +2148,10 @@ header .box .menu ul li a:hover:after {
     overflow-x: hidden;
     overflow-y: auto;
     outline: 0;
+}
+
+.vue_popup {
+    display: block;
 }
 
 .object {

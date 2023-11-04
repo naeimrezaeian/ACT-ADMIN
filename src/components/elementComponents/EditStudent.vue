@@ -1,5 +1,5 @@
 <template>
-    <div class="popup">
+    <div class="popup vue_popup">
         <div class="object objectCandidates">
             <button type="button" class="clouse" @click="closePopup">
                 <img src="@/assets/img/clouse.svg" alt="" />
