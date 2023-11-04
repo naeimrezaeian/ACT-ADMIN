@@ -6766,13 +6766,10 @@ footer .box .right ul li {
 .dats {
     width: 12.5%;
     margin-right: 20px;
-    background: #fff url("../img/calendar.svg") 89% 50% no-repeat !important;
-
-
-
+    background: #fff url("../img/calendar.svg") 95% 50% no-repeat !important;
 }
 
-.swal2-html-container .dats {
+.swal2-html-container .addBranchGroup-dats {
     width: 90%;
     background: #fff url("../img/calendar.svg") 98% 50% no-repeat !important;
 }

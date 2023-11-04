@@ -585,7 +585,7 @@ export default {
 
         input: "select",
         html:
-          '<input id="examDate" type="text" placeholder="Дата экзамена" onfocus="(this.type=\'date\')" class="dats" />' +
+          '<input id="examDate" type="text" placeholder="Дата экзамена" onfocus="(this.type=\'date\')" class="dats addBranchGroup-dats" />' +
           '<input id="comment"  type="text" placeholder="Комменатрий" />' +
           responsibleElement,
         inputOptions: {
