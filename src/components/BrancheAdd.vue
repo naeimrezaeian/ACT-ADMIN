@@ -41,7 +41,7 @@
                         </div>
                         <div class="bot">
                             <input type="file" ref="fileInput" style="display: none;" accept=".jpg, .jpeg, .png"
-                            multiple="flase" @change="onFileSelected()">
+                            @change="onFileSelected()">
                             <button type="button" @click.prevent="selectFile()" class="down">Загрузить</button>
                             <button type="button" @click.prevent="deleteProfileImage()" class="remove">Удалить</button>
                         </div>
@@ -113,10 +113,10 @@
                     </div>
                     <div class="right">
                         <label>Загруженные файлы</label>
-                        <div v-for="item in branch.docs.toSpliced(img,1)" 
+                        <div v-for="item in docs" 
                             :key="item" :value="item" class="files">
                             <button type="button" class="remove_pdf" @click.prevent="deleteAttachment(item)"></button>
-                            <a class="file" href="#">Договор 1.pdf</a>
+                            <a class="file" href="#">{{item.docsFileFilename}}</a>
                         </div>
                     </div>
                 </div>
@@ -189,8 +189,8 @@ export default {
             selectAll: false,
             branch: {
                 id: null,
-                docs: [],
                 branchSystemUsers: [],
+                docs: [],
                 branchExamLevels: [],
             },
         }
@@ -200,7 +200,7 @@ export default {
             this.branch = this.getSelectedBranch;
             this.levels = await this.getLevels();
             if(this.img){
-                this.downloadProfileImage(this.img.fileId);
+                this.downloadImage(this.img.fileId);
             }
         }
         await this.fetchUsersNotInBranch({ branchId: this.branch.id })
@@ -231,7 +231,10 @@ export default {
             return require('@/assets/img/ava.svg');
         },
         img() {
-            return this.branch.docs.find(e => e.fileType === 'image');
+            return this.getSelectedBranch.docs ? this.branch.docs.find(e => e.fileType === 'image') : '';
+        },
+        docs(){
+            return this.branch.docs ? this.branch.docs.filter(e=>e.fileType==='document') : '';
         }
     },
     methods: {
@@ -292,18 +295,17 @@ export default {
                 this.branch.docs.splice(this.branch.docs.indexOf(this.img),1);
             }
             this.branch.docs.push(obj);
-            this.downloadProfileImage(fileId);
+            this.downloadImage(fileId);
         },
         async onAttachmentSelected() {
             for(let i=0;i<this.$refs.branchAttachments.files.length;i++){
                 let file = this.$refs.branchAttachments.files[i];
                 let fileId = await this.uploadImageFile(file)
-                let obj = {fileId, fileType:'pdf'};
+                let obj = {fileId, fileType: 'document'};
                 this.branch.docs.push(obj);
-                console.log(this.branch.docs)
             }
         },
-        async downloadProfileImage(fileId) {
+        async downloadImage(fileId) {
             let result = await this.downloadImageFile(fileId);
             let blob = new Blob([result.data], {type: 'image/*'});
             let url = URL.createObjectURL(blob);
