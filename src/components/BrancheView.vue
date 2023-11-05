@@ -68,7 +68,7 @@
                 <div class="title">Прикрепленные файлы</div>
                 <div class="files">
                   <a v-for="item in docs" :key="item" :value="item" @click.prevent="downloadDocument(item)"
-                  class="file">{{item.docsFileFilename}}</a>
+                  class="file">{{item.fileFilename}}</a>
                 </div>
               </div>
               <div class="lr">
@@ -507,7 +507,6 @@
 import EditStudentPopup from "./elementComponents/EditStudent.vue"
 import { mapActions, mapGetters } from "vuex";
 import ExamGroup from "./ExamGroup.vue";
-import axios from "axios";
 export default {
   name: "AdminBrancheView",
   components: {
@@ -667,19 +666,14 @@ export default {
       this.$refs.branchImage.src = url;
     },
     async downloadDocument(file){
-      let token = localStorage.getItem('token');
-      let url = `https://api.rudn.site:7064/api/files/DownloadFile/${file.fileId}`;
-      axios.get(url, {
-        responseType: 'application/pdf',
-        mode: 'no-cors',
-        headers: {
-          'Authorization': 'Bearer ' + token,
-        },
-      }).then((response)=>{
-        console.log(response)
-      }).catch((err)=>{
-        console.log(err)
-      })
+      let result = await this.downloadImageFile(file.fileId);
+      let blob = new Blob([result.data], {type: 'application/pdf'});
+      let url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = file.fileFilename;
+      link.click();
+      URL.revokeObjectURL(url);
     }
   },
 };

@@ -96,12 +96,12 @@
                                 </div>
                             </div>
                             <div class="box">
-                                <div class="uploads" v-for="item in attachments.files" :key="item" :value="item">
+                                <div class="uploads" v-for="item in student.documentFiles" :key="item" :value="item">
                                     <div class="item">
                                         <div class="files">
                                             <button type="button" class="remove_pdf"
                                             @click.prevent="deleteAttachment(item)"></button>
-                                            <a class="file" href="#">Скан паспорта.pdf</a>
+                                            <a class="file" href="#">{{ item.documentFilename }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -109,8 +109,7 @@
                             <div class="box">
                                 <div class="item doc_upload_btn">
                                     <input type="file" ref="userAttachments" accept=".jpg, .jpeg, .png, .pdf"
-                                    style="display: none;" @change="onAttachmentSelected()"
-                                    multiple="true">
+                                    style="display: none;" multiple @change="onAttachmentSelected()">
                                     <button type="button" class="add_doc" @click.prevent="addAttachment()">
                                         Загрузить документы
                                     </button>
@@ -131,9 +130,6 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     data() {
         return {
-            attachments: {
-                files:[],
-            }
         }
     },
     computed: {
@@ -150,6 +146,11 @@ export default {
     mounted() {
         if(this.student.id && this.student.userImageId){
             this.downloadUserProfileImage(this.student.userImageId);
+        }
+        if(this.student.id){
+            this.student.documentFiles.forEach(element => {
+                this.student.documents.push(element.documentId);
+            });
         }
     },
     methods: {
@@ -186,10 +187,10 @@ export default {
         async onAttachmentSelected() {
             for(let i=0;i<this.$refs.userAttachments.files.length;i++){
                 let file = this.$refs.userAttachments.files[i];
-                let result = await this.uploadImageFile(file)
-                this.attachments.files.push(file);
-                // this.student.
-                console.log(result)
+                let documentId = await this.uploadImageFile(file)
+                let obj = {documentFilename : file.name}
+                this.student.documents.push(documentId);
+                this.student.documentFiles.push(obj);
             }
         },
         async downloadUserProfileImage(fileId) {
@@ -205,7 +206,8 @@ export default {
         },
         deleteAttachment(val){
             this.$refs.userAttachments.value = '';
-            this.attachments.files.splice(this.attachments.files.indexOf(val),1);
+            this.student.documentFiles.splice(this.student.documentFiles.indexOf(val),1);
+            this.student.documents.splice(this.student.documents.indexOf(val),1);
         },
     }
 }

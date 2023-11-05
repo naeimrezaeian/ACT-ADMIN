@@ -116,7 +116,7 @@
                         <div v-for="item in docs" 
                             :key="item" :value="item" class="files">
                             <button type="button" class="remove_pdf" @click.prevent="deleteAttachment(item)"></button>
-                            <a class="file" href="#">{{item.docsFileFilename}}</a>
+                            <a class="file" href="#">{{item.fileFilename}}</a>
                         </div>
                     </div>
                 </div>
