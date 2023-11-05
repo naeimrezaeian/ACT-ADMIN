@@ -301,7 +301,7 @@ export default {
             for(let i=0;i<this.$refs.branchAttachments.files.length;i++){
                 let file = this.$refs.branchAttachments.files[i];
                 let fileId = await this.uploadImageFile(file)
-                let obj = {fileId, fileType: 'document'};
+                let obj = {fileFilename: file.name, fileId, fileType: 'document'};
                 this.branch.docs.push(obj);
             }
         },
