@@ -20,7 +20,11 @@ export default {
     Error,
     Loading
   },
-
+  updated() {
+    window.onbeforeunload = async () => {
+      return 'Changes you made may not be saved';
+    }
+  },
   computed: {
     ...mapState('loader', ['showLoading'])
   },
