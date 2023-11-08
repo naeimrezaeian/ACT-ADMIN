@@ -95,6 +95,9 @@ export default {
         addnewAnswerOption(){this.newQuestion.questionTexts[0].answers.push({answer:''})},
         async saveShanges(){
             this.newQuestion.questionBaseId=this.questionBase.id
+
+            // this.newQuestion.questionTexts[0].questionTitle = this.newQuestion.questionTexts[0].questionTitle.replace(/<\/?[^>]+(>|$)/g, '').replace(/&(nbsp);/gi, '');
+            
             this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')?
             await this.editQuestion(this.newQuestion):
             await this.addQuestion(this.newQuestion)

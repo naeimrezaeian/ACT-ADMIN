@@ -35,8 +35,10 @@
                                 <label :for="item.id"></label>
                             </td>
                             <td>
-                                <router-link :to="{ path: 'Edit/' + item.type }" @click="setQuestionToEdit(item)">{{
-                                    item?.questionTexts[0]?.questionTitle }}</router-link>
+                                <router-link :to="{ path: 'Edit/' + item.type }" @click="setQuestionToEdit(item)">
+                                {{ item?.questionTexts[0]?.questionTitle }}</router-link>
+                                <!-- <router-link :to="{ path: 'Edit/' + item.type }" @click="setQuestionToEdit(item)">
+                                {{ renderResult(item?.questionTexts[0]?.questionTitle) }}</router-link> -->
                             </td>
                             <td>{{ item.type }}</td>
                             <td>{{ item.status }}</td>
@@ -167,7 +169,7 @@ export default {
                     element.isSelected=newVal
                 });
             }
-        }
+        },
     },
     methods: {
         ...mapActions({
@@ -191,6 +193,11 @@ export default {
 
             }
 
+        },
+        renderResult(val){
+            let element = document.createElement('div');
+            element.innerHTML = val;
+            return element.querySelector('div p') ? element.querySelector('div p').innerHTML.replace(/&(nbsp);/, ' ') : element.innerHTML;
         }
     }
 }
