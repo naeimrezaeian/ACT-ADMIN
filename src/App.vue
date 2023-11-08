@@ -21,8 +21,10 @@ export default {
     Loading
   },
   updated() {
-    window.onbeforeunload = async () => {
-      return 'Changes you made may not be saved';
+    if(this.$route.meta.header == true){
+      window.onbeforeunload = async () => {
+        return 'Changes you made may not be saved';
+      }
     }
   },
   computed: {
