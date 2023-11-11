@@ -27,7 +27,7 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
-    z-index: 10;
+    z-index: 1010;
 }
 
 .half-circle-spinner, .half-circle-spinner * {
