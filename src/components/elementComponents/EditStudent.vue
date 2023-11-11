@@ -29,8 +29,8 @@
                                         <label for="pol">Пол</label>
                                         <select name="pol" id="pol" v-model="student.sex">
                                             <option value="" disabled selected>Выбрать</option>
-                                            <option v-for="item in sexTypes" :key="item.key" 
-                                            :value="item.key">{{ item.value}}</option>
+                                            <option v-for="item in sexTypes" :key="item.key" :value="item.key">{{
+                                                item.value }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                             <div class="bot">
                                 <button type="button" class="down" @click.prevent="selectFile()">Загрузить</button>
                                 <input type="file" ref="fileInput" style="display: none;" accept=".jpg,.jpeg,.png"
-                                multiple="false" @change="onFileSelected()">
+                                    multiple="false" @change="onFileSelected()">
                                 <button type="button" class="remove" @click.prevent="deleteProfileImage()">Удалить</button>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                                     <div class="item">
                                         <div class="files">
                                             <button type="button" class="remove_pdf"
-                                            @click.prevent="deleteAttachment(item)"></button>
+                                                @click.prevent="deleteAttachment(item)"></button>
                                             <a class="file" href="#">{{ item.documentFilename }}</a>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@
                             <div class="box">
                                 <div class="item doc_upload_btn">
                                     <input type="file" ref="userAttachments" accept=".jpg, .jpeg, .png, .pdf"
-                                    style="display: none;" multiple @change="onAttachmentSelected()">
+                                        style="display: none;" multiple @change="onAttachmentSelected()">
                                     <button type="button" class="add_doc" @click.prevent="addAttachment()">
                                         Загрузить документы
                                     </button>
@@ -144,13 +144,8 @@ export default {
         },
     },
     mounted() {
-        if(this.student.id && this.student.userImageId){
+        if (this.student.id && this.student.userImageId) {
             this.downloadUserProfileImage(this.student.userImageId);
-        }
-        if(this.student.id){
-            this.student.documentFiles.forEach(element => {
-                this.student.documents.push(element.documentId);
-            });
         }
     },
     methods: {
@@ -185,29 +180,27 @@ export default {
             this.downloadUserProfileImage(result);
         },
         async onAttachmentSelected() {
-            for(let i=0;i<this.$refs.userAttachments.files.length;i++){
+            for (let i = 0; i < this.$refs.userAttachments.files.length; i++) {
                 let file = this.$refs.userAttachments.files[i];
                 let documentId = await this.uploadImageFile(file)
-                let obj = {documentFilename : file.name}
-                this.student.documents.push(documentId);
+                let obj = { documentFilename: file.name, documentId }
                 this.student.documentFiles.push(obj);
             }
         },
         async downloadUserProfileImage(fileId) {
             let result = await this.downloadImageFile(fileId)
-            let blob = new Blob([result.data], {type: 'image/*'});
+            let blob = new Blob([result.data], { type: 'image/*' });
             let url = URL.createObjectURL(blob);
             this.$refs.profileImage.src = url;
         },
-        deleteProfileImage(){
+        deleteProfileImage() {
             this.student.userImageId = null;
             this.$refs.profileImage.src = this.defaultProfileImageUrl;
             this.$refs.fileInput.value = '';
         },
-        deleteAttachment(val){
+        deleteAttachment(val) {
             this.$refs.userAttachments.value = '';
-            this.student.documentFiles.splice(this.student.documentFiles.indexOf(val),1);
-            this.student.documents.splice(this.student.documents.indexOf(val),1);
+            this.student.documentFiles.splice(this.student.documentFiles.indexOf(val), 1);
         },
     }
 }
