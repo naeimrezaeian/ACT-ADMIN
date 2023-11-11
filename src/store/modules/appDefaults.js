@@ -79,22 +79,22 @@ export default {
             cssClass: 'proverka pro'
         },
         {
-            key: 'VerificationCompleted',
+            key: 'verificationCompleted',
             value: 'Проверка завершена',
             cssClass: 'proverka'
         },
         {
-            key: 'Acts',
+            key: 'acts',
             value: 'Требуются акты',
             cssClass: 'proverka treb'
         },
         {
-            key: 'Archived',
+            key: 'archived',
             value: 'В архиве',
             cssClass: 'proverka arhiv'
         },
         {
-            key: 'Rejected',
+            key: 'rejected',
             value: 'Отклонено',
             cssClass: 'proverka red'
         },

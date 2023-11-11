@@ -1,6 +1,6 @@
 <template>
   <Error />
-  <Loading :loading="showLoading"/>
+  <Loading :loading="showLoading" />
   <AdminHeader v-if="$route.meta.header == true" />
   <router-view />
 </template>
@@ -21,7 +21,7 @@ export default {
     Loading
   },
   updated() {
-    if(this.$route.meta.header == true){
+    if (this.$route.meta.header == true) {
       window.onbeforeunload = async () => {
         return 'Changes you made may not be saved';
       }
