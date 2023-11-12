@@ -334,7 +334,6 @@
                         </tr>
                         <tr>
                           <td colspan="6" class="non-pading">
-                            <!-- <AdminCandidateMetrica metricId="g1user-2" /> -->
                           </td>
                         </tr>
 
@@ -348,7 +347,6 @@
                         </tr>
                         <tr>
                           <td colspan="6" class="non-pading">
-                            <!-- <AdminCandidateMetrica metricId="g1user-2" /> -->
                           </td>
                         </tr>
                       </tbody>
