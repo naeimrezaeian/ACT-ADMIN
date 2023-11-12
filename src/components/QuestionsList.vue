@@ -191,11 +191,6 @@ export default {
             }
 
         },
-        renderResult(val){
-            let element = document.createElement('div');
-            element.innerHTML = val;
-            return element.querySelector('div p') ? element.querySelector('div p').innerHTML.replace(/&(nbsp);/, ' ') : element.innerHTML;
-        }
     }
 }
 </script>

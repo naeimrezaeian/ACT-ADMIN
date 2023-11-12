@@ -112,10 +112,6 @@
                         <div class="title">Выбор вопроса</div>
                         <div class="panel">
                             <div class="top_panel">
-                                <div class="chek">
-                                    <input type="checkbox" id="all" v-model="selectAllQuestionBase" class="checkbox">
-                                    <label for="all">Выбрать все</label>
-                                </div>
                             </div>
                             <div class="variant" v-for="item in questionBase" :key="item.id">
                                 <div class="folder">
@@ -322,7 +318,6 @@ export default {
         return {
             Tinyconfig,
             selectAll: false,
-            selectAllForQuestionBases: false,
             subtest: {
                 checkType: 'auto',
                 cameraRecord: false,
@@ -363,17 +358,6 @@ export default {
                 this.selectAll = newVal
                 this.subtestVariants.forEach(variant => {
                     variant.isSelected = newVal
-                })
-            }
-        },
-        selectAllQuestionBase: {
-            get() {
-                return this.selectAllForQuestionBases;
-            },
-            set(newVal) {
-                this.selectAllForQuestionBases = newVal;
-                this.questionBase.examQuestions.forEach(question => {
-                    question.isSelected = newVal
                 })
             }
         },
