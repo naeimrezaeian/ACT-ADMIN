@@ -24,11 +24,7 @@
                 </div>
                 <div :id="`svo-${examGroup.id}`">
                     <div class="bot bots">
-                        <button type="button" class="def">Протокол</button>
-                        <button type="button" class="def">Список</button>
-                        <button type="button" class="add show_popup" rel="editStudentPopup" @click="addUser(examGroup)">
-                            Добавить пользователя
-                        </button>
+                        <ExamGroupButtons :examGroup="examGroup" />
                     </div>
                     <div class="table">
                         <table>
@@ -48,7 +44,7 @@
                                         <td>{{ examGroup.examLevel.title }}</td>
                                         <td>{{ user.user.nationality }}</td>
                                         <td>{{ user.user.migrationCard }}</td>
-                                        <td>{{ userExamStatus.value }}</td>
+                                        <td>{{ getUserExamStatus(user.status) }}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" class="non-pading">
@@ -70,13 +66,13 @@
 </template>
 <script>
 import AdminCandidateMetrica from "./elementComponents/CandidateMetrica.vue";
-//import EditStudentPopup from "./elementComponents/EditStudent.vue";
+import ExamGroupButtons from "./elementComponents/ExamGroupButtons.vue";
 import { mapGetters, mapActions } from 'vuex';
 export default {
     name: "ExamGroup",
     components: {
         AdminCandidateMetrica,
-        //      EditStudentPopup,
+        ExamGroupButtons,
     },
     props: {
         examGroup: {
@@ -84,32 +80,25 @@ export default {
             required: true,
         }
     },
-    data() {
-        return {
-            showAddUser: false,
-        }
-    },
     computed: {
 
         examGroupStatus() {
             return this.getExamStatus.find((item) => item.key === this.examGroup.status);
         },
-        userExamStatus() {
-            return this.userExamStatus.find((item) => item.key === this.examGroup.status);
-        },
         ...mapGetters({ getExamStatus: 'getExamStatus', userExamStatus: 'getUserExamStatus' }),
     },
     methods: {
-        ...mapActions({ setSelectedGroup: 'setSelectedBranchExam', changeEditStudentPopup: 'setShowEditStudentPopup' }),
+        ...mapActions({ setSelectedGroup: 'setSelectedBranchExam' }),
         toggleUsers() {
             this.$Jquery(`#svo-${this.examGroup.id}`).slideToggle()
         },
         toggleUserMetrica(id) {
             this.$Jquery(`#${id}`).slideToggle()
         },
-        addUser(group) {
-            this.changeEditStudentPopup({ show: true, student: {}, group })
-        }
+
+        getUserExamStatus(status) {
+            return this.userExamStatus.find((item) => item.key === status)?.value;
+        },
     },
 };
 </script>
