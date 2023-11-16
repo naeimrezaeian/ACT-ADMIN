@@ -16,14 +16,17 @@
                 <div class="box">
                     <select v-model="filter.examLevelId">
                         <option value="" disabled selected>Выбрать уровень</option>
+                        <option value="">{{ allForDropdowns }}</option>
                         <option v-for="item in levels" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.examModuleId">
                         <option value="" disabled selected>Выбрать модуль</option>
+                        <option value="">{{ allForDropdowns }}</option>
                         <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.status">
                         <option value="" disabled selected>Выбрать статус</option>
+                        <option value="">{{ allForDropdowns }}</option>
                         <option v-for="item in statuses" :key="item.key" :value="item.key">{{ item.value }}</option>
                     </select>
                     <div class="bot">
@@ -121,7 +124,14 @@ export default {
             await this.fetchSubtests(this.filter)
         },
         async resetFilters() {
-            this.filter = { page: 1, pageSize: this.defaultPaging.pageSize }
+            this.filter = {
+                name: '',
+                examModuleId: '',
+                examLevelId: '',
+                status: '',
+                page: 1,
+                pageSize: this.defaultPaging.pageSize
+            }
             await this.fetchSubtests(this.filter)
         },
         editSubtest(data) {
@@ -156,11 +166,12 @@ export default {
             statuses: 'getStatusField',
             defaultPaging: 'getDefaultPaging',
             paging: 'getPaging',
-            getSwalDeleteDialog: 'getSwalDeleteDialog'
+            getSwalDeleteDialog: 'getSwalDeleteDialog',
+            allForDropdowns: 'getAllForDropdowns',
         }),
         levelModules: {
             get() {
-                return this.modules.filter(x => x.examLevelId === this.filter.examLevelId)
+                return this.modules.filter(x => x.examLevelId == this.filter.examLevelId)
             }
         },
         selectAllSubtests: {

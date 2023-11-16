@@ -12,13 +12,13 @@
                 <div class="box">
                     <select v-model="filter.status">
                         <option value="" disabled selected>Выбрать статус</option>
-                        <option value="" selected>{{ allForDropdowns }}</option>
+                        <option value="">{{ allForDropdowns }}</option>
                         <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                     </select>
                     <input type="text" class="inputFilter" placeholder="Выбрать город" v-model="filter.city">
                     <select v-model="filter.branch">
                         <option value="" disabled selected>Выбрать филиал</option>
-                        <option value="" selected>{{ allForDropdowns }}</option>
+                        <option value="">{{ allForDropdowns }}</option>
                         <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode + '-' +
                             item.name }}</option>
                     </select>
@@ -92,7 +92,12 @@ export default {
         await this.getAdminUsers({ page: 1, pageSize: this.defaultPaging.pageSize })
     },
     methods: {
-        ...mapActions({ fetchAllRoles: 'getAllRoles', getAllBranches: 'fetchSimplifiedBranches', getAdminUsers: 'getAllAdminUsers', setUserToEdit: 'setUserToEdit' }),
+        ...mapActions({
+            fetchAllRoles: 'getAllRoles',
+            getAllBranches: 'fetchSimplifiedBranches',
+            getAdminUsers: 'getAllAdminUsers',
+            setUserToEdit: 'setUserToEdit'
+        }),
         async search() {
             await this.getAdminUsers({ page: this.filter.currentPage, pageSize: this.defaultPaging.pageSize, ...this.filter })
         },
@@ -112,15 +117,22 @@ export default {
                 city: '',
                 branch: '',
                 name: '',
-                currentPage: 1
+                currentPage: 1,
+                pageSize: this.defaultPaging.pageSize
             };
             await this.getAdminUsers(this.filter);
         }
     },
     computed: {
         ...mapGetters({
-            allRoles: 'getAllRoles', branches: 'getSimplifiedBranches', statusTypes: 'getStatusField', adminUsers: 'getAdminUsers', defaultPaging: 'getDefaultPaging',
-            paging: 'getPaging', adminRoleTypes: 'getBranchUserType', allForDropdowns: 'getAllForDropdowns',
+            allRoles: 'getAllRoles',
+            branches: 'getSimplifiedBranches',
+            statusTypes: 'getStatusField',
+            adminUsers: 'getAdminUsers',
+            defaultPaging: 'getDefaultPaging',
+            paging: 'getPaging',
+            adminRoleTypes: 'getBranchUserType',
+            allForDropdowns: 'getAllForDropdowns',
         })
     }
 }
