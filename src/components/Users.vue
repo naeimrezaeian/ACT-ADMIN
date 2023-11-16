@@ -12,19 +12,24 @@
                 <div class="box">
                     <select v-model="filter.status">
                         <option value="" disabled selected>Выбрать статус</option>
+                        <option value="" selected>{{ allForDropdowns }}</option>
                         <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                     </select>
                     <input type="text" class="inputFilter" placeholder="Выбрать город" v-model="filter.city">
                     <select v-model="filter.branch">
                         <option value="" disabled selected>Выбрать филиал</option>
+                        <option value="" selected>{{ allForDropdowns }}</option>
                         <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode + '-' +
                             item.name }}</option>
                     </select>
+                    <div class="bot">
+                        <button type="button" class="rezet" @click="resetFilter()">Сбросить фильтры</button>
+                    </div>
                 </div>
                 <div class="box">
                     <input type="text" class="serch_in" placeholder="Поиск по фамилии" v-model="filter.name">
                     <span class="lup"></span>
-                    <button type="button" class="btn">Поиск</button>
+                    <button type="button" class="btn" @click="searchUsers()">Поиск</button>
                 </div>
             </form>
         </div>
@@ -97,13 +102,25 @@ export default {
         },
         editUser(user) {
             this.setUserToEdit(user)
+        },
+        async searchUsers() {
+            await this.getAdminUsers(this.filter);
+        },
+        async resetFilter() {
+            this.filter = {
+                status: '',
+                city: '',
+                branch: '',
+                name: '',
+                currentPage: 1
+            };
+            await this.getAdminUsers(this.filter);
         }
-
     },
     computed: {
         ...mapGetters({
             allRoles: 'getAllRoles', branches: 'getSimplifiedBranches', statusTypes: 'getStatusField', adminUsers: 'getAdminUsers', defaultPaging: 'getDefaultPaging',
-            paging: 'getPaging', adminRoleTypes: 'getBranchUserType'
+            paging: 'getPaging', adminRoleTypes: 'getBranchUserType', allForDropdowns: 'getAllForDropdowns',
         })
     }
 }

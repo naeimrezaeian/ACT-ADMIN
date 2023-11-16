@@ -178,7 +178,8 @@ export default {
                 text: 'Your file has been deleted.',
                 icon: 'success',
             }
-        }
+        },
+        all: 'Bсе',
     },
     mutations: {
         updatePaging: (state, data) => state.paging = data
@@ -197,6 +198,7 @@ export default {
         getSexTypes: (state) => state.sexType,
         getAdminRoleTypes: (state) => state.adminRoleTypes,
         getDocumentTypes: (state) => state.documentTypes,
-        getUserExamStatus: (state) => state.userExamStatus
+        getUserExamStatus: (state) => state.userExamStatus,
+        getAllForDropdowns: (state) => state.all,
     }
 }
