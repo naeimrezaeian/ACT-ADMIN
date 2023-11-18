@@ -75,7 +75,8 @@ export default {
         }
     },
     async mounted() {
-        await this.getBranches({ page: 1, pageSize: this.defaultPaging.pageSize })
+        await this.getBranches({ page: 1, pageSize: this.defaultPaging.pageSize });
+        await this.getAllAdminUsers({page: 1, pageSize: this.defaultPaging.pageSize});
     },
     components: {
         ActPagination
@@ -92,7 +93,8 @@ export default {
     methods: {
         ...mapActions({
             getBranches: 'fetchBranches',
-            setBranchToView:'setBranchToView'
+            setBranchToView:'setBranchToView',
+            getAllAdminUsers: 'getAllAdminUsers'
         }),
         async onPageChange(page) {
             await this.getBranches({ page: page, pageSize: this.defaultPaging.pageSize })

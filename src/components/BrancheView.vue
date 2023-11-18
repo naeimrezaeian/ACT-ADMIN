@@ -97,6 +97,9 @@
                   <option value="" disabled selected>Выбрать статус</option>
                   <option v-for="item in examStatus" :key="item.key" :value="item.key">{{ item.value }}</option>
                 </select>
+                <div class="bot">
+                  <button type="button" class="rezet" @click="resetFilters()">Сбросить фильтры</button>
+                </div>
               </div>
               <div class="box">
                 <input type="text" class="serch_in" placeholder="Напишите запрос для поиска" v-model="filter.comment" />
@@ -643,6 +646,15 @@ export default {
 
 
       });
+    },
+    async resetFilters(){
+      this.filter = {
+        status: "",
+        examLevelId: "",
+        examDate: "",
+        comment: "",
+      };
+      await this.getBranchExams(this.filter);
     },
 
   },
