@@ -67,15 +67,14 @@
               <div class="lf">
                 <div class="title">Прикрепленные файлы</div>
                 <div class="files">
-                  <a class="file" href="#">Договор 1.pdf</a>
-                  <a class="file" href="#">Договор 2.pdf</a>
-                  <a class="file" href="#">Договор 3.pdf</a>
+                  <a v-for="item in docs" :key="item" :value="item" @click.prevent="downloadDocument(item)"
+                  class="file">{{item.fileFilename}}</a>
                 </div>
               </div>
               <div class="lr">
                 <div class="title">Фотография</div>
                 <div class="img">
-                  <img src="@/assets/img/ava.svg" alt="" />
+                  <img :src="deafultImageUrl" ref="branchImage" alt="" />
                 </div>
               </div>
             </div>
@@ -524,6 +523,13 @@ export default {
     }
   },
   mounted() {
+    if(this.selectedBranch.docs){
+      let img = this.selectedBranch.docs.find(e=>e.fileType==='image');
+      if(img){
+        this.downloadImage(img.fileId);
+      }
+    }
+
     // let self = this;
     // this.$Jquery(".show_popup").click(function () {
     //   var popup_id = self.$Jquery(this).attr("rel")
@@ -551,6 +557,12 @@ export default {
       getSelectedGroup: 'getSelectedBranchExam',
       showEditStudentPopup: 'getShowEditStudentPopup'
     }),
+    deafultImageUrl(){
+      return require('@/assets/img/ava.svg');
+    },
+    docs(){
+      return this.selectedBranch.docs ? this.selectedBranch.docs.filter(e=>e.fileType==='document') : '';
+    }
   },
   methods: {
     ...mapActions({
@@ -558,7 +570,8 @@ export default {
       addBranchExam: "createBranchExam",
       addUserToGroup: 'addUserToBranchExam',
       editUserInGroup: 'editUserInBranchExam',
-      getAllStudents: 'getAllStudents'
+      getAllStudents: 'getAllStudents',
+      downloadImageFile: 'downloadFile',
     }),
     async searchBranchExams() {
       await this.getBranchExams(this.filter);
@@ -644,7 +657,22 @@ export default {
 
       });
     },
-
+    async downloadImage(fileId){
+      let result = await this.downloadImageFile(fileId);
+      let blob = new Blob([result.data], {type: 'image/*'});
+      let url = URL.createObjectURL(blob);
+      this.$refs.branchImage.src = url;
+    },
+    async downloadDocument(file){
+      let result = await this.downloadImageFile(file.fileId);
+      let blob = new Blob([result.data], {type: 'application/pdf'});
+      let url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = file.fileFilename;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
   },
 };
 </script>

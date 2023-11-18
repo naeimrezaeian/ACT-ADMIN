@@ -29,8 +29,8 @@
                                         <label for="pol">Пол</label>
                                         <select name="pol" id="pol" v-model="student.sex">
                                             <option value="" disabled selected>Выбрать</option>
-                                            <option v-for="item in sexTypes" :key="item.key" :value="item.key">{{ item.value
-                                            }}</option>
+                                            <option v-for="item in sexTypes" :key="item.key" :value="item.key">{{
+                                                item.value }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -58,14 +58,15 @@
                         </div>
                         <div class="right">
                             <div class="img">
-                                <img src="@/assets/img/ava.svg" alt="" />
+                                <img :src="defaultProfileImageUrl" ref="profileImage" alt="" />
                                 <span>Фотография в формате .jpg, .jpeg или .png. Размер не более
                                     2мб</span>
                             </div>
                             <div class="bot">
-                                <button type="button" class="add">Сделать фото</button>
-                                <button type="button" class="down">Загрузить</button>
-                                <button type="button" class="remove">Удалить</button>
+                                <button type="button" class="down" @click.prevent="selectFile()">Загрузить</button>
+                                <input type="file" ref="fileInput" style="display: none;" accept=".jpg,.jpeg,.png"
+                                    multiple="false" @change="onFileSelected()">
+                                <button type="button" class="remove" @click.prevent="deleteProfileImage()">Удалить</button>
                             </div>
                         </div>
                         <div class="docs">
@@ -95,34 +96,21 @@
                                 </div>
                             </div>
                             <div class="box">
-                                <div class="uploads">
+                                <div class="uploads" v-for="item in student.documentFiles" :key="item" :value="item">
                                     <div class="item">
                                         <div class="files">
-                                            <button type="button" class="remove_pdf"></button>
-                                            <a class="file" href="#">Скан паспорта.pdf</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="uploads">
-                                    <div class="item">
-                                        <div class="files">
-                                            <button type="button" class="remove_pdf"></button>
-                                            <a class="file" href="#">Скан паспорта.pdf</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="uploads">
-                                    <div class="item">
-                                        <div class="files">
-                                            <button type="button" class="remove_pdf"></button>
-                                            <a class="file" href="#">Скан паспорта.pdf</a>
+                                            <button type="button" class="remove_pdf"
+                                                @click.prevent="deleteAttachment(item)"></button>
+                                            <a class="file" href="#">{{ item.documentFilename }}</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="box">
                                 <div class="item doc_upload_btn">
-                                    <button type="button" class="add_doc">
+                                    <input type="file" ref="userAttachments" accept=".jpg, .jpeg, .png, .pdf"
+                                        style="display: none;" multiple @change="onAttachmentSelected()">
+                                    <button type="button" class="add_doc" @click.prevent="addAttachment()">
                                         Загрузить документы
                                     </button>
                                 </div>
@@ -140,6 +128,10 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 export default {
+    data() {
+        return {
+        }
+    },
     computed: {
         ...mapGetters({
             examStatus: "getExamStatus",
@@ -147,13 +139,23 @@ export default {
             documentTypes: 'getDocumentTypes',
             student: 'getSelectedStudent'
         }),
+        defaultProfileImageUrl() {
+            return require(`@/assets/img/ava.svg`);
+        },
+    },
+    mounted() {
+        if (this.student.id && this.student.userImageId) {
+            this.downloadUserProfileImage(this.student.userImageId);
+        }
     },
     methods: {
         ...mapActions({
             addUserToGroup: 'addUserToBranchExam',
             editUserInGroup: 'editUserInBranchExam',
             getAllStudents: 'getAllStudents',
-            changeEditStudentPopup: 'setShowEditStudentPopup'
+            changeEditStudentPopup: 'setShowEditStudentPopup',
+            downloadImageFile: 'downloadFile',
+            uploadImageFile: 'uploadFile',
         }),
         closePopup() {
             this.changeEditStudentPopup({ show: false })
@@ -164,6 +166,41 @@ export default {
             this.closePopup()
             await this.getAllStudents({ groupId: groupId })
 
+        },
+        selectFile() {
+            this.$refs.fileInput.click();
+        },
+        addAttachment() {
+            this.$refs.userAttachments.click();
+        },
+        async onFileSelected() {
+            const file = this.$refs.fileInput.files[0];
+            let result = await this.uploadImageFile(file);
+            this.student.userImageId = result;
+            this.downloadUserProfileImage(result);
+        },
+        async onAttachmentSelected() {
+            for (let i = 0; i < this.$refs.userAttachments.files.length; i++) {
+                let file = this.$refs.userAttachments.files[i];
+                let documentId = await this.uploadImageFile(file)
+                let obj = { documentFilename: file.name, documentId }
+                this.student.documentFiles.push(obj);
+            }
+        },
+        async downloadUserProfileImage(fileId) {
+            let result = await this.downloadImageFile(fileId)
+            let blob = new Blob([result.data], { type: 'image/*' });
+            let url = URL.createObjectURL(blob);
+            this.$refs.profileImage.src = url;
+        },
+        deleteProfileImage() {
+            this.student.userImageId = null;
+            this.$refs.profileImage.src = this.defaultProfileImageUrl;
+            this.$refs.fileInput.value = '';
+        },
+        deleteAttachment(val) {
+            this.$refs.userAttachments.value = '';
+            this.student.documentFiles.splice(this.student.documentFiles.indexOf(val), 1);
         },
     }
 }
