@@ -35,8 +35,7 @@
                                 <label :for="item.id"></label>
                             </td>
                             <td>
-                                <router-link :to="{ path: 'Edit/' + item.type }" @click="setQuestionToEdit(item)">{{
-                                    item?.questionTexts[0]?.questionTitle }}</router-link>
+                                <router-link :to="{ path: 'Edit/' + item.type }" @click="setQuestionToEdit(item)" v-html="item?.questionTexts[0]?.questionTitle"></router-link>
                             </td>
                             <td>{{ item.type }}</td>
                             <td>{{ item.status }}</td>
@@ -167,7 +166,7 @@ export default {
                     element.isSelected=newVal
                 });
             }
-        }
+        },
     },
     methods: {
         ...mapActions({
@@ -191,7 +190,7 @@ export default {
 
             }
 
-        }
+        },
     }
 }
 </script>

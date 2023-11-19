@@ -171,7 +171,9 @@ export default {
                 cancelButtonText: 'Отменить',
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Удалить'
+                confirmButtonText: 'Удалить',
+                width: 'auto',
+                height: 'auto',
             },
             successDelete: {
                 title: 'Deleted!',
