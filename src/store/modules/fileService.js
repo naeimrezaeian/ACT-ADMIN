@@ -52,6 +52,29 @@ export default {
                 // Handle error
                 console.error(error);
             }
-        }
+        },
+        async downloadProtocolFile(/* eslint-disable-next-line no-unused-vars */_, examGroupId) {
+            try {
+                const response = await httpClient.get(`/api/admin/branchExams/GetProtocolFile/${examGroupId}`, {
+                    responseType: 'blob',
+                });
+                return response
+            } catch (error) {
+                // Handle error
+                console.error(error);
+            }
+
+        },
+        async downloadListFile(/* eslint-disable-next-line no-unused-vars */_, examGroupId) {
+            try {
+                const response = await httpClient.get(`/api/admin/branchExams/GetListFile/${examGroupId}`, {
+                    responseType: 'blob',
+                });
+                return response
+            } catch (error) {
+                // Handle error
+                console.error(error);
+            }
+        },
     },
 };

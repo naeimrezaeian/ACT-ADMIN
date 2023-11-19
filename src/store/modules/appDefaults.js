@@ -158,6 +158,10 @@ export default {
             {
                 key: 'failed',
                 value: 'Не успешно',
+            },
+            {
+                key: 'waitingForCheck',
+                value: 'Ожидает проверки'
             }
         ],
         defaultPaging: { pageSize: 10, maxVisibleButtons: 5 },
