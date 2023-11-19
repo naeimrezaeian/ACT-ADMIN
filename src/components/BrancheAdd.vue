@@ -36,12 +36,14 @@
                     </div>
                     <div class="right">
                         <div class="img">
-                            <img src="@/assets/img/ava.svg" alt="">
+                            <img ref="profileImage" :src="defaultProfileImageUrl" alt="">
                             <span>Фотография в формате .jpg, .jpeg или .png. Размер не более 2мб</span>
                         </div>
                         <div class="bot">
-                            <button type="button" class="down">Загрузить</button>
-                            <button type="button" class="remove">Удалить</button>
+                            <input type="file" ref="fileInput" style="display: none;" accept=".jpg, .jpeg, .png"
+                            @change="onFileSelected()">
+                            <button type="button" @click.prevent="selectFile()" class="down">Загрузить</button>
+                            <button type="button" @click.prevent="deleteProfileImage()" class="remove">Удалить</button>
                         </div>
                     </div>
                 </div>
@@ -75,7 +77,9 @@
                 </div>
                 <div class="zag top_m">
                     <span>Адрес центра, реквизиты</span>
-                    <button type="button" class="add">Прикрепить файлы к карточке</button>
+                    <input type="file" ref="branchAttachments" multiple="true" style="display: none;"
+                    accept=".pdf" @change="onAttachmentSelected()">
+                    <button type="button" class="add" @click.prevent="addAttachment()">Прикрепить файлы к карточке</button>
                 </div>
                 <div class="box">
                     <div class="left">
@@ -109,17 +113,10 @@
                     </div>
                     <div class="right">
                         <label>Загруженные файлы</label>
-                        <div class="files">
-                            <button type="button" class="remove_pdf"></button>
-                            <a class="file" href="#">Договор 1.pdf</a>
-                        </div>
-                        <div class="files">
-                            <button type="button" class="remove_pdf"></button>
-                            <a class="file" href="#">Реквизиты 2.pdf</a>
-                        </div>
-                        <div class="files">
-                            <button type="button" class="remove_pdf"></button>
-                            <a class="file" href="#">Допник 3.pdf</a>
+                        <div v-for="item in docs" 
+                            :key="item" :value="item" class="files">
+                            <button type="button" class="remove_pdf" @click.prevent="deleteAttachment(item)"></button>
+                            <a class="file" href="#">{{item.fileFilename}}</a>
                         </div>
                     </div>
                 </div>
@@ -193,15 +190,18 @@ export default {
             branch: {
                 id: null,
                 branchSystemUsers: [],
+                docs: [],
                 branchExamLevels: [],
-            }
+            },
         }
     },
     async mounted() {
-
         if (this.$route.fullPath.endsWith('Edit')) {
-            this.branch = this.getSelectedBranch
-            this.levels = await this.getLevels()
+            this.branch = this.getSelectedBranch;
+            this.levels = await this.getLevels();
+            if(this.img){
+                this.downloadImage(this.img.fileId);
+            }
         }
         await this.fetchUsersNotInBranch({ branchId: this.branch.id })
     },
@@ -211,7 +211,7 @@ export default {
             branchTypes: 'getBranchType',
             branchUserTypes: 'getBranchUserType',
             usersNotInBranch: 'getUsersNotInBranch',
-            levels: 'getExamLevels'
+            levels: 'getExamLevels',
         }),
         isEditMode: {
             get() {
@@ -226,6 +226,15 @@ export default {
                 this.selectAll = value
                 this.branch.branchExamLevels.forEach(x => x.isSelected = value)
             }
+        },
+        defaultProfileImageUrl() {
+            return require('@/assets/img/ava.svg');
+        },
+        img() {
+            return this.getSelectedBranch.docs ? this.branch.docs.find(e => e.fileType === 'image') : '';
+        },
+        docs(){
+            return this.branch.docs ? this.branch.docs.filter(e=>e.fileType==='document') : '';
         }
     },
     methods: {
@@ -233,7 +242,9 @@ export default {
             addBranch: 'addBranch',
             updateBranch: 'updateBranch',
             fetchUsersNotInBranch: 'getUsersNotInBranch',
-            getLevels: 'getLevels'
+            getLevels: 'getLevels',
+            downloadImageFile: 'downloadFile',
+            uploadImageFile: 'uploadFile',
         }),
         async saveChanges() {
             this.$route.fullPath.endsWith('Edit') ?
@@ -269,8 +280,47 @@ export default {
         },
         removeSelectedLevels() {
             this.branch.branchExamLevels = this.branch.branchExamLevels.filter(x => !x.isSelected)
+        },
+        selectFile() {
+            this.$refs.fileInput.click();
+        },
+        addAttachment() {
+            this.$refs.branchAttachments.click();
+        },
+        async onFileSelected() {
+            const file = this.$refs.fileInput.files[0];
+            let fileId = await this.uploadImageFile(file);
+            let obj = {fileId, fileType:'image'};
+            if(this.img){
+                this.branch.docs.splice(this.branch.docs.indexOf(this.img),1);
+            }
+            this.branch.docs.push(obj);
+            this.downloadImage(fileId);
+        },
+        async onAttachmentSelected() {
+            for(let i=0;i<this.$refs.branchAttachments.files.length;i++){
+                let file = this.$refs.branchAttachments.files[i];
+                let fileId = await this.uploadImageFile(file)
+                let obj = {fileFilename: file.name, fileId, fileType: 'document'};
+                this.branch.docs.push(obj);
+            }
+        },
+        async downloadImage(fileId) {
+            let result = await this.downloadImageFile(fileId);
+            let blob = new Blob([result.data], {type: 'image/*'});
+            let url = URL.createObjectURL(blob);
+            this.$refs.profileImage.src = url;
+        },
+        deleteProfileImage() {
+            this.branch.docs.splice(this.img,1);
+            this.$refs.profileImage.src = this.defaultProfileImageUrl;
+            this.$refs.fileInput.value = '';
+        },
+        deleteAttachment(val) {
+            this.branch.docs.splice(this.branch.docs.indexOf(val),1);
+            this.$refs.branchAttachments.value = '';
         }
-    }
+    },
 }
 </script>
 

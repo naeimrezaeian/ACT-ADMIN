@@ -66,7 +66,7 @@
                             <td>{{ item.examLevel.title }}</td>
                             <td>{{ item.date }}</td>
                             <td>{{ item.createdBy.name + ' ' + item.createdBy.family }}</td>
-                            <td>{{ item.description }}</td>
+                            <td v-html="item.description"></td>
                             <td>{{ item.status }}</td>
                         </tr>
 

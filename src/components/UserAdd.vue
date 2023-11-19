@@ -172,20 +172,18 @@ export default {
         selectFile() {
             this.$refs.fileInput.click();
         },
-        onFileSelected() {
+        async onFileSelected() {
             const file = this.$refs.fileInput.files[0];
-            this.uploadImageFile(file).then((result) => {
-                this.user.userImageId = result
-                this.downloadUserProfileImage(result)
-            })
+            let result = await this.uploadImageFile(file);
+            this.user.userImageId = result;
+            this.downloadUserProfileImage(result);
         },
-        downloadUserProfileImage(fileId) {
-            this.downloadImageFile(fileId).then((result) => {
-                const blob = new Blob([result.data], { type: 'image/*' })
-                var url = URL.createObjectURL(blob)
-                this.$refs.profileImage.src = url
-                //this.$refs.profileImage.load()
-            })
+        async downloadUserProfileImage(fileId) {
+            let result = await this.downloadImageFile(fileId);
+            const blob = new Blob([result.data], { type: 'image/*' });
+            var url = URL.createObjectURL(blob);
+            this.$refs.profileImage.src = url;
+            //this.$refs.profileImage.load()
         },
         deleteUserProfileImage() {
             this.user.userImageId = null

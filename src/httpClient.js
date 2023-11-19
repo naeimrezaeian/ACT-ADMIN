@@ -32,20 +32,25 @@ requestFetch.interceptors.response.use((response) => {
     }
 }, (error) => {
     if (401 === error.response.status) {
-        store.dispatch('loader/hide')
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         router.push({ name: 'Login' })
 
     } else if (404 === error.response.status) {
-        store.dispatch('loader/hide')
         return Promise.resolve(error);
+
+    } else if (0 === error.response.status) {
+        store.dispatch('error/displayErrorMessage', 'Your session has expired!');
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+        router.push({ name: 'Login' })
     }
     else {
-        store.dispatch('loader/hide')
-        store.dispatch('error/displayErrorMessage', 'An error occurred. Please try again later.');
+        store.dispatch('error/displayErrorMessage', 'An error occurred. Please try again later!');
         return Promise.reject(error.response)
     }
+
+    store.dispatch('loader/hide')
 })
 
 export default requestFetch

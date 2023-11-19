@@ -124,7 +124,7 @@
                                                         class="checkbox">
                                                     <label :for="question.id"></label>
                                                 </div>
-                                                <div class="name">{{ question.questionTexts[0].questionTitle }}</div>
+                                                <div class="name" v-html="question.questionTexts[0].questionTitle"></div>
                                             </div>
                                         </div>
                                     </div>
