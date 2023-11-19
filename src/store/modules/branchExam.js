@@ -5,6 +5,7 @@ export default {
         selectedBranchExam: null,
         selectedStudent: null,
         showEditStudentPopup: false,
+        userExamResults: [],
     },
     actions: {
         setShowEditStudentPopup({ commit }, data) {
@@ -72,7 +73,15 @@ export default {
             if (response.status === 200) {
                 commit("updateStudents", { students: response.data.result, groupId: filter.groupId })
             }
-        }
+        },
+        async getUserResultMatrix({ commit, state }, { studentId, examGroupId }) {
+            if (state.userExamResults.find(result => result.studentId === studentId)) return
+            const response = await httpClient.get(`/api/admin/branchexams/GetUserExamResult/${examGroupId}/${studentId}`)
+            if (response.status === 200) {
+                const result = { studentId, result: response.data.result }
+                commit("updateUserExamResults", result)
+            }
+        },
     },
     mutations: {
         updateBranchExams: (state, data) => state.branchExams = data,
@@ -84,11 +93,13 @@ export default {
         },
         updateSelectedStudent: (state, data) => state.selectedStudent = data,
         updateShowEditStudentPopup: (state, data) => state.showEditStudentPopup = data,
+        updateUserExamResults: (state, data) => state.userExamResults.push(data),
     },
     getters: {
         getBranchExams: (state) => state.branchExams,
         getSelectedBranchExam: (state) => state.selectedBranchExam,
         getSelectedStudent: (state) => state.selectedStudent,
         getShowEditStudentPopup: (state) => state.showEditStudentPopup,
+        getUserExamResults: (state) => state.userExamResults,
     }
 }
