@@ -26,8 +26,11 @@
                 </div>
                 <div class="box" v-for="(item, index) in newQuestion.questionTexts[0].answers" :key="index">
                     <label for="od_1" class="blue">###_{{ index + 1 }}</label>
+                    <input type="checkbox" @click="checkAnswer(index)"
+                        :checked="this.newQuestion.questionTexts[0].answers[index].isCorrectAnswer" class="answer">
                     <input type="text" v-model="item.answer">
-                    <button v-if="index === (newQuestion.questionTexts[0].answers.length - 1)" type="button" class="add" @click="addnewAnswerOption">Добавить вариант
+                    <button v-if="index === (newQuestion.questionTexts[0].answers.length - 1)" 
+                        type="button" class="add" @click="addnewAnswerOption">Добавить вариант
                         ответа</button>
                 </div>
                 <div class="botom">
@@ -88,7 +91,10 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({ getSelectedQuestionBase: 'getSelectedQuestionBase',getSelectedQuestion:'getSelectedQuestion' })
+        ...mapGetters({ 
+        getSelectedQuestionBase: 'getSelectedQuestionBase',
+        getSelectedQuestion:'getSelectedQuestion'
+     }),
     },
     methods:{
         ...mapActions({addQuestion:'addQuestion',editQuestion:'editQuestion'}),
@@ -98,6 +104,12 @@ export default {
             this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')?
             await this.editQuestion(this.newQuestion):
             await this.addQuestion(this.newQuestion)
+        },
+        checkAnswer(ind) {
+            for (let i = 0; i < (this.newQuestion.questionTexts[0].answers).length; i++) {
+                this.newQuestion.questionTexts[0].answers[i].isCorrectAnswer = false;
+            }
+            this.newQuestion.questionTexts[0].answers[ind].isCorrectAnswer = true;
         }
     }
 

@@ -6773,3 +6773,9 @@ footer .box .right ul li {
     width: 90%;
     background: #fff url("../img/calendar.svg") 98% 50% no-repeat !important;
 }
+
+.vopros_edit form .box .answer {
+    accent-color: #0079C1;
+    width: 25px;
+    margin: 0 20px 0 0;
+}
