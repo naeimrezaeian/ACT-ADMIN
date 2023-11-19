@@ -1,7 +1,7 @@
 <template>
     <template v-if="examGroup.status == getExamStatus[0].key">
-        <button type="button" class="def">Протокол</button>
-        <button type="button" class="def">Список</button>
+        <button type="button" class="def" @click="downloadProtocolFile">Протокол</button>
+        <button type="button" class="def" @click="downloadListFile">Список</button>
         <button type="button" class="add show_popup" rel="editStudentPopup" @click="addUser(examGroup)">
             Добавить пользователя
         </button>
@@ -54,10 +54,30 @@ export default {
         ...mapGetters({ getExamStatus: 'getExamStatus' }),
     },
     methods: {
-        ...mapActions({ changeEditStudentPopup: 'setShowEditStudentPopup' }),
+        ...mapActions({ changeEditStudentPopup: 'setShowEditStudentPopup', getProtocolFile: 'downloadProtocolFile', getListFile: 'downloadListFile' }),
         addUser(group) {
             this.changeEditStudentPopup({ show: true, student: {}, group })
         },
+        async downloadProtocolFile() {
+            let result = await this.getProtocolFile(this.examGroup.id);
+            let blob = new Blob([result.data], { type: 'application/pdf' });
+            let url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `protocol-${this.examGroup.examLevel.title}-${this.examGroup.id}.pdf`;
+            link.click();
+            URL.revokeObjectURL(url);
+        },
+        async downloadListFile() {
+            let result = await this.getListFile(this.examGroup.id);
+            let blob = new Blob([result.data], { type: 'application/pdf' });
+            let url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `list-${this.examGroup.examLevel.title}-${this.examGroup.id}.pdf`
+            link.click();
+            URL.revokeObjectURL(url);
+        }
     }
 }
 </script>

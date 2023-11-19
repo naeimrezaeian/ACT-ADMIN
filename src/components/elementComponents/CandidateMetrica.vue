@@ -135,17 +135,23 @@ export default {
             required: true,
         },
     },
+    mounted() {
+        this.getUserExamResult({ studentId: this.student.user.id, examGroupId: this.examGroup.id });
+    },
     computed: {
-        ...mapGetters({ sexTypes: 'getSexTypes', documentTypes: 'getDocumentTypes' }),
+        ...mapGetters({ sexTypes: 'getSexTypes', documentTypes: 'getDocumentTypes', usersExamResult: 'getUserExamResults' }),
         sexType() {
             return this.sexTypes.find((item) => item.key === this.student?.user?.sex);
         },
         documentType() {
             return this.documentTypes.find((item) => item.key === this.student?.user?.document);
         },
+        examResult() {
+            return this.usersExamResult.find((item) => item.studentId === this.student?.user?.id);
+        }
     },
     methods: {
-        ...mapActions({ setSelectedStudent: 'setSelectedStudent', changeEditStudentPopup: 'setShowEditStudentPopup' }),
+        ...mapActions({ setSelectedStudent: 'setSelectedStudent', changeEditStudentPopup: 'setShowEditStudentPopup', getUserExamResult: 'getUserResultMatrix' }),
         editStudent() {
             this.changeEditStudentPopup({ show: true, student: this.student.user, group: this.examGroup })
         }
