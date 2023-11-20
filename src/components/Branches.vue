@@ -13,7 +13,7 @@
                     <input type="text" v-model="filter.city" placeholder="Выбрать город" class="inputFilter">
                     <select v-model="filter.resposibleId">
                         <option value="" disabled selected>Выбрать ответственного</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="adminUsers.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in adminUsers" :key="item.key" :value="item.key">{{ item.fullname }}</option>
                     </select>
                     <div class="bot">

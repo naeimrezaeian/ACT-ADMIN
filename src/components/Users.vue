@@ -12,13 +12,13 @@
                 <div class="box">
                     <select v-model="filter.status">
                         <option value="" disabled selected>Выбрать статус</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="statusTypes.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                     </select>
                     <input type="text" class="inputFilter" placeholder="Выбрать город" v-model="filter.city">
                     <select v-model="filter.branch">
                         <option value="" disabled selected>Выбрать филиал</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="branches.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode + '-' +
                             item.name }}</option>
                     </select>

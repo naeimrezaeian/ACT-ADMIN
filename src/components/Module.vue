@@ -16,13 +16,13 @@
                 <div class="box">
                     <select v-model="filter.level">
                         <option value="" disabled selected>Выбрать уровень</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="levels.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="({ id, title }, index) in levels" :key="index" :value="id">{{ title }}</option>
 
                     </select>
                     <select v-model="filter.status">
                         <option value="" disabled selected>Выбрать статус</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="statuses.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="({ key, value }, index) in statuses" :key="index" :value="key">{{ value }}
                         </option>
                     </select>

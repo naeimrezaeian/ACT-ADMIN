@@ -89,11 +89,13 @@
                   v-model="filter.examDate" />
                 <select v-model="filter.examLevelId">
                   <option value="" disabled selected>Гражданство</option>
+                  <option value="" v-if="selectedBranch.branchExamLevels.length > 0">{{ allForDropdowns }}</option>
                   <option v-for="item in selectedBranch.branchExamLevels" :key="item.id" :value="item.id">
                     {{ item.examLevelTitle }}</option>
                 </select>
                 <select v-model="filter.status">
                   <option value="" disabled selected>Выбрать статус</option>
+                  <option value="" v-if="examStatus.length > 0">{{ allForDropdowns }}</option>
                   <option v-for="item in examStatus" :key="item.key" :value="item.key">{{ item.value }}</option>
                 </select>
                 <div class="bot">
@@ -558,7 +560,8 @@ export default {
       sexTypes: 'getSexTypes',
       documentTypes: 'getDocumentTypes',
       getSelectedGroup: 'getSelectedBranchExam',
-      showEditStudentPopup: 'getShowEditStudentPopup'
+      showEditStudentPopup: 'getShowEditStudentPopup',
+      allForDropdowns: 'getAllForDropdowns',
     }),
     deafultImageUrl(){
       return require('@/assets/img/ava.svg');

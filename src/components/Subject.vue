@@ -16,17 +16,18 @@
                 <div class="box">
                     <select v-model="filter.examLevelId">
                         <option value="" disabled selected>Выбрать уровень</option>
-                        <option value="">{{ allForDropdowns }}</option>
-                        <option v-for="item in levels" :key="item.id" :value="item.id">{{ item.title }}</option>
+                        <option value="" v-if="levels.length > 0">{{ allForDropdowns }}</option>
+                        <option v-for="item in levels" :key="item.id" 
+                            :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.examModuleId">
                         <option value="" disabled selected>Выбрать модуль</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="filter.examLevelId && levelModules.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.status">
                         <option value="" disabled selected>Выбрать статус</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="statuses.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in statuses" :key="item.key" :value="item.key">{{ item.value }}</option>
                     </select>
                     <div class="bot">
@@ -102,7 +103,7 @@ export default {
                 page: 1,
             },
             currentPage: 1,
-            selectAll: false
+            selectAll: false,
         }
     },
     async mounted() {

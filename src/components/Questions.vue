@@ -17,22 +17,22 @@
                 <div class="box">
                     <select v-model="filter.level">
                         <option value="" disabled selected>Выбрать уровень</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="levels.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in levels" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.module">
                         <option value="" disabled selected>Выбрать модуль</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="filter.level && filterLevelModules.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in filterLevelModules" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.subtest">
                         <option value="" disabled selected>Выбрать субтест</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="filter.module && filterMoudleSubtests.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in filterMoudleSubtests" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.status">
                         <option value="" disabled selected>Статус базы</option>
-                        <option value="">{{ allForDropdowns }}</option>
+                        <option value="" v-if="statuses.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in statuses" :key="item.key" :value="item.key">{{ item.value }}</option>
                     </select>
                     <div class="bot">
