@@ -27,7 +27,7 @@
                 <div class="box" v-for="(item, index) in newQuestion.questionTexts[0].answers" :key="index">
                     <label for="od_1" class="blue">###_{{ index + 1 }}</label>
                     <input type="checkbox" @click="checkAnswer(index)"
-                        :checked="this.newQuestion.questionTexts[0].answers[index].isCorrectAnswer" class="answer">
+                        :checked="newQuestion.questionTexts[0].answers[index].isCorrectAnswer" class="answer">
                     <input type="text" v-model="item.answer">
                     <button v-if="index === (newQuestion.questionTexts[0].answers.length - 1)" 
                         type="button" class="add" @click="addnewAnswerOption">Добавить вариант
