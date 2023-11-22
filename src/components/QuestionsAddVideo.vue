@@ -59,6 +59,8 @@
                     <div class="box" v-for="(answer, index) in question.answers" :key="answer.id">
                         <label for="od_1" class="blue">###_{{ index + 1 }}</label>
                         <input type="text" v-model="answer.answer" id="od_1">
+                        <button type="button" class="delete" @click="deleteAnswer(index)"
+                            style="padding: 15px 10px; margin: 0 30px 0 -10px;"></button>
                         <button type="button" v-if="index === (question.answers.length - 1)" class="add"
                             @click="addNewAnswerOption(question)">Добавить вариант ответа</button>
                     </div>
@@ -163,6 +165,9 @@ export default {
                 this.$refs.videoPlayer.src = url
                 this.$refs.videoPlayer.load()
             })
+        },
+        deleteAnswer(index){
+            this.question.answers.splice(index, 1)
         }
     }
 }
