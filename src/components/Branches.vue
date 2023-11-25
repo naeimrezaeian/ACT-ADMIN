@@ -9,24 +9,21 @@
         <div class="serch">
             <form>
                 <div class="box">
-                    <input type="text" placeholder="Выбрать период" onfocus="(this.type='date')" class="dats">
-                    <select>
-                        <option value="" disabled selected>Выбрать город</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <select>
+                    <input type="text" v-model="filter.period" placeholder="Выбрать период" onfocus="(this.type='date')" class="dats">
+                    <input type="text" v-model="filter.city" placeholder="Выбрать город" class="inputFilter">
+                    <select v-model="filter.resposibleId">
                         <option value="" disabled selected>Выбрать ответственного</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
+                        <option value="" v-if="adminUsers.length > 0">{{ allForDropdowns }}</option>
+                        <option v-for="item in adminUsers" :key="item.key" :value="item.key">{{ item.fullname }}</option>
                     </select>
+                    <div class="bot">
+                        <button type="button" class="rezet" @click="resetFilters()">Сбросить фильтры</button>
+                    </div>
                 </div>
                 <div class="box">
-                    <input type="text" class="serch_in" value="" placeholder="Напишите запрос для поиска или код филиала">
+                    <input type="text" class="serch_in" v-model="filter.name" placeholder="Напишите запрос для поиска или код филиала">
                     <span class="lup"></span>
-                    <button type="button" class="btn">Поиск</button>
+                    <button type="button" class="btn" @click="searchBranches()">Поиск</button>
                 </div>
             </form>
         </div>
@@ -67,23 +64,54 @@ export default {
     name: "AdminBranches",
     data() {
         return {
+            filter: {
+                name: '',
+                period: '',
+                city: '',
+                resposibleId: '',
+                page: 1,
+            },
             currentPage:1,
         }
     },
     async mounted() {
-        await this.getBranches({ page: 1, pageSize: this.defaultPaging.pageSize })
+        await this.getBranches({ page: 1, pageSize: this.defaultPaging.pageSize });
+        await this.getAllAdminUsers({page: 1, pageSize: this.defaultPaging.pageSize});
     },
     components: {
         ActPagination
     },
     computed: {
-        ...mapGetters({ allBranches: 'getBranchList', defaultPaging: 'getDefaultPaging', paging: 'getPaging' }),
+        ...mapGetters({
+            allBranches: 'getBranchList',
+            defaultPaging: 'getDefaultPaging',
+            paging: 'getPaging',
+            allForDropdowns: 'getAllForDropdowns',
+            adminUsers: 'getAdminUsers' 
+        }),
     },
     methods: {
-        ...mapActions({ getBranches: 'fetchBranches',setBranchToView:'setBranchToView' }),
+        ...mapActions({
+            getBranches: 'fetchBranches',
+            setBranchToView:'setBranchToView',
+            getAllAdminUsers: 'getAllAdminUsers'
+        }),
         async onPageChange(page) {
             await this.getBranches({ page: page, pageSize: this.defaultPaging.pageSize })
             this.currentPage=page
+        },
+        async searchBranches() {
+            await this.getBranches(this.filter);
+        },
+        async resetFilters() {
+            this.filter = {
+                name: '',
+                period: '',
+                city: '',
+                resposibleId: '',
+                page: 1,
+            }
+            await this.getBranches(this.filter);
         }
     },
 }

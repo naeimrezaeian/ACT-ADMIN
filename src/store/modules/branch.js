@@ -11,6 +11,10 @@ export default {
   actions: {
     async fetchBranches({ commit }, filter) {
       const params = [
+        filter.name ? `name=${filter.name}` : null,
+        filter.createDate ? `createDate=${filter.createDate}` : null,
+        filter.city ? `city=${filter.city}` : null,
+        filter.responsible ? `responsible=${filter.responsible}` : null,
         filter.page ? `page=${filter.page}` : null,
         filter.pageSize ? `pageSize=${filter.pageSize}` : null,
         'includeDetails=true'

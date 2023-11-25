@@ -84,18 +84,23 @@
           <div class="title">ЭКЗАМЕНЫ ФИЛИАЛА</div>
           <div class="serch">
             <form>
-              <div class="box">
+              <div class="box" style="width: 97.7%;">
                 <input type="text" placeholder="Выбрать период" onfocus="(this.type='date')" class="dats"
                   v-model="filter.examDate" />
                 <select v-model="filter.examLevelId">
                   <option value="" disabled selected>Гражданство</option>
+                  <option value="" v-if="selectedBranch.branchExamLevels.length > 0">{{ allForDropdowns }}</option>
                   <option v-for="item in selectedBranch.branchExamLevels" :key="item.id" :value="item.id">
                     {{ item.examLevelTitle }}</option>
                 </select>
                 <select v-model="filter.status">
                   <option value="" disabled selected>Выбрать статус</option>
+                  <option value="" v-if="examStatus.length > 0">{{ allForDropdowns }}</option>
                   <option v-for="item in examStatus" :key="item.key" :value="item.key">{{ item.value }}</option>
                 </select>
+                <div class="bot">
+                  <button type="button" class="rezet" @click="resetFilters()">Сбросить фильтры</button>
+                </div>
               </div>
               <div class="box">
                 <input type="text" class="serch_in" placeholder="Напишите запрос для поиска" v-model="filter.comment" />
@@ -555,7 +560,8 @@ export default {
       sexTypes: 'getSexTypes',
       documentTypes: 'getDocumentTypes',
       getSelectedGroup: 'getSelectedBranchExam',
-      showEditStudentPopup: 'getShowEditStudentPopup'
+      showEditStudentPopup: 'getShowEditStudentPopup',
+      allForDropdowns: 'getAllForDropdowns',
     }),
     deafultImageUrl() {
       return require('@/assets/img/ava.svg');
@@ -672,7 +678,17 @@ export default {
       link.download = file.fileFilename;
       link.click();
       URL.revokeObjectURL(url);
-    }
+    },
+    async resetFilters(){
+      this.filter = {
+        status: "",
+        examLevelId: "",
+        examDate: "",
+        comment: "",
+      };
+      await this.getBranchExams(this.filter);
+    },
+
   },
 };
 </script>
