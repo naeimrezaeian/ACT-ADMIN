@@ -3,9 +3,9 @@
         <nav class="bread">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Патент</a></li>
-                <li class="breadcrumb-item"><a href="#">Модуль 1</a></li>
-                <li class="breadcrumb-item"><a href="#">Чтение</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Тип вопроса «Список»</li>
+                <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.examModule.title }}</a></li>
+                <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.title }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Тип вопроса {{ getSelectedQuestionBase.type }}</li>
             </ol>
         </nav>
         <div class="vopros">
