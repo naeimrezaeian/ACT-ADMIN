@@ -6,10 +6,10 @@ export default {
     },
 
     actions: {
-        show({ commit }) {
+        showLoadingAnimation({ commit }) {
             commit("show");
         },
-        hide({ commit }) {
+        hideLoadingAnimation({ commit }) {
             commit("hide");
         },
     },
