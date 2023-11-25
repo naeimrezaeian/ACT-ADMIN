@@ -29,6 +29,7 @@ export default {
     text-align: center;
     font-size: 1.2rem;
     padding: 1rem;
+    z-index: 1;
 }
 
 .error-message p {
