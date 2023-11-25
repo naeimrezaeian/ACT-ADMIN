@@ -7,9 +7,9 @@
             <nav class="bread">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Патент</a></li>
-                    <li class="breadcrumb-item"><a href="#">Модуль 1</a></li>
-                    <li class="breadcrumb-item"><a href="#">Чтение</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Тип вопроса «Список»</li>
+                    <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.examModule.title }}</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.title }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Тип вопроса {{ getSelectedQuestionBase.type }}</li>
                 </ol>
             </nav>
             <form>
@@ -27,6 +27,8 @@
                 <div class="box" v-for="(item, index) in newQuestion.questionTexts[0].answers" :key="index">
                     <label for="od_1" class="blue">###_{{ index + 1 }}</label>
                     <input type="text" v-model="item.answer">
+                    <button type="button" class="delete" @click="deleteAnswer(index)"
+                        style="padding: 15px 10px; margin: 0 30px 0 -10px;"></button>
                     <button v-if="index === (newQuestion.questionTexts[0].answers.length - 1)" type="button" class="add" @click="addnewAnswerOption">Добавить вариант
                         ответа</button>
                 </div>
@@ -98,6 +100,9 @@ export default {
             this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')?
             await this.editQuestion(this.newQuestion):
             await this.addQuestion(this.newQuestion)
+        },
+        deleteAnswer(index){
+            this.newQuestion.questionTexts[0].answers.splice(index, 1)
         }
     }
 
