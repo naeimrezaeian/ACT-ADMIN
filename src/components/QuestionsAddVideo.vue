@@ -58,7 +58,7 @@
                     </div>
                     <div class="box" v-for="(answer, answerIndex) in question.answers" :key="answer.id">
                         <label for="od_1" class="blue">###_{{ answerIndex + 1 }}</label>
-                        <input type="text" v-model="answer.answer" id="od_1">
+                        <input type="text" v-model="answer.answer">
                         <button type="button" class="delete" @click="deleteAnswer(questionIndex, answerIndex)"
                             style="padding: 15px 10px; margin: 0 30px 0 -10px;"></button>
                         <button type="button" v-if="answerIndex === (question.answers.length - 1)" class="add"
@@ -166,7 +166,7 @@ export default {
                 this.$refs.videoPlayer.load()
             })
         },
-        deleteAnswer(questionIndex, answerIndex){
+        deleteAnswer(questionIndex, answerIndex) {
             this.newQuestion.questionTexts[questionIndex].answers.splice(answerIndex, 1)
         }
     }
