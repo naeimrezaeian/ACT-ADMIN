@@ -6085,6 +6085,12 @@ footer .box .right ul li {
     color: #000000;
 }
 
+.ege_fil .doc_fil .doc_svo .info .proverka span.delete {
+    display: inline;
+    margin-left: 10px;
+    padding-left: 25px;
+}
+
 .ege_fil .doc_fil .doc_svo .info .proverka.arhiv span {
     color: #919191;
 }
@@ -6367,6 +6373,10 @@ footer .box .right ul li {
 
     border-bottom: 1px solid #E6F0F9;
     vertical-align: middle;
+}
+
+.ege_fil .doc_fil .doc_svo .table table td span.delete {
+    display: inline;
 }
 
 .ege_fil .doc_fil .doc_svo .table table td a,

@@ -68,7 +68,7 @@
                 <div class="title">Прикрепленные файлы</div>
                 <div class="files">
                   <a v-for="item in docs" :key="item" :value="item" @click.prevent="downloadDocument(item)"
-                  class="file">{{item.fileFilename}}</a>
+                    class="file">{{ item.fileFilename }}</a>
                 </div>
               </div>
               <div class="lr">
@@ -105,7 +105,7 @@
             </form>
           </div>
           <ExamGroup v-for="item in branchExams" :key="item.id" :examGroup="item" />
-          <div class="doc_fil">
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -140,8 +140,8 @@
             <button class="calaps" onclick="$('#svo-2').slideToggle()">
               Свернуть
             </button>
-          </div>
-          <div class="doc_fil">
+          </div> -->
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -186,8 +186,8 @@
             <button class="calaps" onclick="$('#svo-3').slideToggle()">
               Свернуть
             </button>
-          </div>
-          <div class="doc_fil">
+          </div> -->
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -229,8 +229,8 @@
             <button class="calaps" onclick="$('#svo-4').slideToggle()">
               Свернуть
             </button>
-          </div>
-          <div class="doc_fil">
+          </div> -->
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -281,8 +281,8 @@
             <button class="calaps" onclick="$('#svo-5').slideToggle()">
               Свернуть
             </button>
-          </div>
-          <div class="doc_fil">
+          </div> -->
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -358,7 +358,7 @@
             <button class="calaps" onclick="$('#svo-10').slideToggle()">
               Свернуть
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -523,9 +523,9 @@ export default {
     }
   },
   mounted() {
-    if(this.selectedBranch.docs){
-      let img = this.selectedBranch.docs.find(e=>e.fileType==='image');
-      if(img){
+    if (this.selectedBranch.docs) {
+      let img = this.selectedBranch.docs.find(e => e.fileType === 'image');
+      if (img) {
         this.downloadImage(img.fileId);
       }
     }
@@ -557,11 +557,11 @@ export default {
       getSelectedGroup: 'getSelectedBranchExam',
       showEditStudentPopup: 'getShowEditStudentPopup'
     }),
-    deafultImageUrl(){
+    deafultImageUrl() {
       return require('@/assets/img/ava.svg');
     },
-    docs(){
-      return this.selectedBranch.docs ? this.selectedBranch.docs.filter(e=>e.fileType==='document') : '';
+    docs() {
+      return this.selectedBranch.docs ? this.selectedBranch.docs.filter(e => e.fileType === 'document') : '';
     }
   },
   methods: {
@@ -657,15 +657,15 @@ export default {
 
       });
     },
-    async downloadImage(fileId){
+    async downloadImage(fileId) {
       let result = await this.downloadImageFile(fileId);
-      let blob = new Blob([result.data], {type: 'image/*'});
+      let blob = new Blob([result.data], { type: 'image/*' });
       let url = URL.createObjectURL(blob);
       this.$refs.branchImage.src = url;
     },
-    async downloadDocument(file){
+    async downloadDocument(file) {
       let result = await this.downloadImageFile(file.fileId);
-      let blob = new Blob([result.data], {type: 'application/pdf'});
+      let blob = new Blob([result.data], { type: 'application/pdf' });
       let url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;

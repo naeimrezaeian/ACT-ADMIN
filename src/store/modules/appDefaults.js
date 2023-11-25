@@ -183,6 +183,18 @@ export default {
                 title: 'Deleted!',
                 text: 'Your file has been deleted.',
                 icon: 'success',
+            },
+            branchExamDonePrompt: {
+                title: 'поставить экзамен как выполненный?',
+                text: "экзамен будет переведен в статус выполнено",
+                icon: 'info',
+                showCancelButton: true,
+                cancelButtonText: 'Отменить',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Отправить окончательно',
+                width: 'auto',
+                height: 'auto',
             }
         }
     },
