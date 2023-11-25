@@ -84,7 +84,7 @@
           <div class="title">ЭКЗАМЕНЫ ФИЛИАЛА</div>
           <div class="serch">
             <form>
-              <div class="box">
+              <div class="box" style="width: 97.7%;">
                 <input type="text" placeholder="Выбрать период" onfocus="(this.type='date')" class="dats"
                   v-model="filter.examDate" />
                 <select v-model="filter.examLevelId">
