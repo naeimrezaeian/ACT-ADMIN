@@ -82,6 +82,49 @@ export default {
                 commit("updateUserExamResults", result)
             }
         },
+        async setBranchExamAsDone({ commit }, examGroupId) {
+            try {
+                const response = await httpClient.post(`/api/admin/branchexams/FinishBranchExam/${examGroupId}`);
+                if (response.status === 200) {
+                    commit("updateBranchExamStatus", { examGroupId, status: response.data.result.status })
+                    return true
+                }
+            } catch (error) {
+                return false
+            }
+        },
+        async archiveBranchExam({ commit }, examGroupId) {
+            try {
+                const response = await httpClient.post(`/api/admin/branchexams/ArchiveBranchExam/${examGroupId}`);
+                if (response.status === 200) {
+                    commit("updateBranchExamStatus", { examGroupId, status: response.data.result.status })
+                    return true
+                }
+            } catch (error) {
+                return false
+            }
+        },
+        async deleteBranchExam({ commit }, groupId) {
+            try {
+                const response = await httpClient.delete(`/api/admin/branchexams/DeleteExam/${groupId}`);
+                if (response.status === 200) {
+                    commit("updateBranchExamStatus", { examGroupId: groupId, status: response.data.result.status, remove: true })
+                    return true
+                }
+            } catch (error) {
+                return false
+            }
+        },
+        async deleteStudentFromBranchExam(/* eslint-disable-next-line no-unused-vars */ _, studentId) {
+            try {
+                const response = await httpClient.delete(`/api/admin/branchexams/DeleteStudent/${studentId}`);
+                if (response.status === 200) {
+                    return true
+                }
+            } catch (error) {
+                return false
+            }
+        },
     },
     mutations: {
         updateBranchExams: (state, data) => state.branchExams = data,
@@ -94,6 +137,13 @@ export default {
         updateSelectedStudent: (state, data) => state.selectedStudent = data,
         updateShowEditStudentPopup: (state, data) => state.showEditStudentPopup = data,
         updateUserExamResults: (state, data) => state.userExamResults.push(data),
+        updateBranchExamStatus: (state, data) => {
+            const branchExam = state.branchExams.find(exam => exam.id === data.examGroupId)
+            branchExam.status = data.status
+            if (data.remove) {
+                state.branchExams = state.branchExams.filter(exam => exam.id !== data.examGroupId)
+            }
+        }
     },
     getters: {
         getBranchExams: (state) => state.branchExams,

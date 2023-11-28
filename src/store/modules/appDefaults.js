@@ -183,8 +183,21 @@ export default {
                 title: 'Deleted!',
                 text: 'Your file has been deleted.',
                 icon: 'success',
+            },
+            branchExamDonePrompt: {
+                title: 'поставить экзамен как выполненный?',
+                text: "экзамен будет переведен в статус выполнено",
+                icon: 'info',
+                showCancelButton: true,
+                cancelButtonText: 'Отменить',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Отправить окончательно',
+                width: 'auto',
+                height: 'auto',
             }
-        }
+        },
+        all: 'Bсе',
     },
     mutations: {
         updatePaging: (state, data) => state.paging = data
@@ -203,6 +216,7 @@ export default {
         getSexTypes: (state) => state.sexType,
         getAdminRoleTypes: (state) => state.adminRoleTypes,
         getDocumentTypes: (state) => state.documentTypes,
-        getUserExamStatus: (state) => state.userExamStatus
+        getUserExamStatus: (state) => state.userExamStatus,
+        getAllForDropdowns: (state) => state.all,
     }
 }
