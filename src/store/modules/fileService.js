@@ -76,5 +76,16 @@ export default {
                 console.error(error);
             }
         },
+        async downloadStudentListFile(/* eslint-disable-next-line no-unused-vars */_, examGroupId) {
+            try {
+                const response = await httpClient.get(`/api/admin/branchExams/GetStudentListFile/${examGroupId}`, {
+                    responseType: 'blob',
+                });
+                return response
+            } catch (error) {
+                // Handle error
+                console.error(error);
+            }
+        },
     },
 };
