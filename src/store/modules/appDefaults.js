@@ -265,7 +265,6 @@ export default {
         getDocumentTypes: (state) => state.documentTypes,
         getUserExamStatus: (state) => state.userExamStatus,
         getAllForDropdowns: (state) => state.all,
-        getUserExamStatus: (state) => state.userExamStatus,
         getNewQuestion: (state) => state.newQuestion,
     }
 }
