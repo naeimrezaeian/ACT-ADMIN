@@ -1,7 +1,7 @@
 <template>
     <div class="box" v-for="(answer, answerIndex) in getNewQuestion.questionTexts[questionIndex].answers" :key="answer.id">
         <label for="od_1" class="blue">###_{{ answerIndex + 1 }}</label>
-        <input type="checkbox" @click="checkAnswer({ questionIndex, answerIndex })"
+        <input type="checkbox" @click="checkAnswer({ questionIndex, answerIndex }), checkedIt($event)"
             :checked="getNewQuestion.questionTexts[questionIndex].answers[answerIndex].isCorrectAnswer"
             class="answer">
         <input type="text" v-model="answer.answer" placeholder="answer ...">
@@ -34,6 +34,9 @@ export default {
             deleteAnswer: 'deleteAnswer',
             checkAnswer: 'checkAnswer',
         }),
+        checkedIt(event) {
+            event.target.checked = true;
+        }
     }
 }
 </script>
