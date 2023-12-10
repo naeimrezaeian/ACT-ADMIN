@@ -62,7 +62,7 @@
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th>{{ item.moduleTitle }}</th>
+                                <th style="padding-bottom: 20px; font-size: large;">{{ item.moduleTitle }}</th>
                             </tr>
                             <tr v-for="value in item?.matrix" :key="value"
                                 :class="[(item.matrix).indexOf(value) % 2 == 0 ? 'even-row' : 'odd-row']">
