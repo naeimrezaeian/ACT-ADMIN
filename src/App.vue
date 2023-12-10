@@ -10,7 +10,6 @@ import AdminHeader from './components/Header.vue'
 import Error from './components/ErrorMessage.vue'
 import Loading from './components/LoadingAnimate.vue'
 import { mapState } from 'vuex'
-import { mapActions } from 'vuex'
 
 export default {
 
@@ -29,10 +28,6 @@ export default {
   },
   computed: {
     ...mapState('loader', ['showLoading'])
-  },
-
-  methods: {
-    ...mapActions('loader', ['hide', 'show'])
   },
 }
 </script>

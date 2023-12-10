@@ -1,5 +1,6 @@
 import httpClient from '@/httpClient'
 import router from '@/router'
+import store from "./../../store";
 export default {
     state: {
         user: {},
@@ -32,6 +33,8 @@ export default {
             } catch (error) {
                 console.log('error in catch block')
                 commit('updateOnError', { error: 'Ошибка соединения к серверу', loading: false })
+            } finally {
+                store.dispatch('loader/hideLoadingAnimation')
             }
 
         },

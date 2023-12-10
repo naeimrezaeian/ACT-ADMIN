@@ -14,7 +14,7 @@ const requestFetch = axios.create({
 // })
 
 requestFetch.interceptors.request.use(config => {
-    store.dispatch('loader/show')
+    store.dispatch('loader/showLoadingAnimation')
     const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -24,10 +24,10 @@ requestFetch.interceptors.request.use(config => {
 requestFetch.interceptors.response.use((response) => {
 
     if (response.status === 200 || response.status === 201) {
-        store.dispatch('loader/hide')
+        store.dispatch('loader/hideLoadingAnimation')
         return Promise.resolve(response)
     } else {
-        store.dispatch('loader/hide')
+        store.dispatch('loader/hideLoadingAnimation')
         return Promise.resolve(response)
     }
 }, (error) => {
@@ -50,7 +50,7 @@ requestFetch.interceptors.response.use((response) => {
         return Promise.reject(error.response)
     }
 
-    store.dispatch('loader/hide')
+    store.dispatch('loader/hideLoadingAnimation')
 })
 
 export default requestFetch
