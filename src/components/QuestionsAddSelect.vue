@@ -24,7 +24,7 @@
                     </editor>
 
                 </div>
-                <answers-template :questionIndex="0"></answers-template>
+                <answersAdd :questionIndex="0"></answersAdd>
                 <div class="botom">
                     <router-link to="/Questions" class="btn otmena">Отменить</router-link>
                     <button type="button" class="btn save" @click="saveShanges">Создать</button>
@@ -36,7 +36,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue'
-import answersTemplate from './answersTemplate.vue'
+import answersAdd from './answersAdd.vue'
 import { mapActions, mapGetters } from 'vuex'
 const Tinyconfig = {
     selector: '#tiny',
@@ -56,7 +56,7 @@ export default {
     name: "AdminQuestionSelect",
     components: {
         'editor': Editor,
-        answersTemplate,
+        answersAdd,
     },
     data() {
         return {
