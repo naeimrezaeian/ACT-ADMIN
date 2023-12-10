@@ -100,11 +100,12 @@ export default {
             required: true,
         },
     },
-    mounted() {
-        this.getUserExamResult({ studentId: this.student.user.id, examGroupId: this.examGroup.id });
-    },
     computed: {
-        ...mapGetters({ sexTypes: 'getSexTypes', documentTypes: 'getDocumentTypes', usersExamResult: 'getUserExamResults' }),
+        ...mapGetters({
+            sexTypes: 'getSexTypes',
+            documentTypes: 'getDocumentTypes',
+            usersExamResult: 'getUserExamResults'
+        }),
         sexType() {
             return this.sexTypes.find((item) => item.key === this.student?.user?.sex);
         },
@@ -116,7 +117,10 @@ export default {
         }
     },
     methods: {
-        ...mapActions({ setSelectedStudent: 'setSelectedStudent', changeEditStudentPopup: 'setShowEditStudentPopup', getUserExamResult: 'getUserResultMatrix' }),
+        ...mapActions({
+            setSelectedStudent: 'setSelectedStudent',
+            changeEditStudentPopup: 'setShowEditStudentPopup',
+        }),
         editStudent() {
             this.changeEditStudentPopup({ show: true, student: this.student.user, group: this.examGroup })
         }

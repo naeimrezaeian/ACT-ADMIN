@@ -42,7 +42,7 @@
                                     <th></th>
                                 </tr>
                                 <template v-for="user in examGroup.userExamLevels" :key="user.id">
-                                    <tr @click="toggleUserMetrica(`g1user-${user.id}`)">
+                                    <tr @click="toggleUserMetrica(`g1user-${user.id}`, user.id)">
                                         <td>{{ user.user.username }}</td>
                                         <td>{{ user.user.fullName }}</td>
                                         <td>{{ examGroup.examLevel.title }}</td>
@@ -104,12 +104,14 @@ export default {
             deleteExamGroup: 'deleteBranchExam',
             deleteStudentFromBranchExam: 'deleteStudentFromBranchExam',
             getAllStudents: 'getAllStudents',
+            getUserExamResult: 'getUserResultMatrix',
         }),
         toggleUsers() {
             this.$Jquery(`#svo-${this.examGroup.id}`).slideToggle()
         },
-        toggleUserMetrica(id) {
-            this.$Jquery(`#${id}`).slideToggle()
+        toggleUserMetrica(metricId, userId) {
+            this.$Jquery(`#${metricId}`).slideToggle()
+            this.getUserExamResult({ studentId: userId, examGroupId: this.examGroup.id });
         },
         async deleteBranchExam() {
             const result = await this.Swal.fire(this.getSwalDeleteDialog.prompt);
