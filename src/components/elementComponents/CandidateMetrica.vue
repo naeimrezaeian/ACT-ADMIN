@@ -57,56 +57,21 @@
                     <div class="title">Матрица результатов</div>
                     <a href="#" class="btn edit show_popup" @click.prevent="editStudent">Редактировать</a>
                 </div>
-                <div class="table">
-                    <table>
+                <div class="table" v-for="item in examResult?.result" :key="item">
+                    <table v-if="(examResult?.result[0]?.matrix[0])">
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th>Лексика <br>и грамматика</th>
-                                <th>Чтение</th>
-                                <th>Аудирование</th>
-                                <th>Письмо</th>
-                                <th>Говорение</th>
+                                <th>{{ item.moduleTitle }}</th>
                             </tr>
-                            <tr>
-                                <td>Баллы</td>
-                                <td>20</td>
-                                <td>30</td>
-                                <td>40</td>
-                                <td>35</td>
-                                <td>60</td>
-                            </tr>
-                            <tr>
-                                <td>Процент</td>
-                                <td><b>33%</b></td>
-                                <td><b>100%</b></td>
-                                <td><b>100%</b></td>
-                                <td><b>50%</b></td>
-                                <td><b>75%</b></td>
-                            </tr>
-                            <tr>
-                                <td>Максимум</td>
-                                <td>60</td>
-                                <td>40</td>
-                                <td>50</td>
-                                <td>70</td>
-                                <td>80</td>
-                            </tr>
-                            <tr>
-                                <td>Порог</td>
-                                <td>50</td>
-                                <td>30</td>
-                                <td>40</td>
-                                <td>55</td>
-                                <td>45</td>
-                            </tr>
-                            <tr>
-                                <td><a href="#">Посмотреть ответы</a></td>
-                                <td><a href="#"><img src="@/assets/img/icon5.svg" alt=""></a></td>
-                                <td><a href="#"><img src="@/assets/img/icon5.svg" alt=""></a></td>
-                                <td><a href="#"><img src="@/assets/img/icon5.svg" alt=""></a></td>
-                                <td><a href="#"><img src="@/assets/img/icon5.svg" alt=""></a></td>
-                                <td><a href="#"><img src="@/assets/img/icon5.svg" alt=""></a></td>
+                            <tr v-for="value in item?.matrix" :key="value"
+                                :class="[(item.matrix).indexOf(value) % 2 == 0 ? 'even-row' : 'odd-row']">
+                                <td><a href="">{{ value.subtestTitle }}</a></td>
+                                <td>{{ value.mark }}</td>
+                                <td>{{ value.percentage }}%</td>
+                                <td>
+                                    <a href="#"> <img src="@/assets/img/icon5.svg" alt=""> </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -159,4 +124,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.matrica .box .right table tr:nth-child(2) td,
+.matrica .box .right table tr:nth-last-child(2) td {
+    background: none !important;
+}
+.even-row{
+    background-color: #fff !important;
+}
+.odd-row{
+    background-color: #E6F0F9 !important;
+}
+</style>
