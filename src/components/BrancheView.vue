@@ -627,9 +627,10 @@ export default {
             return;
           }
           const now = new Date();
+          now.setHours(0, 0, 0, 0);
           examDate = new Date(document.getElementById("examDate").value);
 
-          if (examDate <= now) {
+          if (examDate < now) {
             self.Swal.showValidationMessage("Дата экзамена должна быть больше текущей даты");
             return;
           }
