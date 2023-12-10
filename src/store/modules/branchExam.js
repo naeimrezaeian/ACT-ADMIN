@@ -32,10 +32,13 @@ export default {
             }
 
         },
-        async createBranchExam(/* eslint-disable-next-line no-unused-vars */ _, branchExam) {
+        async createBranchExam({ commit }, branchExam) {
             try {
                 const response = await httpClient.post('/api/admin/branchexams', branchExam);
                 if (response.status === 200) {
+                    const exam = await httpClient.get(`/api/admin/BranchExams/GetBranchExam/${response.data.result.id}`)
+                    if (exam.status === 200)
+                        commit("updateBranchExams", exam.data.result)
                     return true
                 }
             } catch (error) {
