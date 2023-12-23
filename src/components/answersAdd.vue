@@ -11,10 +11,12 @@
             @click="addNewAnswerOption(questionIndex)">Добавить вариант ответа</button>
     </div>
 </template>
+
+
 <script>
 import { mapActions, mapGetters } from 'vuex'
 export default {
-    name:'answersTemplate',
+    name:'answersAdd',
     props:['questionIndex'],
     data() {
         return {
@@ -40,5 +42,6 @@ export default {
     }
 }
 </script>
+
 
 <style></style>

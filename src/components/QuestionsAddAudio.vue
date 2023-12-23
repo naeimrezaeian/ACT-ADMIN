@@ -56,7 +56,7 @@
                             :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh" v-model="question.questionTitle">
                         </editor>
                     </div>
-                    <answers-template :questionIndex="questionIndex"></answers-template>
+                    <answersAdd :questionIndex="questionIndex"></answersAdd>
                 </div>
                 <button type="button" class="add" @click="addNewQuestion">Добавить вопрос</button>
                 <div class="botom">
@@ -70,7 +70,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue'
-import answersTemplate from './answersTemplate.vue'
+import answersAdd from './answersAdd.vue'
 import { mapActions, mapGetters } from 'vuex'
 const Tinyconfig = {
     selector: '#tiny',
@@ -90,7 +90,7 @@ export default {
     name: "AdminQuestionAudio",
     components: {
         'editor': Editor,
-        answersTemplate
+        answersAdd
     },
     data() {
         return {
