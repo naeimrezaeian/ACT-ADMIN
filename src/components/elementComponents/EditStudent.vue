@@ -144,8 +144,12 @@ export default {
         },
     },
     mounted() {
-        if (this.student.id && this.student.userImageId) {
-            this.downloadUserProfileImage(this.student.userImageId);
+        if (this.student.id) {
+            if (this.student.userImageId) {
+                this.downloadUserProfileImage(this.student.userImageId);
+            }
+        } else {
+            this.student.documentFiles = [];
         }
     },
     methods: {
