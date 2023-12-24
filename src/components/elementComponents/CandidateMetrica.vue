@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        <button class="calaps" onclick="$('#g1user-1').slideToggle()">Свернуть</button>
+        <button class="calaps" @click="$Jquery(`#${metricId}`).slideToggle()">Свернуть</button>
     </div>
 </template>
 
