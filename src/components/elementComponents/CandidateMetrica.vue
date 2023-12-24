@@ -62,7 +62,7 @@
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th style="padding-bottom: 20px; font-size: large;">{{ item.moduleTitle }}</th>
+                                <th class="table-header">{{ item.moduleTitle }}</th>
                             </tr>
                             <tr v-for="value in item?.matrix" :key="value"
                                 :class="[(item.matrix).indexOf(value) % 2 == 0 ? 'even-row' : 'odd-row']">
@@ -133,10 +133,15 @@ export default {
 .matrica .box .right table tr:nth-last-child(2) td {
     background: none !important;
 }
-.even-row{
+.even-row {
     background-color: #fff !important;
 }
-.odd-row{
+.odd-row {
     background-color: #E6F0F9 !important;
+}
+.table-header {
+    padding-bottom: 20px !important;
+    font-size: medium !important;
+    font-weight: bold !important;
 }
 </style>
