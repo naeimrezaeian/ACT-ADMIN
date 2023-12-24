@@ -12,6 +12,7 @@ import fileUpload from "./modules/fileService";
 import error from "./modules/error";
 import students from "./modules/students";
 import loader from "./modules/loader";
+import newQuestion from "./modules/newQuestion";
 export default new createStore({
     modules: {
         appDefaults,
@@ -26,6 +27,7 @@ export default new createStore({
         branchExam,
         fileUpload,
         error,
-        loader
+        loader,
+        newQuestion
     }
 })
