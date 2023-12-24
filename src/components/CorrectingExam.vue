@@ -11,38 +11,54 @@
                         <div class="item">
                             <div class="name">ФИО</div>
                             <!-- <div class="text">{{ student.user.fullName }}</div> -->
+                            <div class="text">aУбайдилла М.В.</div>
                         </div>
                         <div class="item">
                             <div class="name">Пол</div>
                             <!-- <div class="text">{{ sexType?.value }}</div> -->
+                            <div class="text">aмужской</div>
                         </div>
                         <div class="item">
                             <div class="name">Дата рождения</div>
                             <!-- <div class="text">{{ student.user.birthDate }}</div> -->
+                            <div class="text">a19.05.1987</div>
                         </div>
                         <div class="item">
                             <div class="name">Национальность</div>
                             <!-- <div class="text">{{ student.user.nationality }}</div> -->
+                            <div class="text">aУбайдилла М.В.</div>
                         </div>
                         <div class="item">
                             <div class="name">Город</div>
                             <!-- <div class="text">{{ student.user.placeOfBirth }}</div> -->
+                            <div class="text">aТашкент</div>
                         </div>
                         <div class="item">
                             <div class="name">Документ</div>
                             <!-- <div class="text">{{ documentType?.value }}</div> -->
+                            <div class="text">aПаспорт</div>
                         </div>
                         <div class="item">
                             <div class="name">Дата выдачи</div>
                             <!-- <div class="text">{{ student.user.issueDate }}</div> -->
+                            <div class="text">a21.01.2020</div>
                         </div>
                         <div class="item">
                             <div class="name">Кем выдан</div>
                             <!-- <div class="text">{{ student.user.issuedBy }}</div> -->
+                            <div class="text">aРОВД Ташкента в</div>
                         </div>
                         <div class="item">
                             <div class="name">Миграционная карта</div>
                             <!-- <div class="text">{{ student.user.migrationCard }}</div> -->
+                            <div class="text">
+                                <div class="name">Серия</div>
+                                <!-- <div class="text">{{ student.user.migrationCard }}</div> -->
+                                <div class="text">4012</div>
+                                <div class="name">№</div>
+                                <!-- <div class="text">{{ student.user.migrationCard }}</div> -->
+                                <div class="text">302678</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,22 +118,30 @@ export default {
     line-height: 16px;
 }
 .content .left-side .top .box .item .name {
-    width: 50%;
+    width: 45%; 
     color: #909090;
 }
 .content .left-side .top .box .item .text {
+    display: flex;
     font-size: 14px;
-    width: 50%;
+    width: 55%;
+}
+.content .left-side .top .box .item .text .text {
+    margin: 0 10px;
 }
 .content .left-side .img {
-    width: 100%;
-    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 5px;
+    height: 230px;
     background-color: #C4C4C4;
     margin-bottom: 30px;
 }
 .content .left-side .img img {
-    width: 100%;
-    height: auto;
+    max-width: 100%;
+    max-height: 100%;
 }
 .content .left-side .bottom {
     display: flex;
