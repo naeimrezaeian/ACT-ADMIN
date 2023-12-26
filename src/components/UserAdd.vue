@@ -11,10 +11,12 @@
                         <div class="item">
                             <label for="fio">Фамилия</label>
                             <input type="text" id="fio" name="fio" v-model="user.family">
+                            <div v-for="error in v$.user.family.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
                         <div class="item">
                             <label for="name">Имя</label>
                             <input type="text" id="name" name="name" v-model="user.name">
+                            <div v-for="error in v$.user.name.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
                     </div>
                     <div class="box">
@@ -137,11 +139,28 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 export default {
     name: "AdminUserAdd",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             user: {}
+        }
+    },
+    validations () {
+        return {
+            user: {
+                family:{
+                    data: { required: helpers.withMessage('Фамилия Необходимый', required) }
+                },
+                name: {
+                    data: { required: helpers.withMessage('Имя Необходимый', required) }
+                },
+            },
         }
     },
     async mounted() {
@@ -192,9 +211,12 @@ export default {
 
         },
         async saveChanges() {
-            var userRoles = this.allRoles.filter(x => x.isSelected).map(x => x.id)
-            this.user.userRoles = userRoles
-            this.isEditMode ? await this.editSystemUser(this.user) : await this.addSystemUser(this.user)
+            const result = await this.v$.$validate();
+            if (result) {
+                var userRoles = this.allRoles.filter(x => x.isSelected).map(x => x.id)
+                this.user.userRoles = userRoles
+                this.isEditMode ? await this.editSystemUser(this.user) : await this.addSystemUser(this.user)
+            }
         }
     },
     computed: {

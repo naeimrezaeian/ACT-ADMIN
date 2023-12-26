@@ -6789,3 +6789,16 @@ footer .box .right ul li {
     width: 25px;
     margin: 0 20px 0 0;
 }
+
+.error-msg {
+    margin-top: 2px;
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
+    animation: error-msg 1s infinite alternate linear;
+}
+@keyframes error-msg {
+    100% {
+        opacity: 5%;
+    }
+}
