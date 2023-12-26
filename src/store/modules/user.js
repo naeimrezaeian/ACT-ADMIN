@@ -1,6 +1,7 @@
 import httpClient from '@/httpClient'
 import router from '@/router'
 import store from "./../../store";
+import { jwtDecode } from "jwt-decode";
 export default {
     state: {
         user: {},
@@ -17,14 +18,21 @@ export default {
                 const response = await httpClient.post("/api/auth/admin/login", { username, password }, { showLoader: false })
 
                 if (response.data && response.data.success === true) {
+                    const token = response.data.result.token;
                     localStorage.removeItem("token")
                     localStorage.removeItem("user")
-                    localStorage.setItem('token', response.data.result.token);
+                    localStorage.setItem('token', token);
                     localStorage.setItem("user", JSON.stringify(response.data.result.user))
                     sessionStorage.setItem('isAuth', 'true');
                     httpClient.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.result.token;
                     commit("updateLoggedinUser", response.data.result.user)
-                    router.push('/dashboard')
+                    const decodedToken = jwtDecode(token)
+                    const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+                    if (role == 'SuperAdmin' || role == 'Admin') {
+                        router.push('/dashboard')
+                    } else if (role == 'Teacher') {
+                        router.push('/dashboard')
+                    }
                 }
                 else {
                     console.log('error in response')
