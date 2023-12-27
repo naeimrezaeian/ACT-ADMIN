@@ -139,30 +139,30 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { useVuelidate } from '@vuelidate/core'
-import { required, helpers } from '@vuelidate/validators'
+// import { useVuelidate } from '@vuelidate/core'
+// import { required, helpers } from '@vuelidate/validators'
 export default {
     name: "AdminUserAdd",
     setup () {
-        return { v$: useVuelidate() }
+        // return { v$: useVuelidate() }
     },
     data() {
         return {
             user: {}
         }
     },
-    validations () {
-        return {
-            user: {
-                family:{
-                    data: { required: helpers.withMessage('Фамилия Необходимый', required) }
-                },
-                name: {
-                    data: { required: helpers.withMessage('Имя Необходимый', required) }
-                },
-            },
-        }
-    },
+    // validations () {
+    //     return {
+    //         user: {
+    //             family:{
+    //                 data: { required: helpers.withMessage('Фамилия Необходимый', required) }
+    //             },
+    //             name: {
+    //                 data: { required: helpers.withMessage('Имя Необходимый', required) }
+    //             },
+    //         },
+    //     }
+    // },
     async mounted() {
 
         this.getAllBranches()
