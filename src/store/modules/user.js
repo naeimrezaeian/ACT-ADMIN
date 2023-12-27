@@ -30,8 +30,8 @@ export default {
                     const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
                     if (role == 'SuperAdmin' || role == 'Admin') {
                         router.push('/dashboard')
-                    } else if (role == 'Teacher') {
-                        router.push('/dashboard')
+                    } else if (role == 'Checker') {
+                        router.push('/UserExams')
                     }
                 }
                 else {
