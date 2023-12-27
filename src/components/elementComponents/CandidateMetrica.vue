@@ -66,7 +66,18 @@
                             </tr>
                             <tr v-for="value in item?.matrix" :key="value"
                                 :class="[(item.matrix).indexOf(value) % 2 == 0 ? 'even-row' : 'odd-row']">
-                                <td><a href="">{{ value.subtestTitle }}</a></td>
+                                <td>
+                                    <div class="first-col">
+                                        <a href="">{{ value.subtestTitle }}</a>
+                                        <button type="button" class="add add-btn" v-if="value.isManualCheck && !value.userAnswerFileId"
+                                            @click="addFile()"></button>
+                                        <div v-if="value.isManualCheck && value.userAnswerFileId" class="files">
+                                            <a class="file" href="#"></a>
+                                        </div>
+                                        <button type="button" class="delete delete-btn" v-if="value.isManualCheck && value.userAnswerFileId"
+                                            @click="deleteFile()"></button>
+                                    </div>
+                                </td>
                                 <td>{{ value.mark }}</td>
                                 <td>{{ value.percentage }}%</td>
                                 <td>
@@ -123,7 +134,11 @@ export default {
         }),
         editStudent() {
             this.changeEditStudentPopup({ show: true, student: this.student.user, group: this.examGroup })
-        }
+        },
+        addFile () {
+        },
+        deleteFile () {
+        },
     }
 }
 </script>
@@ -138,5 +153,26 @@ export default {
 }
 .odd-row{
     background-color: #E6F0F9 !important;
+}
+.first-col {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 40px;
+}
+.delete-btn {
+    padding: 9.5px !important;
+}
+.add-btn {
+    padding: 11px !important;
+}
+.file {
+    margin-bottom: 0 !important;
+    background-size: 20px !important;
+    padding: 0 !important;
+    width: 35px !important;
+    height: 27px !important;
 }
 </style>
