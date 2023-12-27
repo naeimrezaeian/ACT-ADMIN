@@ -25,6 +25,7 @@ import AdminMessage from './components/Message.vue'
 import AdminLog from './components/Log.vue'
 import AdminCandidates from './components/Candidates.vue'
 import AdminCandidatesAdd from'./components/CandidatesAdd.vue'
+import AdminUserExams from'./components/UserExams.vue'
 
 const routes = [
     {
@@ -33,6 +34,13 @@ const routes = [
       component: AdminLogin,
       meta: {  header: false }
     
+    },
+  
+    {
+      path: "/UserExams",
+      name: "UserExams",
+      component: AdminUserExams,
+      meta: {  header: true }
     },
     
     {
