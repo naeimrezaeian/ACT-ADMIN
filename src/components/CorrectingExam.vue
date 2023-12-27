@@ -10,65 +10,51 @@
                     <div class="box">
                         <div class="item">
                             <div class="name">ФИО</div>
-                            <!-- <div class="text">{{ student.user.fullName }}</div> -->
-                            <div class="text">aУбайдилла М.В.</div>
+                            <div class="text">{{ getUserExamToShow?.userExamLevel?.user?.fullName }}</div>
                         </div>
                         <div class="item">
                             <div class="name">Пол</div>
-                            <!-- <div class="text">{{ sexType?.value }}</div> -->
-                            <div class="text">aмужской</div>
+                            <div class="text">{{ getUserExamToShow?.userExamLevel?.user?.sex }}</div>
                         </div>
                         <div class="item">
                             <div class="name">Дата рождения</div>
-                            <!-- <div class="text">{{ student.user.birthDate }}</div> -->
-                            <div class="text">a19.05.1987</div>
+                            <div class="text">{{ getUserExamToShow?.userExamLevel?.user?.birthDate }}</div>
                         </div>
                         <div class="item">
                             <div class="name">Национальность</div>
-                            <!-- <div class="text">{{ student.user.nationality }}</div> -->
-                            <div class="text">aУбайдилла М.В.</div>
+                            <div class="text">{{ getUserExamToShow?.userExamLevel?.user?.nationality }}</div>
                         </div>
                         <div class="item">
                             <div class="name">Город</div>
-                            <!-- <div class="text">{{ student.user.placeOfBirth }}</div> -->
-                            <div class="text">aТашкент</div>
+                            <div class="text">{{ getUserExamToShow?.userExamLevel?.user?.placeOfBirth }}</div>
                         </div>
                         <div class="item">
                             <div class="name">Документ</div>
-                            <!-- <div class="text">{{ documentType?.value }}</div> -->
-                            <div class="text">aПаспорт</div>
+                            <div class="text">{{ getUserExamToShow?.userExamLevel?.user?.document }}</div>
                         </div>
                         <div class="item">
                             <div class="name">Дата выдачи</div>
-                            <!-- <div class="text">{{ student.user.issueDate }}</div> -->
-                            <div class="text">a21.01.2020</div>
+                            <div class="text">{{ getUserExamToShow?.userExamLevel?.user?.issueDate }}</div>
                         </div>
                         <div class="item">
                             <div class="name">Кем выдан</div>
-                            <!-- <div class="text">{{ student.user.issuedBy }}</div> -->
-                            <div class="text">aРОВД Ташкента в</div>
+                            <div class="text">{{ getUserExamToShow?.userExamLevel?.user?.issuedBy }}</div>
                         </div>
                         <div class="item">
                             <div class="name">Миграционная карта</div>
-                            <!-- <div class="text">{{ student.user.migrationCard }}</div> -->
                             <div class="text">
-                                <div class="name">Серия</div>
-                                <!-- <div class="text">{{ student.user.migrationCard }}</div> -->
-                                <div class="text">4012</div>
-                                <div class="name">№</div>
-                                <!-- <div class="text">{{ student.user.migrationCard }}</div> -->
-                                <div class="text">302678</div>
+                            <div class="text">{{ getUserExamToShow?.userExamLevel?.user?.migrationCard }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="img">
-                    <img src="" alt="">
+                    <img :src="defaultProfileImageUrl" ref="profileImage" alt="">
                 </div>
                 <div class="bottom">
                     <div class="headers">Оценка:</div>
                     <input type="text" class="input" placeholder="Введите оценку">
-                    <div class="headers">Ваши комментарии</div>
+                    <div class="headers">Ваши комментарии:</div>
                     <textarea class="input comment"></textarea>
                 </div>
             </div>
@@ -84,8 +70,34 @@
 
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 export default {
-    
+    name: 'AdminCorrectingExam',
+    data() {
+        return {
+            
+        }
+    },
+    async mounted() {
+        const userImgId = this.getUserExamToShow.userExamLevel.user.userImageId;
+        userImgId ? this.downloadUserProfileImage(userImgId) : null;
+    },
+    computed: {
+        ...mapGetters({
+            getUserExamToShow: 'getUserExamToShow',
+        }),
+    },
+    methods: {
+        ...mapActions({
+            downloadImageFile: 'downloadFile',
+        }),
+        async downloadUserProfileImage(fileId) {
+            let result = await this.downloadImageFile(fileId);
+            const blob = new Blob([result.data], { type: 'image/*' });
+            var url = URL.createObjectURL(blob);
+            this.$refs.profileImage.src = url;
+        },
+    },
 }
 </script>
 
@@ -125,9 +137,6 @@ export default {
     display: flex;
     font-size: 14px;
     width: 55%;
-}
-.content .left-side .top .box .item .text .text {
-    margin: 0 10px;
 }
 .content .left-side .img {
     display: flex;

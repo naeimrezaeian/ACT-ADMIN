@@ -53,7 +53,7 @@
                         <tr v-for="item in getManualCheckSubtests" :key="item.id">
                             <td>{{ item.userExamLevel.user.username }}</td>
                             <td>
-                                <router-link :to="``" @click="(item)" >{{ item.userExamLevel.user.fullName }}</router-link>
+                                <router-link :to="`UserExams/${item.userExamLevel.user.id}`" @click="setUserExamToShow(item)" >{{ item.userExamLevel.user.fullName }}</router-link>
                             </td>
                             <td>{{ item.userExamLevel.user.nationality }}</td>
                             <td>{{ item.subtest.examModule.examLevel.title }}</td>
@@ -121,6 +121,7 @@ export default {
             fetchLevels: 'getLevels',
             fetchModules: 'fetchModules',
             getBranches: 'fetchBranches',
+            setUserExamToShow: 'setUserExamToShow',
         }),
         async onPageChange(page) {
             await this.manualCheckSubtests({ page: page, pageSize: this.defaultPaging.pageSize });
@@ -143,9 +144,7 @@ export default {
         },
         returnStatus (userExamStatus) {
             for (let i = 0; i < (this.statuses).length; i++) {
-                if (this.statuses[i].key == userExamStatus) {
-                    return this.statuses[i].value;
-                }
+                return this.statuses[i].key == userExamStatus ? this.statuses[i].value : null;
             }
         }
     },

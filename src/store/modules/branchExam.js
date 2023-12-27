@@ -7,6 +7,7 @@ export default {
         showEditStudentPopup: false,
         userExamResults: [],
         manualCheckSubtests: [],
+        UserExamToShow: {},
     },
     actions: {
         setShowEditStudentPopup({ commit }, data) {
@@ -146,6 +147,9 @@ export default {
                 commit("updateManualCheckSubtests", response.data.result)
             }
         },
+        setUserExamToShow ({ commit }, data) {
+            commit("updateUserExamToShow", data)
+        }
     },
     mutations: {
         updateBranchExams: (state, data) => state.branchExams = data,
@@ -166,6 +170,7 @@ export default {
             }
         },
         updateManualCheckSubtests: (state, data) => state.manualCheckSubtests = data,
+        updateUserExamToShow: (state ,data) => state.UserExamToShow = data,
     },
     getters: {
         getBranchExams: (state) => state.branchExams,
@@ -174,5 +179,6 @@ export default {
         getShowEditStudentPopup: (state) => state.showEditStudentPopup,
         getUserExamResults: (state) => state.userExamResults,
         getManualCheckSubtests: (state) => state.manualCheckSubtests,
+        getUserExamToShow: (state) => state.UserExamToShow,
     }
 }
