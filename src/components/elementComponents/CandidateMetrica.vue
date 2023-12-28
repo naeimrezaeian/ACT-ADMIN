@@ -57,25 +57,27 @@
                     <div class="title">Матрица результатов</div>
                     <a href="#" class="btn edit show_popup" @click.prevent="editStudent">Редактировать</a>
                 </div>
-                <div class="table" v-for="item in examResult?.result" :key="item">
+                <input type="file" ref="fileInput" style="display: none;"
+                    @change="onFileSelected()" accept=".pdf">
+                <div class="table" v-for="(item, itemIndex) in examResult?.result" :key="item">
                     <table v-if="(examResult?.result[0]?.matrix[0])">
                         <tbody>
                             <tr>
                                 <th></th>
                                 <th>{{ item.moduleTitle }}</th>
                             </tr>
-                            <tr v-for="value in item?.matrix" :key="value"
+                            <tr v-for="(value, valueIndex) in item?.matrix" :key="value"
                                 :class="[(item.matrix).indexOf(value) % 2 == 0 ? 'even-row' : 'odd-row']">
                                 <td>
                                     <div class="first-col">
                                         <a href="">{{ value.subtestTitle }}</a>
                                         <button type="button" class="add add-btn" v-if="value.isManualCheck && !value.userAnswerFileId"
-                                            @click="addFile()"></button>
+                                            @click.prevent="addFile(value, itemIndex, valueIndex)"></button>
                                         <div v-if="value.isManualCheck && value.userAnswerFileId" class="files">
-                                            <a class="file" href="#"></a>
+                                            <a class="file" @click="downloadFile(value)" href="#"></a>
                                         </div>
                                         <button type="button" class="delete delete-btn" v-if="value.isManualCheck && value.userAnswerFileId"
-                                            @click="deleteFile()"></button>
+                                            @click="deleteFile(value, itemIndex, valueIndex)"></button>
                                     </div>
                                 </td>
                                 <td>{{ value.mark }}</td>
@@ -111,6 +113,13 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            subtestObj: null,
+            examIndex:null,
+            matrixIndex:null,
+        }
+    },
     computed: {
         ...mapGetters({
             sexTypes: 'getSexTypes',
@@ -131,13 +140,42 @@ export default {
         ...mapActions({
             setSelectedStudent: 'setSelectedStudent',
             changeEditStudentPopup: 'setShowEditStudentPopup',
+            uploadIFile: 'uploadFile',
+            downloadFile: 'downloadFile',
+            uploadUserExam: 'uploadUserExam',
         }),
         editStudent() {
             this.changeEditStudentPopup({ show: true, student: this.student.user, group: this.examGroup })
         },
-        addFile () {
+        addFile (val, itemInd, valInd) {
+            this.subtestObj = val;
+            this.examIndex = itemInd;
+            this.matrixIndex = valInd;
+            this.$refs.fileInput.click();
         },
-        deleteFile () {
+        async onFileSelected () {
+            const file = this.$refs.fileInput.files[0];
+            const fileId = await this.uploadIFile(file);
+            const subtestId = this.subtestObj.userSubtestId;
+            await this.uploadUserExam({ userSubtestId: subtestId, userAnswserFileId: fileId });
+            this.examResult.result[this.examIndex].matrix[this.matrixIndex].userAnswerFileId = fileId;
+            this.examResult.result[this.examIndex].matrix[this.matrixIndex].isManualcheck = false;
+        },
+        async deleteFile (val, itemInd, valInd) {
+            const subtestId = val.userSubtestId;
+            await this.uploadUserExam({ userSubtestId: subtestId, userAnswserFileId: null });
+            this.examResult.result[itemInd].matrix[valInd].userAnswerFileId = null;
+            this.examResult.result[itemInd].matrix[valInd].isManualcheck = true;
+        },
+        async downloadFile (val) {
+            let result = await this.downloadFile(val.userAnswerFileId);
+            let blob = new Blob([result.data], { type: 'application/pdf' });
+            let url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = val.subtestTitle;
+            link.click();
+            URL.revokeObjectURL(url);
         },
     }
 }
