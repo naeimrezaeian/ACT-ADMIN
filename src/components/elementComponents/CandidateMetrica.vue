@@ -159,13 +159,11 @@ export default {
             const subtestId = this.subtestObj.userSubtestId;
             await this.uploadUserExam({ userSubtestId: subtestId, userAnswserFileId: fileId });
             this.examResult.result[this.examIndex].matrix[this.matrixIndex].userAnswerFileId = fileId;
-            this.examResult.result[this.examIndex].matrix[this.matrixIndex].isManualcheck = false;
         },
         async deleteFile (val, itemInd, valInd) {
             const subtestId = val.userSubtestId;
             await this.uploadUserExam({ userSubtestId: subtestId, userAnswserFileId: null });
             this.examResult.result[itemInd].matrix[valInd].userAnswerFileId = null;
-            this.examResult.result[itemInd].matrix[valInd].isManualcheck = true;
         },
         async downloadFile (val) {
             let result = await this.downloadFile(val.userAnswerFileId);
