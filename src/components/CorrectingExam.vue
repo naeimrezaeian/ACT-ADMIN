@@ -53,17 +53,22 @@
                 </div>
                 <div class="bottom">
                     <div class="headers">Оценка:</div>
-                    <input type="text" class="input" placeholder="Введите оценку">
+                    <input v-model="result.mark" type="number" class="input" placeholder="Введите оценку">
                     <div class="headers">Ваши комментарии:</div>
-                    <textarea class="input comment"></textarea>
+                    <textarea v-model="result.comment" class="input comment"></textarea>
                 </div>
             </div>
             <div class="right-side">
+                <PDFViewer
+                    :source="pdfUrl"
+                    style="height: 100%; width: 100%"
+                    @download="handleDownload"
+                    />
             </div>
         </div>
         <div class="footer">
-            <router-link to="/Users" type="button" class="btn cancel">Отменить</router-link>
-            <button type="button" class="btn">Сохранить</button>
+            <router-link to="/UserExams" type="button" class="btn cancel">Отменить</router-link>
+            <button type="button" class="btn" @click="saveChanges()" :disabled="result.mark == null || result.mark == ''">Сохранить</button>
         </div>
     </div>
 </template>
@@ -71,16 +76,28 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import PDFViewer from 'pdf-viewer-vue'
+import router from '@/router';
 export default {
     name: 'AdminCorrectingExam',
     data() {
         return {
-            
+            pdfUrl: null,
+            result : {
+                userSubtestId: '',
+                mark: null,
+                comment: '',
+            }
         }
     },
+    components: {
+        PDFViewer
+    },
     async mounted() {
-        const userImgId = this.getUserExamToShow.userExamLevel.user.userImageId;
+        this.result.userSubtestId = this.getUserExamToShow.id;
+        const userImgId = this.getUserExamToShow.userExamLevel.user?.userImageId;
         userImgId ? this.downloadUserProfileImage(userImgId) : null;
+        await this.downloadPdf();
     },
     computed: {
         ...mapGetters({
@@ -89,13 +106,28 @@ export default {
     },
     methods: {
         ...mapActions({
-            downloadImageFile: 'downloadFile',
+            downloadFile: 'downloadFile',
+            setUserSubtestMark: 'setUserSubtestMark',
         }),
-        async downloadUserProfileImage(fileId) {
-            let result = await this.downloadImageFile(fileId);
+        async downloadUserProfileImage (fileId) {
+            let result = await this.downloadFile(fileId);
             const blob = new Blob([result.data], { type: 'image/*' });
             var url = URL.createObjectURL(blob);
             this.$refs.profileImage.src = url;
+        },
+        async downloadPdf () {
+            const result = await this.downloadFile(this.getUserExamToShow.userAnswerFileId);
+            const blob = new Blob([result.data], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            this.pdfUrl = url;
+        },
+        async saveChanges () {
+            await this.setUserSubtestMark({
+                userSubtestId: this.result.userSubtestId,
+                mark: this.result.mark,
+                comment: this.result.comment
+            });
+            router.push('/UserExams')
         },
     },
 }

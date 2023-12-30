@@ -149,7 +149,17 @@ export default {
         },
         setUserExamToShow ({ commit }, data) {
             commit("updateUserExamToShow", data)
-        }
+        },
+        async setUserSubtestMark(/* eslint-disable-next-line no-unused-vars */ _, { userSubtestId, mark, comment }) {
+            try {
+                const response = await httpClient.post(`/api/admin/branchexams/SetUserSubtestMark/`, { userSubtestId, mark, comment })
+                if (response.status === 200) {
+                    return true
+                }
+            } catch (error) {
+                return false
+            }
+        },
     },
     mutations: {
         updateBranchExams: (state, data) => state.branchExams = data,
