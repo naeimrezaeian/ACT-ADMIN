@@ -74,7 +74,7 @@
                                         <button type="button" class="add add-btn" v-if="value.isManualCheck && !value.userAnswerFileId"
                                             @click.prevent="addFile(value, itemIndex, valueIndex)"></button>
                                         <div v-if="value.isManualCheck && value.userAnswerFileId" class="files">
-                                            <a class="file" @click="downloadFile(value)" href="#"></a>
+                                            <a class="file" @click.prevent="downloadDocument(value)"></a>
                                         </div>
                                         <button type="button" class="delete delete-btn" v-if="value.isManualCheck && value.userAnswerFileId"
                                             @click="deleteFile(value, itemIndex, valueIndex)"></button>
@@ -165,7 +165,7 @@ export default {
             await this.uploadUserExam({ userSubtestId: subtestId, userAnswserFileId: null });
             this.examResult.result[itemInd].matrix[valInd].userAnswerFileId = null;
         },
-        async downloadFile (val) {
+        async downloadDocument (val) {
             let result = await this.downloadFile(val.userAnswerFileId);
             let blob = new Blob([result.data], { type: 'application/pdf' });
             let url = URL.createObjectURL(blob);
