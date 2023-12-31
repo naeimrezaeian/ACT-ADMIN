@@ -12,16 +12,19 @@
                             <div class="item">
                                 <label for="name">Название филиала</label>
                                 <input type="text" id="name" v-model="branch.name" placeholder="Введите название">
+                                <div v-for="error in v$.branch.name.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="zip">Код филиала</label>
                                 <input type="text" id="zip" v-model="branch.branchCode" placeholder="145-288">
+                                <div v-for="error in v$.branch.branchCode.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                         </div>
                         <div class="box">
                             <div class="item">
                                 <label for="name_s">Краткое название</label>
                                 <input type="text" id="name_s" v-model="branch.shortName" placeholder="Введите название">
+                                <div v-for="error in v$.branch.shortName.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="tip">Тип филиала</label>
@@ -29,8 +32,8 @@
                                     <option value="" disabled selected>Выбрать тип филиала</option>
                                     <option v-for="item in branchTypes" :key="item.key" :value="item.key">{{ item.value }}
                                     </option>
-
                                 </select>
+                                <div v-for="error in v$.branch.branchType.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                         </div>
                     </div>
@@ -50,6 +53,8 @@
                 <div class="zag">
                     <span>Ответственные</span>
                     <button type="button" @click="addBranchUser" class="add">Добавить поле</button>
+                    <div v-for="error in v$.branch.branchSystemUsers.$errors"
+                        :key="error.$uid" class="error-msg" style="margin: 5px 0 0 10px;">{{ error.$message }}</div>
                 </div>
                 <div class="box">
                     <div class="left">
@@ -71,7 +76,6 @@
                                 </select>
                             </div>
                             <button type="button" @click="removeBranchUser(index)" class="delete" />
-
                         </div>
                     </div>
                 </div>
@@ -87,20 +91,25 @@
                             <div class="item">
                                 <label for="city">Город</label>
                                 <input type="text" id="city" v-model="branch.city" placeholder="Введите название">
+                                <div v-for="error in v$.branch.city.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="inn">ИНН</label>
                                 <input type="text" id="inn" v-model="branch.tin" placeholder="Введите название">
+                                <div v-for="error in v$.branch.tin.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                         </div>
                         <div class="box">
                             <div class="item">
                                 <label for="adres">Фактический адрес</label>
                                 <input type="text" id="adres" v-model="branch.actualAddress" placeholder="Введите название">
+                                <div v-for="error in v$.branch.actualAddress.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="kpp">КПП</label>
                                 <input type="text" id="kpp" v-model="branch.checkpoint" placeholder="Введите название">
+                                <div v-for="error in v$.branch.checkpoint.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+
                             </div>
                         </div>
                         <div class="box">
@@ -108,6 +117,7 @@
                                 <label for="ur_adres">Юридический адрес</label>
                                 <input type="text" id="ur_adres" v-model="branch.legalAddress"
                                     placeholder="Введите название">
+                                <div v-for="error in v$.branch.legalAddress.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                         </div>
                     </div>
@@ -181,9 +191,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 export default {
     name: "AdminBrancheAdd",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             selectAll: false,
@@ -192,6 +206,42 @@ export default {
                 branchSystemUsers: [],
                 docs: [],
                 branchExamLevels: [],
+            },
+        }
+    },
+    validations () {
+        return {
+            branch: {
+                name: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.name, required),
+                },
+                branchCode: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchCode, required),
+                },
+                shortName: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.shortName, required),
+                },
+                branchType: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchType, required),
+                },
+                branchSystemUsers: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchSystemUsers, required),
+                },
+                city: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.city, required),
+                },
+                tin: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.tin, required),
+                },
+                actualAddress: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.actualAddress, required),
+                },
+                checkpoint: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.checkpoint, required),
+                },
+                legalAddress: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.legalAddress, required),
+                },
             },
         }
     },
@@ -212,6 +262,7 @@ export default {
             branchUserTypes: 'getBranchUserType',
             usersNotInBranch: 'getUsersNotInBranch',
             levels: 'getExamLevels',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
         isEditMode: {
             get() {
@@ -247,9 +298,12 @@ export default {
             uploadImageFile: 'uploadFile',
         }),
         async saveChanges() {
-            this.$route.fullPath.endsWith('Edit') ?
+            const result = await this.v$.$validate();
+            if (result) {
+                this.$route.fullPath.endsWith('Edit') ?
                 await this.updateBranch(this.branch) :
                 await this.addBranch(this.branch)
+            }
         },
         addBranchUser() {
 

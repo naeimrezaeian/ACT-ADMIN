@@ -10,6 +10,7 @@
                     <div class="item">
                         <label for="zag">Заголовок</label>
                         <input type="text" id="zag" v-model="subtest.title">
+                        <div v-for="error in v$.subtest.title.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="time">Время прохождения</label>
@@ -19,10 +20,12 @@
                     <div class="item">
                         <label for="col">Количество баллов</label>
                         <input type="text" id="col" v-model.number="subtest.maxScore">
+                        <div v-for="error in v$.subtest.maxScore.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="col_p">Проходной балл</label>
                         <input type="text" id="col_p" v-model.number="subtest.passingScore">
+                        <div v-for="error in v$.subtest.passingScore.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                 </div>
                 <div class="box">
@@ -32,6 +35,7 @@
                             <option value="" disabled selected>Выбрать уровень</option>
                             <option v-for="item in levels" :key="item.id" :value="item.id">{{ item.title }}</option>
                         </select>
+                        <div v-for="error in v$.subtest.examModule.examLevelId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="model">Модуль</label>
@@ -39,6 +43,7 @@
                             <option value="" disabled selected>Выбрать модуль</option>
                             <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}</option>
                         </select>
+                        <div v-for="error in v$.subtest.examModuleId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="tip">Тип субътеста</label>
@@ -46,6 +51,7 @@
                             <option value="" disabled selected>Выбрать тип</option>
                             <option v-for="item in subtestTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                         </select>
+                        <div v-for="error in v$.subtest.questionType.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="tip_p">Тип проверки</label>
@@ -296,7 +302,8 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import { mapActions, mapGetters } from 'vuex'
-
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 const Tinyconfig = {
     selector: '#tiny',
     height: 214,
@@ -314,6 +321,9 @@ const Tinyconfig = {
 
 export default {
     name: "AdminSubjectAdd",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             Tinyconfig,
@@ -326,6 +336,32 @@ export default {
 
                 }
             }
+        }
+    },
+    validations () {
+        return {
+            subtest: {
+                title: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.title, required),
+                },
+                maxScore: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.maxScore, required),
+                },
+                passingScore: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.passingScore, required),
+                },
+                examModule: {
+                    examLevelId: {
+                        required: helpers.withMessage(this.getinputErrorMessages.addSubtest.examLevelId, required),
+                    },
+                },
+                examModuleId: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.examModuleId, required),
+                },
+                questionType: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.questionType, required),
+                },
+            },
         }
     },
     async mounted() {
@@ -348,7 +384,8 @@ export default {
             editSubtest: 'getEditSubtest',
             subtestVariants: 'getSubtestVariants',
             questionBase: 'getQuestionBase',
-            subtesCheckType: 'getSubtestCheckType'
+            subtesCheckType: 'getSubtestCheckType',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
         selectAllVariants: {
             get() {
@@ -437,11 +474,14 @@ export default {
             });
         },
         async saveShanges() {
-            this.isEditMode ?
+            const result = await this.v$.$validate();
+            if (result) {
+                this.isEditMode ?
                 await this.editCurrentSubtest(this.subtest) :
                 await this.addSubtest(this.subtest)
-            if (this.isEditMode) {
-                this.updateSubtestVariant({ subtestId: this.subtest.id, variants: this.subtestVariants })
+                if (this.isEditMode) {
+                    this.updateSubtestVariant({ subtestId: this.subtest.id, variants: this.subtestVariants })
+                }
             }
         }
     },

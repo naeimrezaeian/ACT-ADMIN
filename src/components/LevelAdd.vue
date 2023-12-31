@@ -10,10 +10,12 @@
                     <div class="item">
                         <label for="name">Название уровня</label>
                         <input type="text" id="name" v-model="examlevel.title">
+                        <div v-for="error in v$.examlevel.title.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="itemsmall">
                         <label for="name_s">Краткое название</label>
                         <input type="text" id="name_s" v-model="examlevel.shortName">
+                        <div v-for="error in v$.examlevel.shortName.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="itemsmall">
                         <label for="urov">Статус</label>
@@ -43,6 +45,8 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import { mapActions, mapGetters } from 'vuex';
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 const Tinyconfig = {
     selector: '#tiny',
     height: 214,
@@ -60,24 +64,49 @@ const Tinyconfig = {
 
 export default {
     name: "LevelAdd",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             Tinyconfig,
             examlevel: {status:'active'}
         }
     },
+    validations () {
+        return {
+            examlevel: {
+                title: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addLevel.title, required),
+                },
+                shortName: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addLevel.shortName, required),
+                },
+            },
+        }
+    },
     components: {
         'editor': Editor
     },
     computed:{
-        ...mapGetters({examLevelEdit:'getEditLevel',statuses:'getStatusField'})
+        ...mapGetters({
+            examLevelEdit:'getEditLevel',
+            statuses:'getStatusField',
+            getinputErrorMessages: 'getinputErrorMessages',
+        })
     },
     methods: {
-        ...mapActions({addNewExamLevel:'addNewLevel',editExamLevel:'editExamLevel'}),
+        ...mapActions({
+            addNewExamLevel:'addNewLevel',
+            editExamLevel:'editExamLevel'
+        }),
         async saveChanges(){
-            this.$route.fullPath.endsWith('Edit')?
-            await this.editExamLevel(this.examlevel):
-            await this.addNewExamLevel(this.examlevel)
+            const result = await this.v$.$validate();
+            if (result) {
+                this.$route.fullPath.endsWith('Edit')?
+                await this.editExamLevel(this.examlevel):
+                await this.addNewExamLevel(this.examlevel)
+            }
         }
 
     },

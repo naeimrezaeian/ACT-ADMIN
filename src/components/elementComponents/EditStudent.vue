@@ -13,16 +13,19 @@
                                 <div class="item">
                                     <label for="fio">Фамилия</label>
                                     <input type="text" id="fio" name="fio" v-model="student.family" />
+                                    <div v-for="error in v$.student.family.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                                 <div class="item">
                                     <label for="name">Имя</label>
                                     <input type="text" id="name" name="name" v-model="student.name" />
+                                    <div v-for="error in v$.student.name.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                             </div>
                             <div class="box">
                                 <div class="item">
                                     <label for="och">Отчество</label>
                                     <input type="text" id="och" name="och" v-model="student.father" />
+                                    <div v-for="error in v$.student.father.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                                 <div class="item">
                                     <div class="select">
@@ -32,6 +35,7 @@
                                             <option v-for="item in sexTypes" :key="item.key" :value="item.key">{{
                                                 item.value }}</option>
                                         </select>
+                                        <div v-for="error in v$.student.sex.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -39,20 +43,24 @@
                                 <div class="item">
                                     <label for="naci">Национальность</label>
                                     <input type="text" id="naci" name="naci" v-model="student.nationality" />
+                                    <div v-for="error in v$.student.nationality.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                                 <div class="item">
                                     <label for="roj">Место рождения</label>
                                     <input type="text" id="roj" name="roj" v-model="student.placeOfBirth" />
+                                    <div v-for="error in v$.student.placeOfBirth.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                                 <div class="item">
                                     <label for="date">Дата рождения</label>
                                     <input type="text" placeholder="__.__.____" onfocus="(this.type='date')" id="date"
                                         name="date" class="dats" v-model="student.birthDate" />
+                                    <div v-for="error in v$.student.birthDate.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                                 <div class="item">
                                     <label for="sprav">Справка для пересдачи</label>
                                     <input type="text" id="sprav" name="sprav" v-model="student.refNumber"
                                         placeholder="Номер справки" />
+                                    <div v-for="error in v$.student.refNumber.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                             </div>
                         </div>
@@ -78,21 +86,25 @@
                                         <option v-for="item in documentTypes" :key="item.key" :value="item.key">{{
                                             item.value }}</option>
                                     </select>
+                                    <div v-for="error in v$.student.document.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                                 <div class="item doc_item_2">
                                     <div select="select">
                                         <label for="date_v">Дата выдачи</label>
                                         <input type="text" placeholder="__.__.____" onfocus="(this.type='date')" id="date_v"
                                             name="date_v" class="dats" v-model="student.issueDate" />
+                                        <div v-for="error in v$.student.issueDate.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                     </div>
                                 </div>
                                 <div class="item doc_item_3">
                                     <label for="kem">Кем выдан</label>
                                     <input type="text" id="kem" name="kem" v-model="student.issueBy" />
+                                    <div v-for="error in v$.student.issueBy.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                                 <div class="item doc_item_4">
                                     <label for="cart">Миграционная карта</label>
                                     <input type="text" id="cart" name="cart" v-model="student.migrationCard" />
+                                    <div v-for="error in v$.student.migrationCard.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                                 </div>
                             </div>
                             <div class="box">
@@ -127,9 +139,58 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers, minLength } from '@vuelidate/validators'
 export default {
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
+        }
+    },
+    validations () {
+        return {
+            student: {
+                family: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.familly, required),
+                    minLength: minLength(3)
+                },
+                name: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.name, required),
+                    minLength: minLength(3)
+                },
+                father: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.father, required),
+                },
+                sex: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.sex, required),
+                },
+                nationality: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.nationality, required),
+                },
+                placeOfBirth: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.placeOfBirth, required),
+                },
+                birthDate: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.birthDate, required),
+                },
+                refNumber: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.refNumber, required),
+                },
+                document: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.refNumber, required),
+                },
+                issueDate: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.issueDate, required),
+                },
+                issueBy: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.issueBy, required),
+                },
+                migrationCard: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.migrationCard, required),
+                },
+            },
         }
     },
     computed: {
@@ -137,7 +198,8 @@ export default {
             examStatus: "getExamStatus",
             sexTypes: 'getSexTypes',
             documentTypes: 'getDocumentTypes',
-            student: 'getSelectedStudent'
+            student: 'getSelectedStudent',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
         defaultProfileImageUrl() {
             return require(`@/assets/img/ava.svg`);
@@ -165,11 +227,13 @@ export default {
             this.changeEditStudentPopup({ show: false })
         },
         async saveStudent() {
-            this.student.id ? await this.editUserInGroup(this.student) : await this.addUserToGroup(this.student)
-            var groupId = this.student.groupId
-            this.closePopup()
-            await this.getAllStudents({ groupId: groupId })
-
+            const result = await this.v$.$validate();
+            if (result) {
+                this.student.id ? await this.editUserInGroup(this.student) : await this.addUserToGroup(this.student)
+                var groupId = this.student.groupId
+                this.closePopup()
+                await this.getAllStudents({ groupId: groupId })
+            }
         },
         selectFile() {
             this.$refs.fileInput.click();

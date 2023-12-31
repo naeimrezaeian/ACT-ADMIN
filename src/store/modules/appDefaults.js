@@ -198,6 +198,68 @@ export default {
             }
         },
         all: 'Bсе',
+        inputErrorMessages: {
+            addUser: {
+                name: 'Фамилия Необходимый',
+                familly: 'Фамилия Необходимый',
+                father: 'Фамилия Необходимый',
+                sex: 'Фамилия Необходимый',
+                birthDate: 'Фамилия Необходимый',
+                email: 'Фамилия Необходимый',
+                role: 'Фамилия Необходимый',
+                branchId: 'Фамилия Необходимый',
+                status: 'Фамилия Необходимый',
+            },
+            addBranch: {
+                name: 'Фамилия Необходимый',
+                branchCode: 'Фамилия Необходимый',
+                shortName: 'Фамилия Необходимый',
+                branchType: 'Фамилия Необходимый',
+                branchSystemUsers: 'Фамилия Необходимый',
+                city: 'Фамилия Необходимый',
+                tin: 'Фамилия Необходимый',
+                actualAddress: 'Фамилия Необходимый',
+                checkpoint: 'Фамилия Необходимый',
+                legalAddress: 'Фамилия Необходимый',
+            },
+            addLevel: {
+                title: 'Фамилия Необходимый',
+                shortName: 'Фамилия Необходимый',
+            },
+            addModule: {
+                title: 'Фамилия Необходимый',
+                examLevelId: 'Фамилия Необходимый',
+            },
+            addSubtest: {
+                title: 'Фамилия Необходимый',
+                maxScore: 'Фамилия Необходимый',
+                passingScore: 'Фамилия Необходимый',
+                examLevelId: 'Фамилия Необходимый',
+                examModuleId: 'Фамилия Необходимый',
+                questionType: 'Фамилия Необходимый',
+            },
+            addStudent: {
+                name: 'Фамилия Необходимый',
+                familly: 'Фамилия Необходимый',
+                father: 'Фамилия Необходимый',
+                sex: 'Фамилия Необходимый',
+                birthDate: 'Фамилия Необходимый',
+                nationality: 'Фамилия Необходимый',
+                placeOfBirth: 'Фамилия Необходимый',
+                refNumber: 'Фамилия Необходимый',
+                issueDate: 'Фамилия Необходимый',
+                issueBy: 'Фамилия Необходимый',
+                migrationCard: 'Фамилия Необходимый',
+            },
+            addQustionBase: {
+                title: 'Фамилия Необходимый',
+                type: 'Фамилия Необходимый',
+                status: 'Фамилия Необходимый',
+                examLevelId: 'Фамилия Необходимый',
+                examModuleId: 'Фамилия Необходимый',
+                subtestId: 'Фамилия Необходимый',
+            },
+        }
     },
     mutations: {
         updatePaging: (state, data) => state.paging = data,
@@ -218,5 +280,6 @@ export default {
         getDocumentTypes: (state) => state.documentTypes,
         getUserExamStatus: (state) => state.userExamStatus,
         getAllForDropdowns: (state) => state.all,
+        getinputErrorMessages: (state) => state.inputErrorMessages,
     }
 }

@@ -23,6 +23,7 @@
                         <div class="item">
                             <label for="och">Отчество</label>
                             <input type="text" id="och" name="och" v-model="user.father">
+                            <div v-for="error in v$.user.father.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
                         <div class="item">
                             <div class="select">
@@ -32,11 +33,13 @@
                                     <option v-for="item in sexTypes" :key="item.key" :value="item.key">{{ item.value }}
                                     </option>
                                 </select>
+                                <div v-for="error in v$.user.sex.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="select">
                                 <label for="date">Дата рождения</label>
                                 <input type="text" placeholder="__.__.____" onfocus="(this.type='date')" id="date"
                                     name="date" class="dats" v-model="user.birthDate">
+                                <div v-for="error in v$.user.birthDate.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                         </div>
                     </div>
@@ -44,34 +47,8 @@
                         <div class="item">
                             <label for="naci">Адрес электронной почты</label>
                             <input type="text" id="naci" name="naci" v-model="user.email">
+                            <div v-for="error in v$.user.email.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
-                        <div class="item">
-                            <div class="select">
-                                <label for="pol">Роль</label>
-                                <select name="pol" id="pol" v-model="user.role">
-                                    <option value="" disabled selected>Выбрать</option>
-                                    <option v-for="item in adminRoleTypes" :key="item.key" :value="item.key">{{ item.value
-                                    }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="select" v-if="user.role && user.role != adminRoleTypes[0].key">
-                                <label for="roj">Филиал</label>
-                                <select name="roj" id="roj" class="usereditselect" v-model="user.branchId">
-                                    <option value="" disabled selected>Выбрать</option>
-                                    <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode +
-                                        '-' + item.name }}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="box">
-                        <div class="item">
-                            <label for="naci">Пароль</label>
-                            <input type="text" id="naci" name="naci" value="">
-                        </div>
-
                         <div class="item">
                             <div class="select">
                                 <label for="pol">Статус</label>
@@ -79,13 +56,31 @@
                                     <option value="" disabled selected>Выбрать</option>
                                     <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}
                                     </option>
-
                                 </select>
+                                <div v-for="error in v$.user.status.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
-
+                            <div class="select">
+                                <label for="pol">Роль</label>
+                                <select class="role" name="pol" id="pol" v-model="user.role">
+                                    <option value="" disabled selected>Выбрать</option>
+                                    <option v-for="item in adminRoleTypes" :key="item.key" :value="item.key">{{ item.value
+                                    }}
+                                    </option>
+                                </select>
+                                <div v-for="error in v$.user.role.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                            </div>
                         </div>
                     </div>
-
+                    <div class="box">
+                        <div class="select" v-if="user.role && user.role != adminRoleTypes[0].key">
+                            <label for="roj">Филиал</label>
+                            <select name="roj" id="roj" class="usereditselect branchInput" v-model="user.branchId">
+                                <option value="" disabled selected>Выбрать</option>
+                                <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode +
+                                    '-' + item.name }}</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="usereditaccess">
                         <div class="title">Дополнительно</div>
 
@@ -139,30 +134,51 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import { useVuelidate } from '@vuelidate/core'
-// import { required, helpers } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers, minLength, email } from '@vuelidate/validators'
 export default {
     name: "AdminUserAdd",
     setup () {
-        // return { v$: useVuelidate() }
+        return { v$: useVuelidate() }
     },
     data() {
         return {
             user: {}
         }
     },
-    // validations () {
-    //     return {
-    //         user: {
-    //             family:{
-    //                 data: { required: helpers.withMessage('Фамилия Необходимый', required) }
-    //             },
-    //             name: {
-    //                 data: { required: helpers.withMessage('Имя Необходимый', required) }
-    //             },
-    //         },
-    //     }
-    // },
+    validations () {
+        return {
+            user: {
+                family: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.name, required),
+                    minLength: minLength(3),
+                },
+                name: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.name, required),
+                    minLength: minLength(3),
+                },
+                father: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.father, required)
+                },
+                sex: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.sex, required)
+                },
+                birthDate: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.birthDate, required)
+                },
+                email: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.email, required),
+                    email
+                },
+                role: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.role, required)
+                },
+                status: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.status, required)
+                },
+            },
+        }
+    },
     async mounted() {
 
         this.getAllBranches()
@@ -226,7 +242,8 @@ export default {
             adminRoleTypes: 'getBranchUserType',
             branches: 'getSimplifiedBranches',
             statusTypes: 'getStatusField',
-            getSelectedUser: 'getSelectedUser'
+            getSelectedUser: 'getSelectedUser',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
         firstColumn() {
             return this.allRoles.slice(0, Math.ceil(this.allRoles.length / 2));
@@ -246,4 +263,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.role {
+    width: 100% !important;
+}
+.branchInput {
+    width: 201% !important;
+}
+</style>

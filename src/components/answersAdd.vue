@@ -5,8 +5,7 @@
             :checked="getNewQuestion.questionTexts[questionIndex].answers[answerIndex].isCorrectAnswer"
             class="answer">
         <input type="text" v-model="answer.answer" placeholder="answer ...">
-        <button type="button" class="delete" @click="deleteAnswer({ questionIndex, answerIndex })"
-            style="padding: 15px 10px; margin: 0 30px 0 -10px;"></button>
+        <button type="button" class="delete" @click="deleteAnswer({ questionIndex, answerIndex })"></button>
         <button type="button" v-if="answerIndex === (getNewQuestion.questionTexts[questionIndex].answers.length - 1)" class="add"
             @click="addNewAnswerOption(questionIndex)">Добавить вариант ответа</button>
     </div>
@@ -44,4 +43,9 @@ export default {
 </script>
 
 
-<style></style>
+<style scoped>
+.delete {
+    padding: 15px 10px !important;
+    margin: 0 30px 0 10px !important;
+}
+</style>
