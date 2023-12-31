@@ -57,16 +57,30 @@
                     <div class="title">Матрица результатов</div>
                     <a href="#" class="btn edit show_popup" @click.prevent="editStudent">Редактировать</a>
                 </div>
-                <div class="table" v-for="item in examResult?.result" :key="item">
+                <input type="file" ref="fileInput" style="display: none;" @change="onFileSelected()" accept=".pdf">
+                <div class="table" v-for="(item, itemIndex) in examResult?.result" :key="item">
                     <table v-if="(examResult?.result[0]?.matrix[0])">
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th>{{ item.moduleTitle }}</th>
+                                <th class="table-header">{{ item.moduleTitle }}</th>
                             </tr>
-                            <tr v-for="value in item?.matrix" :key="value"
+                            <tr v-for="(value, valueIndex) in item?.matrix" :key="value"
                                 :class="[(item.matrix).indexOf(value) % 2 == 0 ? 'even-row' : 'odd-row']">
-                                <td><a href="">{{ value.subtestTitle }}</a></td>
+                                <td>
+                                    <div class="first-col">
+                                        <a href="">{{ value.subtestTitle }}</a>
+                                        <button type="button" class="add add-btn"
+                                            v-if="value.isManualCheck && !value.userAnswerFileId"
+                                            @click.prevent="addFile(value, itemIndex, valueIndex)"></button>
+                                        <div v-if="value.isManualCheck && value.userAnswerFileId" class="files">
+                                            <a class="file" @click.prevent="downloadDocument(value)"></a>
+                                        </div>
+                                        <button type="button" class="delete delete-btn"
+                                            v-if="value.isManualCheck && value.userAnswerFileId"
+                                            @click="deleteFile(value, itemIndex, valueIndex)"></button>
+                                    </div>
+                                </td>
                                 <td>{{ value.mark }}</td>
                                 <td>{{ value.percentage }}%</td>
                                 <td>
@@ -78,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <button class="calaps" onclick="$('#g1user-1').slideToggle()">Свернуть</button>
+        <button class="calaps" @click="$Jquery(`#${metricId}`).slideToggle()">Свернуть</button>
     </div>
 </template>
 
@@ -100,6 +114,13 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            subtestObj: null,
+            examIndex: null,
+            matrixIndex: null,
+        }
+    },
     computed: {
         ...mapGetters({
             sexTypes: 'getSexTypes',
@@ -120,10 +141,41 @@ export default {
         ...mapActions({
             setSelectedStudent: 'setSelectedStudent',
             changeEditStudentPopup: 'setShowEditStudentPopup',
+            uploadIFile: 'uploadFile',
+            downloadFile: 'downloadFile',
+            uploadUserExam: 'uploadUserExam',
         }),
         editStudent() {
             this.changeEditStudentPopup({ show: true, student: this.student.user, group: this.examGroup })
-        }
+        },
+        addFile(val, itemInd, valInd) {
+            this.subtestObj = val;
+            this.examIndex = itemInd;
+            this.matrixIndex = valInd;
+            this.$refs.fileInput.click();
+        },
+        async onFileSelected() {
+            const file = this.$refs.fileInput.files[0];
+            const fileId = await this.uploadIFile(file);
+            const subtestId = this.subtestObj.userSubtestId;
+            await this.uploadUserExam({ userSubtestId: subtestId, userAnswserFileId: fileId });
+            this.examResult.result[this.examIndex].matrix[this.matrixIndex].userAnswerFileId = fileId;
+        },
+        async deleteFile(val, itemInd, valInd) {
+            const subtestId = val.userSubtestId;
+            await this.uploadUserExam({ userSubtestId: subtestId, userAnswserFileId: null });
+            this.examResult.result[itemInd].matrix[valInd].userAnswerFileId = null;
+        },
+        async downloadDocument(val) {
+            let result = await this.downloadFile(val.userAnswerFileId);
+            let blob = new Blob([result.data], { type: 'application/pdf' });
+            let url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = val.subtestTitle;
+            link.click();
+            URL.revokeObjectURL(url);
+        },
     }
 }
 </script>
@@ -133,10 +185,42 @@ export default {
 .matrica .box .right table tr:nth-last-child(2) td {
     background: none !important;
 }
-.even-row{
+
+.even-row {
     background-color: #fff !important;
 }
-.odd-row{
+
+.odd-row {
     background-color: #E6F0F9 !important;
 }
-</style>
+
+.first-col {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 40px;
+}
+
+.delete-btn {
+    padding: 9.5px !important;
+}
+
+.add-btn {
+    padding: 11px !important;
+}
+
+.file {
+    margin-bottom: 0 !important;
+    background-size: 20px !important;
+    padding: 0 !important;
+    width: 35px !important;
+    height: 27px !important;
+}
+
+.table-header {
+    padding-bottom: 20px !important;
+    font-size: medium !important;
+    font-weight: bold !important;
+}</style>
