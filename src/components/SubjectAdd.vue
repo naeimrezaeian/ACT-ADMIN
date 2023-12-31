@@ -48,19 +48,13 @@
                         </select>
                     </div>
                     <div class="item">
-                        <label for="tip_p">Тип проверки</label>
-                        <select id="tip_p" v-model="subtest.checkType">
-                            <option value="" disabled selected>Автоматический</option>
-                            <option v-for="item in subtesCheckType" :key="item.key" :value="item.key">{{ item.value }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="item">
                         <label for="video">Видео запись</label>
                         <select id="video" v-model="cameraRecord">
                             <option value="" disabled selected>Автоматический</option>
                             <option v-for="item in boolTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                         </select>
+                    </div>
+                    <div class="item">
                     </div>
                 </div>
                 <div class="item">
@@ -319,7 +313,6 @@ export default {
             Tinyconfig,
             selectAll: false,
             subtest: {
-                checkType: 'auto',
                 cameraRecord: false,
                 maxTime: 0,
                 examModule: {
@@ -348,7 +341,6 @@ export default {
             editSubtest: 'getEditSubtest',
             subtestVariants: 'getSubtestVariants',
             questionBase: 'getQuestionBase',
-            subtesCheckType: 'getSubtestCheckType'
         }),
         selectAllVariants: {
             get() {
