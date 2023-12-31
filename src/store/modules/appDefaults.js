@@ -45,19 +45,19 @@ export default {
             }
         ],
         branchUserType: [{
-            key: 'superAdmin',
+            key: 'SuperAdmin',
             value: 'Главный ответственный'
         },
         {
-            key: 'admin',
+            key: 'Admin',
             value: 'Ответственное лицо'
         },
         {
-            key: 'official',
+            key: 'Official',
             value: 'Официальное лицо'
         },
         {
-            key: 'checker',
+            key: 'Checker',
             value: 'Проверяющий'
         }],
         branchType: [{

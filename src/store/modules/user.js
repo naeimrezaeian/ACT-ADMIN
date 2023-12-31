@@ -26,12 +26,13 @@ export default {
                     sessionStorage.setItem('isAuth', 'true');
                     httpClient.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.result.token;
                     commit("updateLoggedinUser", response.data.result.user)
-                    const decodedToken = jwtDecode(token)
+                    const decodedToken = jwtDecode(token);
+                    const allRoles = store.getters['getBranchUserType'];
                     const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-                    if (role == 'SuperAdmin' || role == 'Admin') {
-                        router.push('/dashboard')
-                    } else if (role == 'Checker') {
-                        router.push('/UserExams')
+                    if (role == allRoles[3].key) {
+                        router.push('/UserExams');
+                    } else {
+                        router.push('/dashboard');
                     }
                 }
                 else {
