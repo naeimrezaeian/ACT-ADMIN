@@ -68,6 +68,8 @@
                             <option v-for="item in boolTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                         </select>
                     </div>
+                    <div class="item">
+                    </div>
                 </div>
                 <div class="item">
                     <label for="text">Описание</label>
@@ -329,7 +331,6 @@ export default {
             Tinyconfig,
             selectAll: false,
             subtest: {
-                checkType: 'auto',
                 cameraRecord: false,
                 maxTime: 0,
                 examModule: {
