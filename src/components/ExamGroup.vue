@@ -42,7 +42,7 @@
                                     <th></th>
                                 </tr>
                                 <template v-for="user in examGroup.userExamLevels" :key="user.id">
-                                    <tr @click="toggleUserMetrica(`g1user-${user.id}`, user.userId)">
+                                    <tr @click="toggleUserMetrica(`g1user-${user.id}`, user.userId)" style="cursor: pointer;">
                                         <td>{{ user.user.username }}</td>
                                         <td>{{ user.user.fullName }}</td>
                                         <td>{{ examGroup.examLevel.title }}</td>
