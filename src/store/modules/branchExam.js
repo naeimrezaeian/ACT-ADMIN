@@ -128,6 +128,16 @@ export default {
                 return false
             }
         },
+        async uploadUserExam(/* eslint-disable-next-line no-unused-vars */ _, {userSubtestId, userAnswserFileId}) {
+            try {
+                const response = await httpClient.post(`/api/admin/branchexams/UploadUserExam`, {userSubtestId, userAnswserFileId});
+                if (response.status === 200) {
+                    return true
+                }
+            } catch (error) {                
+                return false
+            }
+        },
     },
     mutations: {
         updateBranchExams: (state, data) => state.branchExams = data,
