@@ -59,7 +59,9 @@
                 </div>
             </div>
             <div class="right-side">
+                <div v-if="showError" class="err-msg">{{ getPdfErrorMessage }}</div>
                 <PDFViewer
+                    v-if="!showError"
                     :source="pdfUrl"
                     style="height: 100%; width: 100%"
                     @download="handleDownload"
@@ -83,6 +85,7 @@ export default {
     data() {
         return {
             pdfUrl: null,
+            showError: false,
             result : {
                 userSubtestId: '',
                 mark: null,
@@ -102,6 +105,7 @@ export default {
     computed: {
         ...mapGetters({
             getUserExamToShow: 'getUserExamToShow',
+            getPdfErrorMessage: 'getPdfErrorMessage',
         }),
     },
     methods: {
@@ -116,10 +120,16 @@ export default {
             this.$refs.profileImage.src = url;
         },
         async downloadPdf () {
-            const result = await this.downloadFile(this.getUserExamToShow.userAnswerFileId);
-            const blob = new Blob([result.data], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            this.pdfUrl = url;
+            const fileId = this.getUserExamToShow.userAnswerFileId;
+            if (fileId) {
+                const result = await this.downloadFile(fileId);
+                const blob = new Blob([result.data], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                this.pdfUrl = url;
+            } else {
+                this.showError = true;
+            }
+
         },
         async saveChanges () {
             await this.setUserSubtestMark({
@@ -216,5 +226,14 @@ export default {
 .footer .cancel:hover {
     background-color: #2057A1;
     color: white;
+}
+.err-msg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 30px;
 }
 </style>
