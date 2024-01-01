@@ -29,7 +29,6 @@ import AdminCandidatesAdd from'./components/CandidatesAdd.vue'
 import AdminUserExams from'./components/UserExams.vue'
 import AdminCorrectingExam from'./components/CorrectingExam.vue'
 
-const isChecker = store.getters['getIsCheckerLogedIn'];
 const routes = [
   {
     path: "/",
@@ -60,7 +59,7 @@ const routes = [
     path: "/Dashboard",
     name: "Dashboard",
     component () {
-      if (!isChecker) {
+      if (!store.getters['getIsCheckerLogedIn']) {
         return AdminDashboard
       } else {
         return PageNotFound
@@ -72,7 +71,7 @@ const routes = [
     path: "/Users",
     name: "Users",
     component () {
-      if (!isChecker) {
+      if (!store.getters['getIsCheckerLogedIn']) {
         return PageParent
       } else {
         return PageNotFound
@@ -105,7 +104,7 @@ const routes = [
     path: "/Branches",
     name: "Branches",
     component () {
-      if (!isChecker) {
+      if (!store.getters['getIsCheckerLogedIn']) {
         return PageParent
       } else {
         return PageNotFound
@@ -139,7 +138,7 @@ const routes = [
     path: "/Levels",
     name: "Levels",
     component () {
-      if (!isChecker) {
+      if (!store.getters['getIsCheckerLogedIn']) {
         return PageParent
       } else {
         return PageNotFound
@@ -171,7 +170,7 @@ const routes = [
     path: "/Module",
     name: "Module",
     component () {
-      if (!isChecker) {
+      if (!store.getters['getIsCheckerLogedIn']) {
         return PageParent
       } else {
         return PageNotFound
@@ -201,7 +200,7 @@ const routes = [
     path: "/Subjects",
     name: "Subjects",
     component () {
-      if (!isChecker) {
+      if (!store.getters['getIsCheckerLogedIn']) {
         return PageParent
       } else {
         return PageNotFound
@@ -231,7 +230,7 @@ const routes = [
     path: "/Questions",
     name: "Questions",
     component () {
-      if (!isChecker) {
+      if (!store.getters['getIsCheckerLogedIn']) {
         return PageParent
       } else {
         return PageNotFound
@@ -295,7 +294,7 @@ const routes = [
     path: "/Message",
     name: "Message",
     component () {
-      if (!isChecker) {
+      if (!store.getters['getIsCheckerLogedIn']) {
         return AdminMessage
       } else {
         return PageNotFound
@@ -308,7 +307,7 @@ const routes = [
     path: "/Log",
     name: "Log",
     component () {
-      if (!isChecker) {
+      if (!store.getters['getIsCheckerLogedIn']) {
         return AdminLog
       } else {
         return PageNotFound
