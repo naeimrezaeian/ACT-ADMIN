@@ -29,7 +29,7 @@ export default {
                     const decodedToken = jwtDecode(token);
                     const allRoles = store.getters['getBranchUserType'];
                     const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-                    if (role == allRoles[3].key) {
+                    if (role.toLowerCase() === allRoles[3].key.toLowerCase()) {
                         router.push('/UserExams');
                     } else {
                         router.push('/dashboard');
