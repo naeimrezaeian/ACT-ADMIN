@@ -259,6 +259,11 @@ export default {
                 examModuleId: 'Фамилия Необходимый',
                 subtestId: 'Фамилия Необходимый',
             },
+            correctingExam: {
+                mark: 'Фамилия Необходимый',
+                markMin: 'минимальный балл',
+                markMax: 'максимальный балл',
+            },
         }
     },
     mutations: {

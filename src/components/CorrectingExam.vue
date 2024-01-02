@@ -54,6 +54,7 @@
                 <div class="bottom">
                     <div class="headers">Оценка:</div>
                     <input v-model="result.mark" type="number" class="input" placeholder="Введите оценку">
+                    <div v-for="error in v$.result.mark.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     <div class="headers">Ваши комментарии:</div>
                     <textarea v-model="result.comment" class="input comment"></textarea>
                 </div>
@@ -68,7 +69,7 @@
         </div>
         <div class="footer">
             <router-link to="/UserExams" type="button" class="btn cancel">Отменить</router-link>
-            <button type="button" class="btn" @click="saveChanges()" :disabled="result.mark == null || result.mark == ''">Сохранить</button>
+            <button type="button" class="btn" @click="saveChanges()">Сохранить</button>
         </div>
     </div>
 </template>
@@ -78,16 +79,38 @@
 import { mapActions, mapGetters } from 'vuex';
 import PDFViewer from 'pdf-viewer-vue'
 import router from '@/router';
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers, minValue, maxValue } from '@vuelidate/validators';
 export default {
     name: 'AdminCorrectingExam',
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             pdfUrl: null,
-            result : {
+            result: {
                 userSubtestId: '',
                 mark: null,
                 comment: '',
             }
+        }
+    },
+    validations () {
+        return {
+            result: {
+                mark: {
+                    required: helpers.withMessage(this.getinputErrorMessages.correctingExam.mark, required),
+                    minValue: helpers.withMessage(
+                        `${this.getinputErrorMessages.correctingExam.markMin} 0`,
+                        minValue(0)
+                    ),
+                    maxValue: helpers.withMessage(
+                        `${this.getinputErrorMessages.correctingExam.markMax} ${this.getUserExamToShow.subtest.maxScore}`,
+                        maxValue(this.getUserExamToShow.subtest.maxScore)
+                    ),
+                },
+            },
         }
     },
     components: {
@@ -97,11 +120,13 @@ export default {
         this.result.userSubtestId = this.getUserExamToShow.id;
         const userImgId = this.getUserExamToShow.userExamLevel.user?.userImageId;
         userImgId ? this.downloadUserProfileImage(userImgId) : null;
+        this.getUserExamToShow.mark ? this.result.mark = this.getUserExamToShow.mark : null;
         await this.downloadPdf();
     },
     computed: {
         ...mapGetters({
             getUserExamToShow: 'getUserExamToShow',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
     },
     methods: {
@@ -122,12 +147,15 @@ export default {
             this.pdfUrl = url;
         },
         async saveChanges () {
-            await this.setUserSubtestMark({
-                userSubtestId: this.result.userSubtestId,
-                mark: this.result.mark,
-                comment: this.result.comment
-            });
-            router.push('/UserExams')
+            const result = await this.v$.$validate();
+            if (result) {
+                await this.setUserSubtestMark({
+                    userSubtestId: this.result.userSubtestId,
+                    mark: this.result.mark,
+                    comment: this.result.comment
+                });
+                router.push('/UserExams')
+            }
         },
     },
 }
