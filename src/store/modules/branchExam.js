@@ -6,6 +6,8 @@ export default {
         selectedStudent: null,
         showEditStudentPopup: false,
         userExamResults: [],
+        manualCheckSubtests: [],
+        UserExamToShow: {},
     },
     actions: {
         setShowEditStudentPopup({ commit }, data) {
@@ -138,6 +140,36 @@ export default {
                 return false
             }
         },
+        async manualCheckSubtests({ commit }, filter) {
+            const params = [
+                filter?.page ? `page=${filter.page}` : null,
+                filter?.pageSize ? `pageSize=${filter.pageSize}` : null,
+                filter?.date ? `date=${filter.date}` : null,
+                filter?.levelId ? `levelId=${filter.levelId}` : null,
+                filter?.moduleId ? `moduleId=${filter.moduleId}` : null,
+                filter?.branchId ? `branchId=${filter.branchId}` : null,
+                filter?.status ? `status=${filter.status}` : null,
+                filter?.name ? `fullName=${filter.name}` : null,
+            ].filter(param => param !== null)
+                .join('&');
+            const response = await httpClient.get(`/api/admin/branchexams/GetManualCheckSubtests/?${params}`)
+            if (response.status === 200) {
+                commit("updateManualCheckSubtests", response.data.result)
+            }
+        },
+        setUserExamToShow ({ commit }, data) {
+            commit("updateUserExamToShow", data)
+        },
+        async setUserSubtestMark(/* eslint-disable-next-line no-unused-vars */ _, { userSubtestId, mark, comment }) {
+            try {
+                const response = await httpClient.post(`/api/admin/branchexams/SetUserSubtestMark/`, { userSubtestId, mark, comment })
+                if (response.status === 200) {
+                    return true
+                }
+            } catch (error) {
+                return false
+            }
+        },
     },
     mutations: {
         updateBranchExams: (state, data) => state.branchExams = data,
@@ -156,7 +188,9 @@ export default {
             if (data.remove) {
                 state.branchExams = state.branchExams.filter(exam => exam.id !== data.examGroupId)
             }
-        }
+        },
+        updateManualCheckSubtests: (state, data) => state.manualCheckSubtests = data,
+        updateUserExamToShow: (state ,data) => state.UserExamToShow = data,
     },
     getters: {
         getBranchExams: (state) => state.branchExams,
@@ -164,5 +198,7 @@ export default {
         getSelectedStudent: (state) => state.selectedStudent,
         getShowEditStudentPopup: (state) => state.showEditStudentPopup,
         getUserExamResults: (state) => state.userExamResults,
+        getManualCheckSubtests: (state) => state.manualCheckSubtests,
+        getUserExamToShow: (state) => state.UserExamToShow,
     }
 }

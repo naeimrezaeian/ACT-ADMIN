@@ -25,6 +25,8 @@ import AdminMessage from './components/Message.vue'
 import AdminLog from './components/Log.vue'
 import AdminCandidates from './components/Candidates.vue'
 import AdminCandidatesAdd from'./components/CandidatesAdd.vue'
+import AdminUserExams from'./components/UserExams.vue'
+import AdminCorrectingExam from'./components/CorrectingExam.vue'
 
 const routes = [
     {
@@ -33,6 +35,23 @@ const routes = [
       component: AdminLogin,
       meta: {  header: false }
     
+    },
+  
+    {
+      path: "/UserExams",
+      name: "UserExams",
+      component: PageParent,
+      meta: {  header: true },
+      children: [
+        {
+          path: "",
+          component: AdminUserExams,
+        },
+        {
+          path: ":id",
+          component: AdminCorrectingExam,
+        }
+      ]
     },
     
     {
