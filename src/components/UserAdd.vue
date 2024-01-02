@@ -79,6 +79,7 @@
                                 <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode +
                                     '-' + item.name }}</option>
                             </select>
+                            <div v-for="error in v$.user.branchId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
                     </div>
                     <div class="usereditaccess">
@@ -135,7 +136,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { useVuelidate } from '@vuelidate/core'
-import { required, helpers, minLength, email } from '@vuelidate/validators'
+import { required, helpers, minLength, email, requiredIf } from '@vuelidate/validators'
 export default {
     name: "AdminUserAdd",
     setup () {
@@ -150,12 +151,18 @@ export default {
         return {
             user: {
                 family: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addUser.name, required),
-                    minLength: minLength(3),
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.familly, required),
+                    minLength: helpers.withMessage(
+                        this.getinputErrorMessages.addUser.famillyMin,
+                        minLength(3)
+                    ),
                 },
                 name: {
                     required: helpers.withMessage(this.getinputErrorMessages.addUser.name, required),
-                    minLength: minLength(3),
+                    minLength: helpers.withMessage(
+                        this.getinputErrorMessages.addUser.nameMin,
+                        minLength(3)
+                    ),
                 },
                 father: {
                     required: helpers.withMessage(this.getinputErrorMessages.addUser.father, required)
@@ -175,6 +182,14 @@ export default {
                 },
                 status: {
                     required: helpers.withMessage(this.getinputErrorMessages.addUser.status, required)
+                },
+                branchId: {
+                    requiredIf: helpers.withMessage(
+                        this.getinputErrorMessages.addUser.branchId,
+                        requiredIf(() => {
+                            return this.user.role != this.adminRoleTypes[0].key ? true : false;
+                        })
+                    )
                 },
             },
         }
@@ -218,7 +233,6 @@ export default {
             const blob = new Blob([result.data], { type: 'image/*' });
             var url = URL.createObjectURL(blob);
             this.$refs.profileImage.src = url;
-            //this.$refs.profileImage.load()
         },
         deleteUserProfileImage() {
             this.user.userImageId = null
