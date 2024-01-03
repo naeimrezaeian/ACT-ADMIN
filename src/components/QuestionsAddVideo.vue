@@ -16,6 +16,7 @@
                 <div class="item">
                     <label for="vopr">Напишите название вопроса</label>
                     <input type="text" v-model="getNewQuestion.desc" id="vopr">
+                    <div v-for="error in v$.getNewQuestion.desc.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                 </div>
                 <div class="box">
                     <label for="subtest">Укажите количество прослушиваний</label>
@@ -55,8 +56,11 @@
                         <editor :id="question.id" :init="Tinyconfig"
                             :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh" v-model="question.questionTitle">
                         </editor>
+                        <div v-for="error in v$.getNewQuestion.questionTexts?.$errors[0]?.$response?.$errors[questionIndex]?.questionTitle"
+                            :key="error" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <answersAdd :questionIndex="questionIndex"></answersAdd>
+                    <p v-for="error of v$.$errors" :key="error.$uid"></p>
                 </div>
                 <button type="button" class="add" @click="addNewQuestion">Добавить вопрос</button>
                 <div class="botom">
@@ -72,6 +76,8 @@
 import Editor from '@tinymce/tinymce-vue'
 import answersAdd from './answersAdd.vue'
 import { mapActions, mapGetters } from 'vuex'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 const Tinyconfig = {
     selector: '#tiny',
     height: 214,
@@ -87,12 +93,30 @@ const Tinyconfig = {
 
 }
 export default {
-
     name: "AdminQuestionVideo",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             Tinyconfig,
             questionBase: null,
+        }
+    },
+    validations () {
+        return {
+            getNewQuestion: {
+                desc: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addQuestion.desc, required),
+                },
+                questionTexts: {
+                    required: helpers.forEach({
+                        questionTitle: {
+                            required: helpers.withMessage(this.getinputErrorMessages.addQuestion.questionTitle, required),
+                        }
+                    })
+                }
+            },
         }
     },
     components: {
@@ -124,6 +148,7 @@ export default {
             getSelectedQuestionBase: 'getSelectedQuestionBase',
             getSelectedQuestion: 'getSelectedQuestion',
             getNewQuestion: 'getNewQuestion',
+            getinputErrorMessages: 'getinputErrorMessages',
         })
     },
     methods: {
@@ -138,10 +163,13 @@ export default {
         }),
         removeQuestionFile() { this.getNewQuestion.fileId = null },
         async saveShanges() {
-            this.getNewQuestion.questionBaseId = this.questionBase.id
-            this.$route.fullPath.toLocaleLowerCase().endsWith('edit/video') ?
-                await this.editQuestion(this.getNewQuestion) :
-                await this.addQuestion(this.getNewQuestion)
+            const result = await this.v$.$validate();
+            if (result) {
+                this.getNewQuestion.questionBaseId = this.questionBase.id
+                this.$route.fullPath.toLocaleLowerCase().endsWith('edit/video') ?
+                    await this.editQuestion(this.getNewQuestion) :
+                    await this.addQuestion(this.getNewQuestion)
+            }
         },
         selectFile() {
             this.$refs.fileInput.click();

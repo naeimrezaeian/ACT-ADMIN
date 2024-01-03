@@ -253,13 +253,24 @@ export default {
                 issueBy: 'Фамилия Необходимый',
                 migrationCard: 'Фамилия Необходимый',
             },
-            addQustionBase: {
+            addQuestionBase: {
                 title: 'Фамилия Необходимый',
                 type: 'Фамилия Необходимый',
                 status: 'Фамилия Необходимый',
                 examLevelId: 'Фамилия Необходимый',
                 examModuleId: 'Фамилия Необходимый',
                 subtestId: 'Фамилия Необходимый',
+            },
+            addQuestion: {
+                desc: 'Фамилия Необходимый',
+                questionTitle: 'Описание вопроса',
+                answers: 'Фамилия Необходимый',
+                answer: 'Фамилия Необходимый',
+            },
+            addAnswers: {
+                answersMin: 'ответов должно быть более 1 вариантов',
+                answer: 'Фамилия Необходимый',
+                correctAnswer: 'выберите правильный ответ',
             },
             correctingExam: {
                 mark: 'Фамилия Необходимый',
