@@ -27,6 +27,9 @@
                 </div>
                 <answersAdd :questionIndex="0"></answersAdd>
                 <p v-for="error of v$.$errors" :key="error.$uid"></p>
+                <div v-if="getShowCorrectAnswerErr[0]" class="error-msg">{{ 
+                    getinputErrorMessages.addAnswers.correctAnswer
+                }}</div>
                 <div class="botom">
                     <router-link to="/Questions" class="btn otmena">Отменить</router-link>
                     <button type="button" class="btn save" @click="saveShanges">Создать</button>
@@ -98,7 +101,8 @@ export default {
         })
     },
     async mounted() {
-        this.questionBase = this.getSelectedQuestionBase
+        this.setShowCorrectAnswerErr();
+        this.questionBase = this.getSelectedQuestionBase;
         if(this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')){
             await this.setNewQuestion(this.getSelectedQuestion)
         }
@@ -109,6 +113,7 @@ export default {
             getSelectedQuestion:'getSelectedQuestion',
             getNewQuestion: 'getNewQuestion',
             getinputErrorMessages: 'getinputErrorMessages',
+            getShowCorrectAnswerErr: 'getShowCorrectAnswerErr',
         }),
     },
     methods:{
@@ -116,11 +121,17 @@ export default {
             addQuestion:'addQuestion',
             editQuestion:'editQuestion',
             setNewQuestion: 'setNewQuestion',
+            setShowCorrectAnswerErr: 'setShowCorrectAnswerErr',
+            checkShowCorrectAnswerErr: 'checkShowCorrectAnswerErr',
         }),
         addnewAnswerOption(){this.newQuestion.questionTexts[0].answers.push({answer:''})},
         async saveShanges(){
             const result = await this.v$.$validate();
-            if (result) {
+            let checkErr;
+            await this.checkShowCorrectAnswerErr().then(result => {
+                checkErr = result
+            })
+            if (result && !checkErr) {
                 this.getNewQuestion.questionBaseId = this.questionBase.id
                 this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')?
                 await this.editQuestion(this.getNewQuestion):

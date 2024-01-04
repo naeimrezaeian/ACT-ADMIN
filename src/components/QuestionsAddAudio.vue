@@ -56,11 +56,14 @@
                         <editor :id="question.id" :init="Tinyconfig"
                             :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh" v-model="question.questionTitle">
                         </editor>
-                        <div v-for="error in v$.getNewQuestion.questionTexts?.$errors[0]?.$response?.$errors[questionIndex]?.questionTitle"
+                        <div v-for="error in v$.getNewQuestion.questionTexts.$each.$response.$errors[questionIndex].questionTitle"
                             :key="error" class="error-msg">{{ error.$message }}</div>
                     </div>
-                    <answersAdd :questionIndex="questionIndex"></answersAdd>
+                    <answersAdd :questionIndex="questionIndex" :showCorrectAnswerErr="showCorrectAnswerErr"></answersAdd>
                     <p v-for="error of v$.$errors" :key="error.$uid"></p>
+                    <div v-if="getShowCorrectAnswerErr[questionIndex]" class="error-msg">{{ 
+                        getinputErrorMessages.addAnswers.correctAnswer
+                    }}</div>
                 </div>
                 <button type="button" class="add" @click="addNewQuestion">Добавить вопрос</button>
                 <div class="botom">
@@ -114,12 +117,12 @@ export default {
                     required: helpers.withMessage(this.getinputErrorMessages.addQuestion.desc, required),
                 },
                 questionTexts: {
-                    required: helpers.forEach({
+                    $each: helpers.forEach({
                         questionTitle: {
                             required: helpers.withMessage(this.getinputErrorMessages.addQuestion.questionTitle, required),
-                        }
-                    })
-                }
+                        },
+                    }),
+                },
             },
         }
     },
@@ -137,8 +140,8 @@ export default {
         })
     },
     mounted() {
-
-        this.questionBase = this.getSelectedQuestionBase
+        this.setShowCorrectAnswerErr();
+        this.questionBase = this.getSelectedQuestionBase;
         if (this.$route.fullPath.toLocaleLowerCase().endsWith('edit/audio')) {
             this.downloadQuestionFile(this.getSelectedQuestion.fileId)
             this.setNewQuestion(this.getSelectedQuestion)
@@ -150,6 +153,7 @@ export default {
             getSelectedQuestion: 'getSelectedQuestion',
             getNewQuestion: 'getNewQuestion',
             getinputErrorMessages: 'getinputErrorMessages',
+            getShowCorrectAnswerErr: 'getShowCorrectAnswerErr',
         })
     },
     methods: {
@@ -161,15 +165,21 @@ export default {
             setNewQuestion: 'setNewQuestion',
             addNewQuestion: 'addNewQuestion',
             removequestion: 'removequestion',
+            setShowCorrectAnswerErr: 'setShowCorrectAnswerErr',
+            checkShowCorrectAnswerErr: 'checkShowCorrectAnswerErr',
         }),
         removeQuestionFile() { this.getNewQuestion.fileId = null },
         async saveShanges() {
             const result = await this.v$.$validate();
-            if (result) {
+            let checkErr;
+            await this.checkShowCorrectAnswerErr().then(result => {
+                checkErr = result
+            })
+            if (result && !checkErr) {
                 this.getNewQuestion.questionBaseId = this.questionBase.id
                 this.$route.fullPath.toLocaleLowerCase().endsWith('edit/audio') ?
                     await this.editQuestion(this.getNewQuestion) :
-                    await this.addQuestion(this.getNewQuestion)              
+                    await this.addQuestion(this.getNewQuestion)                                
             }
         },
         selectFile() {

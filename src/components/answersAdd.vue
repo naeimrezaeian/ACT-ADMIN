@@ -5,22 +5,32 @@
             :checked="getNewQuestion.questionTexts[questionIndex].answers[answerIndex].isCorrectAnswer"
             class="answer">
         <input type="text" v-model="answer.answer" placeholder="answer ...">
+        <div v-for="i in [0,1]" :key="i">
+            <div v-if="v$.getNewQuestion.questionTexts.$each.$response.$errors[questionIndex]?.answers[i]?.$validator == '$each'"
+                class="error-msg">{{
+                    v$.getNewQuestion.questionTexts.$each.$response.$errors[questionIndex]?.answers[i]?.$response.$errors[answerIndex]?.answer[0]?.$message
+                }}
+            </div>
+        </div>
         <button type="button" class="delete" @click="deleteAnswer({ questionIndex, answerIndex })"></button>
         <button type="button" v-if="answerIndex === (getNewQuestion.questionTexts[questionIndex].answers.length - 1)" class="add"
             @click="addNewAnswerOption(questionIndex)">Добавить вариант ответа</button>
     </div>
-        <div v-if="v$.getNewQuestion.questionTexts?.$errors[0]?.$response?.$errors[questionIndex]?.answers[0].$validator =='minLength'"
-            class="error-msg">{{
-                v$.getNewQuestion.questionTexts?.$errors[0]?.$response?.$errors[questionIndex]?.answers[0].$message
-            }}
-        </div>
+    <button type="button" v-if="getNewQuestion.questionTexts[questionIndex].answers.length == 0" class="add"
+        @click="addNewAnswerOption(questionIndex)">Добавить вариант ответа</button>
+    <div v-if="v$.getNewQuestion.questionTexts.$each.$response.$errors[questionIndex]?.answers[0]?.$validator == 'minLength' ||
+        v$.getNewQuestion.questionTexts.$each.$response.$errors[questionIndex]?.answers[0]?.$validator == 'required'"
+        class="error-msg">{{ 
+            v$.getNewQuestion.questionTexts.$each.$response.$errors[questionIndex]?.answers[0]?.$message
+        }}
+    </div>
 </template>
 
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { useVuelidate } from '@vuelidate/core'
-import { helpers, minLength } from '@vuelidate/validators'
+import { helpers, minLength, required } from '@vuelidate/validators'
 export default {
     name:'answersAdd',
     props:['questionIndex'],
@@ -34,19 +44,15 @@ export default {
         return {
             getNewQuestion: {
                 questionTexts: {
-                    required: helpers.forEach({
+                    $each: helpers.forEach({
                         answers: {
+                            required: helpers.withMessage(this.getinputErrorMessages.addAnswers.answers, required),
                             minLength: helpers.withMessage(this.getinputErrorMessages.addAnswers.answersMin, minLength(2)),
-                            // required: helpers.forEach({
-                            //     isCorrectAnswer: {
-                            //         requiredIf: helpers.withMessage(
-                            //             this.getinputErrorMessages.addAnswers.correctAnswer,
-                            //             requiredIf(() => {
-                            //                 return this.getNewQuestion.questionTexts.answers.isCorrectAnswer == false | null ? false : true;
-                            //             })
-                            //         ),
-                            //     },
-                            // })
+                            $each: helpers.forEach({
+                                answer: {
+                                    required: helpers.withMessage(this.getinputErrorMessages.addAnswers.answer, required),
+                                },
+                            })
                         }
                     }),
                 }

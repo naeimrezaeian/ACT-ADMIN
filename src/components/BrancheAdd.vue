@@ -53,8 +53,11 @@
                 <div class="zag">
                     <span>Ответственные</span>
                     <button type="button" @click="addBranchUser" class="add">Добавить поле</button>
-                    <div v-for="error in v$.branch.branchSystemUsers.$errors"
-                        :key="error.$uid" class="error-msg" style="margin: 5px 0 0 10px;">{{ error.$message }}</div>
+                    <div v-if="v$.branch.branchSystemUsers?.$errors[0]?.$property == '0'"
+                        class="error-msg" style="margin: 5px 0 0 10px;">{{
+                            v$.branch.branchSystemUsers?.$errors[0].$message
+                        }}
+                    </div>
                 </div>
                 <div class="box">
                     <div class="left">
@@ -66,6 +69,7 @@
                                     <option v-for="user in usersNotInBranch" :key="user.id" :value="user.id">
                                         {{ user.fullName }}</option>
                                 </select>
+                                <div v-for="error in v$.branch.branchSystemUsers[0].userId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="otv">роль пользователя</label>
@@ -74,6 +78,7 @@
                                     <option v-for="role in branchUserTypes" :key="item?.id ?? index + role.key"
                                         :value="role.key">{{ role.value }}</option>
                                 </select>
+                                <div v-for="error in v$.branch.branchSystemUsers[0].userRole.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <button type="button" @click="removeBranchUser(index)" class="delete" />
                         </div>
@@ -224,9 +229,15 @@ export default {
                 branchType: {
                     required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchType, required),
                 },
-                branchSystemUsers: {
+                branchSystemUsers: [{
                     required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchSystemUsers, required),
-                },
+                    userId: {
+                        required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchSystemUsers, required),
+                    },
+                    userRole: {
+                        required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchSystemUsers, required),
+                    },
+                }],
                 city: {
                     required: helpers.withMessage(this.getinputErrorMessages.addBranch.city, required),
                 },
