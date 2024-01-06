@@ -52,15 +52,15 @@
                     <ul class="spisok">
                         <li>
                             <span>Уровень</span>
-                            <strong>{{ item.subtest.examModule.examLevel.title }}</strong>
+                            <strong>{{ item.subtest?.examModule.examLevel.title }}</strong>
                         </li>
                         <li>
                             <span>Модуль</span>
-                            <strong>{{ item.subtest.examModule.title }}</strong>
+                            <strong>{{ item.subtest?.examModule.title }}</strong>
                         </li>
                         <li>
                             <span>Субтест</span>
-                            <strong>{{ item.subtest.title }}</strong>
+                            <strong>{{ item.subtest?.title }}</strong>
                         </li>
                         <li>
                             <span>Всего</span>
@@ -72,7 +72,7 @@
                         </li>
                         <li>
                             <span>Составитель</span>
-                            <strong>{{ item.createdBy.name + ' ' + item.createdBy.family }}</strong>
+                            <strong>{{ item.createdBy?.name + ' ' + item.createdBy?.family }}</strong>
                         </li>
                     </ul>
                     <router-link :to="{ path: 'Questions/' + item.id }" class="btn"
