@@ -1,5 +1,6 @@
 <template>
   <header>
+    <AdminUserMenu />
     <div class="wrapper">
         <div class="box">
             <div class="logo">
@@ -50,11 +51,12 @@
 </template>
 
 <script>
+import AdminUserMenu from "./UserMenu.vue";
 export default {
-name: 'AdminHeader',
-methods(){
-    
-}
+    name: 'AdminHeader',
+    components: {
+        AdminUserMenu,
+    }
 
 }
 </script>
