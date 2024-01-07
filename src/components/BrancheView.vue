@@ -29,12 +29,10 @@
               <div class="lr">
                 <div class="title">Ответственные</div>
                 <ul>
-                  <li><span>Ответственный</span> Иванов Иван Иванович</li>
-                  <li>
-                    <span>Главный ответственный</span> Иванов Иван Иванович
+                  <li v-for="user in selectedBranch.branchSystemUsers" :key="user.id">
+                    <span>{{ user.userRole }}</span>
+                    {{ user.userName }}
                   </li>
-                  <li><span>Официальное лицо</span> Иванов Иван Иванович</li>
-                  <li><span>Проверяющий</span> Иванов Иван Иванович</li>
                 </ul>
               </div>
             </div>
@@ -53,7 +51,7 @@
                   <li><span>КПП</span> {{ selectedBranch.checkpoint }}</li>
                 </ul>
               </div>
-              <div class="lr">
+              <!-- <div class="lr">
                 <div class="title">Документы</div>
                 <ul>
                   <li><span>Номер договора (1)</span> №1234567890-1</li>
@@ -61,7 +59,7 @@
                   <li><span>Номер договора (2)</span> №1234567890-2</li>
                   <li><span>Дата договова (2)</span> 24.05.2022</li>
                 </ul>
-              </div>
+              </div> -->
             </div>
             <div class="box">
               <div class="lf">
