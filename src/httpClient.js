@@ -33,11 +33,13 @@ requestFetch.interceptors.response.use((response) => {
         router.push({ name: 'Login' })
 
     } else if (404 === error.response.status) {
+        store.dispatch('loader/hideLoadingAnimation')
         return Promise.resolve(error);
 
     }
     else {
         store.dispatch('error/displayErrorMessage', 'An error occurred. Please try again later!');
+        store.dispatch('loader/hideLoadingAnimation')
         return Promise.reject(error.response)
     }
 
