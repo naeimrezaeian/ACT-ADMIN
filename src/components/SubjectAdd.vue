@@ -325,7 +325,7 @@ export default {
         if (this.isEditMode) {
             this.subtest = this.editSubtest
             await this.getSubtestVariatns(this.subtest.id)
-            await this.getQuestionBases({ status: 'active', subtest: this.subtest.id, page: 0, pageSize: 0, includeQuestions: true })
+            await this.getQuestionBases({ status: 'active', subtest: this.subtest.id, page: 0, pageSize: 0 })
         }
     },
     components: {
