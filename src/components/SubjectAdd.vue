@@ -13,8 +13,7 @@
                     </div>
                     <div class="item">
                         <label for="time">Время прохождения</label>
-                        <input type="time" placeholder="_ _ : _ _" id="time" onfocus="(this.type='time')" v-model="time"
-                            step="60">
+                        <vue-timepicker hide-clear-button input-width="100%" v-model="time"></vue-timepicker>
                     </div>
                     <div class="item">
                         <label for="col">Количество баллов</label>
@@ -289,6 +288,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue'
+import VueTimepicker from 'vue3-timepicker/src/VueTimepicker.vue'
 import { mapActions, mapGetters } from 'vuex'
 
 const Tinyconfig = {
@@ -329,7 +329,8 @@ export default {
         }
     },
     components: {
-        'editor': Editor
+        'editor': Editor,
+        VueTimepicker,
     },
     computed: {
         ...mapGetters({
