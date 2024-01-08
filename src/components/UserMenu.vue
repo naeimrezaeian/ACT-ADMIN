@@ -13,7 +13,7 @@
                     <div class="options-menu" id="options-menu">
                         <button class="option-btn show_popup" onclick="$('#options-menu').slideToggle()"
                             rel="popup" style="margin: 15px 0 10px 0;">изменить пароль</button>
-                        <button class="option-btn" @click="exit()">Выход</button>                
+                        <button class="option-btn" @click="exit()">Выйти</button>             
                     </div>
                 </div>
             </div>
