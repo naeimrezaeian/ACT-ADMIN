@@ -30,8 +30,8 @@
                 <div class="title">Ответственные</div>
                 <ul>
                   <li v-for="user in selectedBranch.branchSystemUsers" :key="user.id">
-                    <span>{{ user.userRole }}</span>
-                    {{ user.userName }}
+                    <span>{{ returnRole(user.userRole) }}</span>
+                    {{ user.fullName }}
                   </li>
                 </ul>
               </div>
@@ -560,6 +560,7 @@ export default {
       getSelectedGroup: 'getSelectedBranchExam',
       showEditStudentPopup: 'getShowEditStudentPopup',
       allForDropdowns: 'getAllForDropdowns',
+      getBranchUserType: 'getBranchUserType',
     }),
     deafultImageUrl() {
       return require('@/assets/img/ava.svg');
@@ -687,7 +688,9 @@ export default {
       };
       await this.getBranchExams(this.filter);
     },
-
+    returnRole(val) {
+      return this.getBranchUserType.filter(x => x.key.toLowerCase() == val.toLowerCase())[0].value
+    }
   },
 };
 </script>
