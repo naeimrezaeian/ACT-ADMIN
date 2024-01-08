@@ -3,12 +3,12 @@ import router from "./router";
 import store from "./store";
 
 const requestFetch = axios.create({
-    // baseURL: 'https://api.rudn.site:7064/',
+    baseURL: 'https://api.rudn.site:7064/',
     //baseURL: 'https://localhost:7064/',
-    
+
     // ----- back-end domain in vue.config.js -----
     // baseURL: 'https://admin.rudn.site:8082/',
-    baseURL: 'http://localhost:8080/',
+    //baseURL: 'http://localhost:8081/',
 });
 
 requestFetch.interceptors.request.use(config => {
