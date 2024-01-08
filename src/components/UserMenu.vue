@@ -25,11 +25,11 @@
                         <form>
                             <div class="item">
                                 <label for="uroven">Старый Пароль</label>
-                                <input type="password">
+                                <input type="password" v-model="currentPass">
                             </div>
                             <div class="item">
                                 <label for="model">Новый Пароль</label>
-                                <input type="password">
+                                <input type="password" v-model="newPass">
                             </div>
                             <div class="item">
                                 <label for="uroven">Подтвердите Новый Пароль</label>
@@ -48,12 +48,15 @@
 
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import router from '@/router';
 export default {
     name:'AdminUserMenu',
     data() {
         return {
             fullName: '',
+            currentPass: '',
+            newPass: '',
         }
     },
     mounted() {
@@ -69,7 +72,15 @@ export default {
             self.$Jquery('body').removeClass('hide');
         });
     },
+    computed: {
+        ...mapGetters({
+            getSwalDeleteDialog: 'getSwalDeleteDialog',
+        })
+    },
     methods: {
+        ...mapActions({
+            changePassword: 'changePassword', 
+        }),
         getName() {
             const user = JSON.parse(localStorage.getItem('user'));
             this.fullName = user.name + ' ' + user.family;
@@ -78,6 +89,12 @@ export default {
             localStorage.removeItem("token")
             localStorage.removeItem("user")
             router.push({ name: 'Login' })
+        },
+        async changePass() {
+            await this.changePassword({ currentPassword: this.currentPass , newPassword: this.newPass });
+            this.Swal.fire(this.getSwalDeleteDialog.successChangePassword);
+            this.currentPass = '', this.newPass = '';
+            this.$Jquery('.popup').hide();
         }
     },
 }
