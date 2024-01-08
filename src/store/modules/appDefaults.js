@@ -195,7 +195,12 @@ export default {
                 confirmButtonText: 'Отправить окончательно',
                 width: 'auto',
                 height: 'auto',
-            }
+            },
+            successChangePassword: {
+                title: 'Измененный!',
+                text: 'твой пароль изменен.',
+                icon: 'success',
+            },
         },
         all: 'Bсе',
         pdfErrorMessage: 'pdf не существует...',
