@@ -5,10 +5,6 @@ import store from "./store";
 const requestFetch = axios.create({
     baseURL: 'https://api.rudn.site:7064/',
     //baseURL: 'https://localhost:7064/',
-
-    // ----- back-end domain in vue.config.js -----
-    // baseURL: 'https://admin.rudn.site:8082/',
-    //baseURL: 'http://localhost:8081/',
 });
 
 requestFetch.interceptors.request.use(config => {
@@ -17,10 +13,6 @@ requestFetch.interceptors.request.use(config => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
-    // config.headers.common['Access-Control-Allow-Origin'] = '*';
-    // config.headers.common['Access-Control-Allow-Methods'] = 'GET, PUT, POST, DELETE, OPTIONS';
-    // config.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token';
-    // config.headers.common['Access-Control-Allow-Credentials'] = true;
     return config;
 });
 
