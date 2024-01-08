@@ -689,7 +689,7 @@ export default {
       await this.getBranchExams(this.filter);
     },
     returnRole(val) {
-      return this.getBranchUserType.filter(x => x.key.toLowerCase() == val.toLowerCase())[0].value
+      return this.getBranchUserType.filter(x => x.key == val)[0].value
     }
   },
 };
