@@ -46,7 +46,7 @@ export default {
         ],
         branchUserType: [{
             key: 'superAdmin',
-            value: 'Главный ответственный'
+            value: 'Супер администратор'
         },
         {
             key: 'admin',
