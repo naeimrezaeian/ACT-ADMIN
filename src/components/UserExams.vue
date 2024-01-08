@@ -143,9 +143,7 @@ export default {
             await this.manualCheckSubtests(this.filter);
         },
         returnStatus (userExamStatus) {
-            for (let i = 0; i < (this.statuses).length; i++) {
-                return this.statuses[i].key == userExamStatus ? this.statuses[i].value : null;
-            }
+            return this.statuses.filter(x => x.key == userExamStatus)[0].value
         }
     },
     watch: {

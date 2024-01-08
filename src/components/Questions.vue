@@ -68,7 +68,7 @@
                         </li>
                         <li>
                             <span>Тип</span>
-                            <strong>{{ item.type }}</strong>
+                            <strong>{{ subtestType(item.type) }}</strong>
                         </li>
                         <li>
                             <span>Составитель</span>
@@ -301,9 +301,9 @@ export default {
                 await this.onPageChange(this.currentPage)
                 this.Swal.fire(this.getSwalDeleteDialog.successDelete)
             }
-
-
-
+        },
+        subtestType(val) {
+            return this.subtestTypes.filter(x => x.key == val)[0].value
         }
     },
     watch: {
