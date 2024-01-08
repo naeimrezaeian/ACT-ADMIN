@@ -145,6 +145,8 @@ export default {
     },
     mounted() {
         if (this.student.id) {
+            this.student.birthDate = new Date(this.student.birthDate).toLocaleDateString();
+            this.student.issueDate = new Date(this.student.issueDate).toLocaleDateString();
             if (this.student.userImageId) {
                 this.downloadUserProfileImage(this.student.userImageId);
             }
