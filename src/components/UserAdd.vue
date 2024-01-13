@@ -199,7 +199,8 @@ export default {
         this.getAllBranches()
         await this.fetchAllRoles()
         if (this.isEditMode) {
-            this.user = this.getSelectedUser
+            this.user = this.getSelectedUser;
+            this.user.birthDate = new Date(this.user.birthDate).toLocaleDateString();
             this.user.userClaims.forEach(element => {
                 var item = this.allRoles.find(x => x.id === element.claimId)
                 item ? item.isSelected = true : item

@@ -16,7 +16,8 @@
                             </div>
                             <div class="item">
                                 <label for="zip">Код филиала</label>
-                                <input type="text" id="zip" v-model="branch.branchCode" placeholder="145-288">
+                                <input type="text" id="zip" v-model="branch.branchCode"
+                                    placeholder="Введите 4-значный код филиала">
                                 <div v-for="error in v$.branch.branchCode.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                         </div>
@@ -44,7 +45,7 @@
                         </div>
                         <div class="bot">
                             <input type="file" ref="fileInput" style="display: none;" accept=".jpg, .jpeg, .png"
-                            @change="onFileSelected()">
+                                @change="onFileSelected()">
                             <button type="button" @click.prevent="selectFile()" class="down">Загрузить</button>
                             <button type="button" @click.prevent="deleteProfileImage()" class="remove">Удалить</button>
                         </div>
@@ -86,8 +87,8 @@
                 </div>
                 <div class="zag top_m">
                     <span>Адрес центра, реквизиты</span>
-                    <input type="file" ref="branchAttachments" multiple="true" style="display: none;"
-                    accept=".pdf" @change="onAttachmentSelected()">
+                    <input type="file" ref="branchAttachments" multiple="true" style="display: none;" accept=".pdf"
+                        @change="onAttachmentSelected()">
                     <button type="button" class="add" @click.prevent="addAttachment()">Прикрепить файлы к карточке</button>
                 </div>
                 <div class="box">
@@ -128,10 +129,9 @@
                     </div>
                     <div class="right">
                         <label>Загруженные файлы</label>
-                        <div v-for="item in docs" 
-                            :key="item" :value="item" class="files">
+                        <div v-for="item in docs" :key="item" :value="item" class="files">
                             <button type="button" class="remove_pdf" @click.prevent="deleteAttachment(item)"></button>
-                            <a class="file" href="#">{{item.fileFilename}}</a>
+                            <a class="file" href="#">{{ item.fileFilename }}</a>
                         </div>
                     </div>
                 </div>
@@ -260,7 +260,7 @@ export default {
         if (this.$route.fullPath.endsWith('Edit')) {
             this.branch = this.getSelectedBranch;
             this.levels = await this.getLevels();
-            if(this.img){
+            if (this.img) {
                 this.downloadImage(this.img.fileId);
             }
         }
@@ -295,8 +295,8 @@ export default {
         img() {
             return this.getSelectedBranch.docs ? this.branch.docs.find(e => e.fileType === 'image') : '';
         },
-        docs(){
-            return this.branch.docs ? this.branch.docs.filter(e=>e.fileType==='document') : '';
+        docs() {
+            return this.branch.docs ? this.branch.docs.filter(e => e.fileType === 'document') : '';
         }
     },
     methods: {
@@ -355,34 +355,34 @@ export default {
         async onFileSelected() {
             const file = this.$refs.fileInput.files[0];
             let fileId = await this.uploadImageFile(file);
-            let obj = {fileId, fileType:'image'};
-            if(this.img){
-                this.branch.docs.splice(this.branch.docs.indexOf(this.img),1);
+            let obj = { fileId, fileType: 'image' };
+            if (this.img) {
+                this.branch.docs.splice(this.branch.docs.indexOf(this.img), 1);
             }
             this.branch.docs.push(obj);
             this.downloadImage(fileId);
         },
         async onAttachmentSelected() {
-            for(let i=0;i<this.$refs.branchAttachments.files.length;i++){
+            for (let i = 0; i < this.$refs.branchAttachments.files.length; i++) {
                 let file = this.$refs.branchAttachments.files[i];
                 let fileId = await this.uploadImageFile(file)
-                let obj = {fileFilename: file.name, fileId, fileType: 'document'};
+                let obj = { fileFilename: file.name, fileId, fileType: 'document' };
                 this.branch.docs.push(obj);
             }
         },
         async downloadImage(fileId) {
             let result = await this.downloadImageFile(fileId);
-            let blob = new Blob([result.data], {type: 'image/*'});
+            let blob = new Blob([result.data], { type: 'image/*' });
             let url = URL.createObjectURL(blob);
             this.$refs.profileImage.src = url;
         },
         deleteProfileImage() {
-            this.branch.docs.splice(this.img,1);
+            this.branch.docs.splice(this.img, 1);
             this.$refs.profileImage.src = this.defaultProfileImageUrl;
             this.$refs.fileInput.value = '';
         },
         deleteAttachment(val) {
-            this.branch.docs.splice(this.branch.docs.indexOf(val),1);
+            this.branch.docs.splice(this.branch.docs.indexOf(val), 1);
             this.$refs.branchAttachments.value = '';
         }
     },
