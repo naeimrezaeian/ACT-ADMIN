@@ -46,7 +46,7 @@ export default {
         ],
         branchUserType: [{
             key: 'superAdmin',
-            value: 'Главный ответственный'
+            value: 'Супер администратор'
         },
         {
             key: 'branchAdmin',
@@ -199,9 +199,15 @@ export default {
                 confirmButtonText: 'Отправить окончательно',
                 width: 'auto',
                 height: 'auto',
-            }
+            },
+            successChangePassword: {
+                title: 'Измененный!',
+                text: 'твой пароль изменен.',
+                icon: 'success',
+            },
         },
         all: 'Bсе',
+        pdfErrorMessage: 'pdf не существует...',
     },
     mutations: {
         updatePaging: (state, data) => state.paging = data,
@@ -222,5 +228,6 @@ export default {
         getDocumentTypes: (state) => state.documentTypes,
         getUserExamStatus: (state) => state.userExamStatus,
         getAllForDropdowns: (state) => state.all,
+        getPdfErrorMessage: (state) => state.pdfErrorMessage,
     }
 }

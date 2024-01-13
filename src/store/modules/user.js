@@ -100,8 +100,10 @@ export default {
         },
         setUserToEdit({ commit }, data) {
             commit("updateSelectedUser", data)
-        }
-
+        },
+        async changePassword(/* eslint-disable-next-line no-unused-vars */ _, { currentPassword, newPassword }) {
+            await httpClient.post('/api/admin/users/ChangePassword', { currentPassword, newPassword })
+        },
     },
     mutations: {
         updateOnError(state, data) {

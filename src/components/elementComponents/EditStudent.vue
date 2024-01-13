@@ -21,6 +21,16 @@
                             </div>
                             <div class="box">
                                 <div class="item">
+                                    <label for="fio">латинское семья</label>
+                                    <input type="text" id="fio" name="fio" v-model="student.latinFamily" />
+                                </div>
+                                <div class="item">
+                                    <label for="name">латинское имя</label>
+                                    <input type="text" id="name" name="name" v-model="student.latinName" />
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="item">
                                     <label for="och">Отчество</label>
                                     <input type="text" id="och" name="och" v-model="student.father" />
                                 </div>
@@ -145,6 +155,8 @@ export default {
     },
     mounted() {
         if (this.student.id) {
+            this.student.birthDate = new Date(this.student.birthDate).toLocaleDateString();
+            this.student.issueDate = new Date(this.student.issueDate).toLocaleDateString();
             if (this.student.userImageId) {
                 this.downloadUserProfileImage(this.student.userImageId);
             }

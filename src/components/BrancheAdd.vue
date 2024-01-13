@@ -15,7 +15,8 @@
                             </div>
                             <div class="item">
                                 <label for="zip">Код филиала</label>
-                                <input type="text" id="zip" v-model="branch.branchCode" placeholder="145-288">
+                                <input type="text" id="zip" v-model="branch.branchCode"
+                                    placeholder="Введите 4-значный код филиала">
                             </div>
                         </div>
                         <div class="box">
