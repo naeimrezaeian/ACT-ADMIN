@@ -41,7 +41,7 @@
                         </div>
                         <div class="bot">
                             <input type="file" ref="fileInput" style="display: none;" accept=".jpg, .jpeg, .png"
-                            @change="onFileSelected()">
+                                @change="onFileSelected()">
                             <button type="button" @click.prevent="selectFile()" class="down">Загрузить</button>
                             <button type="button" @click.prevent="deleteProfileImage()" class="remove">Удалить</button>
                         </div>
@@ -55,20 +55,16 @@
                     <div class="left">
                         <div v-for="(item, index) in branch.branchSystemUsers" :key="item?.id ?? index" class="box">
                             <div class="item">
-                                <label for="lico">пользователь</label>
-                                <select id="lico" v-model="item.userId">
+                                <label>пользователь</label>
+                                <select v-model="item.userId">
                                     <option value="" disabled selected>выбрать пользователя</option>
                                     <option v-for="user in usersNotInBranch" :key="user.id" :value="user.id">
-                                        {{ user.fullName }}</option>
+                                        {{ user.fullname }}</option>
                                 </select>
                             </div>
                             <div class="item">
-                                <label for="otv">роль пользователя</label>
-                                <select id="otv" v-model="item.userRole">
-                                    <option value="" disabled selected>выберите роль пользователя</option>
-                                    <option v-for="role in branchUserTypes" :key="item?.id ?? index + role.key"
-                                        :value="role.key">{{ role.value }}</option>
-                                </select>
+                                <label>роль пользователя</label>
+                                <input :value="getUserRole(item.userId)" disabled />
                             </div>
                             <button type="button" @click="removeBranchUser(index)" class="delete" />
 
@@ -77,8 +73,8 @@
                 </div>
                 <div class="zag top_m">
                     <span>Адрес центра, реквизиты</span>
-                    <input type="file" ref="branchAttachments" multiple="true" style="display: none;"
-                    accept=".pdf" @change="onAttachmentSelected()">
+                    <input type="file" ref="branchAttachments" multiple="true" style="display: none;" accept=".pdf"
+                        @change="onAttachmentSelected()">
                     <button type="button" class="add" @click.prevent="addAttachment()">Прикрепить файлы к карточке</button>
                 </div>
                 <div class="box">
@@ -113,10 +109,9 @@
                     </div>
                     <div class="right">
                         <label>Загруженные файлы</label>
-                        <div v-for="item in docs" 
-                            :key="item" :value="item" class="files">
+                        <div v-for="item in docs" :key="item" :value="item" class="files">
                             <button type="button" class="remove_pdf" @click.prevent="deleteAttachment(item)"></button>
-                            <a class="file" href="#">{{item.fileFilename}}</a>
+                            <a class="file" href="#">{{ item.fileFilename }}</a>
                         </div>
                     </div>
                 </div>
@@ -199,7 +194,7 @@ export default {
         if (this.$route.fullPath.endsWith('Edit')) {
             this.branch = this.getSelectedBranch;
             this.levels = await this.getLevels();
-            if(this.img){
+            if (this.img) {
                 this.downloadImage(this.img.fileId);
             }
         }
@@ -233,8 +228,8 @@ export default {
         img() {
             return this.getSelectedBranch.docs ? this.branch.docs.find(e => e.fileType === 'image') : '';
         },
-        docs(){
-            return this.branch.docs ? this.branch.docs.filter(e=>e.fileType==='document') : '';
+        docs() {
+            return this.branch.docs ? this.branch.docs.filter(e => e.fileType === 'document') : '';
         }
     },
     methods: {
@@ -290,35 +285,38 @@ export default {
         async onFileSelected() {
             const file = this.$refs.fileInput.files[0];
             let fileId = await this.uploadImageFile(file);
-            let obj = {fileId, fileType:'image'};
-            if(this.img){
-                this.branch.docs.splice(this.branch.docs.indexOf(this.img),1);
+            let obj = { fileId, fileType: 'image' };
+            if (this.img) {
+                this.branch.docs.splice(this.branch.docs.indexOf(this.img), 1);
             }
             this.branch.docs.push(obj);
             this.downloadImage(fileId);
         },
         async onAttachmentSelected() {
-            for(let i=0;i<this.$refs.branchAttachments.files.length;i++){
+            for (let i = 0; i < this.$refs.branchAttachments.files.length; i++) {
                 let file = this.$refs.branchAttachments.files[i];
                 let fileId = await this.uploadImageFile(file)
-                let obj = {fileFilename: file.name, fileId, fileType: 'document'};
+                let obj = { fileFilename: file.name, fileId, fileType: 'document' };
                 this.branch.docs.push(obj);
             }
         },
         async downloadImage(fileId) {
             let result = await this.downloadImageFile(fileId);
-            let blob = new Blob([result.data], {type: 'image/*'});
+            let blob = new Blob([result.data], { type: 'image/*' });
             let url = URL.createObjectURL(blob);
             this.$refs.profileImage.src = url;
         },
         deleteProfileImage() {
-            this.branch.docs.splice(this.img,1);
+            this.branch.docs.splice(this.img, 1);
             this.$refs.profileImage.src = this.defaultProfileImageUrl;
             this.$refs.fileInput.value = '';
         },
         deleteAttachment(val) {
-            this.branch.docs.splice(this.branch.docs.indexOf(val),1);
+            this.branch.docs.splice(this.branch.docs.indexOf(val), 1);
             this.$refs.branchAttachments.value = '';
+        },
+        getUserRole(userId) {
+            return this.branchUserTypes.find(x => x.key === this.usersNotInBranch.find(x => x.id === userId)?.role)?.value
         }
     },
 }

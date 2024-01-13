@@ -11,7 +11,7 @@ export default {
         error: '',
         loading: false,
         roles: [],
-        isCheckerLogedIn : false,
+        isCheckerLogedIn: false,
     },
     actions: {
         async adminLogin({ commit }, { username, password }) {
@@ -30,7 +30,7 @@ export default {
                     const decodedToken = jwtDecode(token);
                     const allRoles = store.getters['getBranchUserType'];
                     const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-                    if (role.toLowerCase() === allRoles[3].key.toLowerCase()) {
+                    if (role.toLowerCase() === allRoles[4].key.toLowerCase()) {
                         commit('updateIsCheckerLogedIn');
                         router.push('/UserExams');
                     } else {
@@ -123,7 +123,7 @@ export default {
         updateSelectedUser(state, data) {
             state.selectedUser = data
         },
-        updateIsCheckerLogedIn (state) {
+        updateIsCheckerLogedIn(state) {
             state.isCheckerLogedIn = true;
         }
     },

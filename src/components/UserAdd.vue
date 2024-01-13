@@ -53,18 +53,27 @@
                                     </option>
                                 </select>
                             </div>
-                            <div class="select" v-if="user.role && user.role != adminRoleTypes[0].key">
+                            <div class="select">
+                                <label for="pol">Статус</label>
+                                <select name="pol" id="pol" v-model="user.status" style="width: 100%;">
+                                    <option value="" disabled selected>Выбрать</option>
+                                    <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}
+                                    </option>
+
+                                </select>
+                            </div>
+                            <!-- <div class="select" v-if="user.role && user.role != adminRoleTypes[0].key">
                                 <label for="roj">Филиал</label>
                                 <select name="roj" id="roj" class="usereditselect" v-model="user.branchId">
                                     <option value="" disabled selected>Выбрать</option>
                                     <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode +
                                         '-' + item.name }}</option>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
 
                     </div>
-                    <div class="box">
+                    <!-- <div class="box">
                         <div class="item">
                             <label for="naci">Пароль</label>
                             <input type="text" id="naci" name="naci" value="">
@@ -82,7 +91,7 @@
                             </div>
 
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="usereditaccess">
                         <div class="title">Дополнительно</div>

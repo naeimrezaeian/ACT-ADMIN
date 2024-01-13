@@ -49,7 +49,11 @@ export default {
             value: 'Главный ответственный'
         },
         {
-            key: 'admin',
+            key: 'branchAdmin',
+            value: 'Администратор филиала'
+        },
+        {
+            key: 'responsible',
             value: 'Ответственное лицо'
         },
         {
