@@ -205,6 +205,11 @@ export default {
                 text: 'твой пароль изменен.',
                 icon: 'success',
             },
+            successResetPassword: {
+                title: 'Измененный!',
+                text: 'Пароль был сброшен.',
+                icon: 'success',
+            },
         },
         all: 'Bсе',
         pdfErrorMessage: 'pdf не существует...',

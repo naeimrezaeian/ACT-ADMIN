@@ -104,6 +104,9 @@ export default {
         async changePassword(/* eslint-disable-next-line no-unused-vars */ _, { currentPassword, newPassword }) {
             await httpClient.post('/api/admin/users/ChangePassword', { currentPassword, newPassword })
         },
+        async resetPassword(/* eslint-disable-next-line no-unused-vars */ _, data) {
+            await httpClient.post(`/api/admin/users/ResetPassword/${data}`)
+        },
     },
     mutations: {
         updateOnError(state, data) {

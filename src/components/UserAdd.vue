@@ -73,6 +73,11 @@
                         </div>
 
                     </div>
+                    <div class="box">
+                        <div class="item">
+                            <button type="button" class="btn-reset" @click="resetPass()" :disabled="!this.isEditMode">Сброс пароля</button>
+                        </div>
+                    </div>
                     <!-- <div class="box">
                         <div class="item">
                             <label for="naci">Пароль</label>
@@ -177,7 +182,8 @@ export default {
             downloadImageFile: 'downloadFile',
             uploadImageFile: 'uploadFile',
             addSystemUser: 'addNewSystemUser',
-            editSystemUser: 'editSystemUser'
+            editSystemUser: 'editSystemUser',
+            resetPassword: 'resetPassword',
         }),
         selectFile() {
             this.$refs.fileInput.click();
@@ -205,7 +211,11 @@ export default {
             var userRoles = this.allRoles.filter(x => x.isSelected).map(x => x.id)
             this.user.userRoles = userRoles
             this.isEditMode ? await this.editSystemUser(this.user) : await this.addSystemUser(this.user)
-        }
+        },
+        async resetPass() {
+            await this.resetPassword(this.getSelectedUser.id);
+            this.Swal.fire(this.getSwalDeleteDialog.successResetPassword);
+        },
     },
     computed: {
         ...mapGetters({
@@ -214,7 +224,8 @@ export default {
             adminRoleTypes: 'getBranchUserType',
             branches: 'getSimplifiedBranches',
             statusTypes: 'getStatusField',
-            getSelectedUser: 'getSelectedUser'
+            getSelectedUser: 'getSelectedUser',
+            getSwalDeleteDialog: 'getSwalDeleteDialog',
         }),
         firstColumn() {
             return this.allRoles.slice(0, Math.ceil(this.allRoles.length / 2));
@@ -234,4 +245,26 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.btn-reset {
+    background-color: #E6F0F9;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    border-radius: 3px;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color .5s;
+}
+.btn-reset:hover {
+    background-color: #2057A1;
+    color: #fff;
+}
+.btn-reset:disabled:hover {
+    cursor: default;
+    background-color: #E6F0F9;
+    color: rgba(16, 16, 16, 0.3);
+}
+</style>
