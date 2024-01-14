@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
+import store from "./store";
 import  AdminLogin from './components/Login.vue'
 import  AdminDashboard from './components/Dashboard.vue'
 import  AdminUsers from './components/Users.vue'
@@ -29,266 +30,320 @@ import AdminUserExams from'./components/UserExams.vue'
 import AdminCorrectingExam from'./components/CorrectingExam.vue'
 
 const routes = [
-    {
-      path: "/",
-      name: "Login",
-      component: AdminLogin,
-      meta: {  header: false }
-    
-    },
+  {
+    path: "/",
+    name: "Login",
+    component: AdminLogin,
+    meta: {  header: false }
   
-    {
-      path: "/UserExams",
-      name: "UserExams",
-      component: PageParent,
-      meta: {  header: true },
-      children: [
-        {
-          path: "",
-          component: AdminUserExams,
-        },
-        {
-          path: ":id",
-          component: AdminCorrectingExam,
-        }
-      ]
-    },
-    
-    {
-        path: "/Dashboard",
-        name: "Dashboard",
-        component: AdminDashboard,
-        meta: {  header: true }
+  },
+
+  {
+    path: "/UserExams",
+    name: "UserExams",
+    component: PageParent,
+    meta: {  header: true },
+    children: [
+      {
+        path: "",
+        component: AdminUserExams,
       },
       {
-        path: "/Users",
-        name: "Users",
-        component: PageParent,
-        meta: {  header: true },
-        children:[
-          {
-            path:"",
-            component:AdminUsers
-          },
-          {
-            path:":id",
-            component:AdminUserView
-          },
-          {
-            path:"Add",
-            component:AdminUserAdd
-          },
-          {
-            path:"Edit",
-            component:AdminUserAdd
-          },
+        path: ":id",
+        component: AdminCorrectingExam,
+      }
+    ]
+  },
+  
+  {
+    path: "/Dashboard",
+    name: "Dashboard",
+    component () {
+      if (!store.getters['getIsCheckerLogedIn']) {
+        return AdminDashboard
+      } else {
+        return PageNotFound
+      }
+    },
+    meta: {  header: true }
+  },
+  {
+    path: "/Users",
+    name: "Users",
+    component () {
+      if (!store.getters['getIsCheckerLogedIn']) {
+        return PageParent
+      } else {
+        return PageNotFound
+      }
+    },
+    meta: {  header: true },
+    children:[
+      {
+        path:"",
+        component:AdminUsers
+      },
+      {
+        path:":id",
+        component:AdminUserView
+      },
+      {
+        path:"Add",
+        component:AdminUserAdd
+      },
+      {
+        path:"Edit",
+        component:AdminUserAdd
+      },
 
-        ]
+    ]
+    
+  },
+    
+  {
+    path: "/Branches",
+    name: "Branches",
+    component () {
+      if (!store.getters['getIsCheckerLogedIn']) {
+        return PageParent
+      } else {
+        return PageNotFound
+      }
+    },
+    meta: {  header: true },
+    children:[
+      {
+        path:"",
+        component:AdminBranches
+      },
+      {
+        path:":id",
+        component:AdminBrancheView
+      },
+      {
+        path:"Add",
+        component:AdminBrancheAdd,
         
       },
-      
       {
-        path: "/Branches",
-        name: "Branches",
-        component: PageParent,
-        meta: {  header: true },
-        children:[
-          {
-            path:"",
-            component:AdminBranches
-          },
-          {
-            path:":id",
-            component:AdminBrancheView
-          },
-          {
-            path:"Add",
-            component:AdminBrancheAdd,
-           
-          },
-          {
-            path:"Edit",
-            component:AdminBrancheAdd,
-           
-          },
+        path:"Edit",
+        component:AdminBrancheAdd,
+        
+      },
 
-        ]
+    ]
 
+  },
+  {
+    path: "/Levels",
+    name: "Levels",
+    component () {
+      if (!store.getters['getIsCheckerLogedIn']) {
+        return PageParent
+      } else {
+        return PageNotFound
+      }
+    },
+    meta: {  header: true },
+    children:[
+      {
+        path:"",
+        component:AdminLevels
       },
       {
-        path: "/Levels",
-        name: "Levels",
-        component: PageParent,
-        meta: {  header: true },
-        children:[
-          {
-            path:"",
-            component:AdminLevels
-          },
-          {
-            path:":id",
-            component:AdminBrancheView
-          },
-          {
-            path:"Add",
-            component:AdminLevelAdd
-          },
-          {
-            path:"Edit",
-            component:AdminLevelAdd
-          },
-
-        ]
-
-      },      
+        path:":id",
+        component:AdminBrancheView
+      },
       {
-        path: "/Module",
-        name: "Module",
-        component: PageParent,
-        meta: {  header: true },
+        path:"Add",
+        component:AdminLevelAdd
+      },
+      {
+        path:"Edit",
+        component:AdminLevelAdd
+      },
+
+    ]
+
+  },      
+  {
+    path: "/Module",
+    name: "Module",
+    component () {
+      if (!store.getters['getIsCheckerLogedIn']) {
+        return PageParent
+      } else {
+        return PageNotFound
+      }
+    },
+    meta: {  header: true },
+    children:[
+      {
+        path:"",
+        component:AdminModule
+      },
+      {
+        path:":id",
+        component:AdminBrancheView
+      },
+      {
+        path:"Add",
+        component:AdminModuleAdd
+      },
+      {
+        path:"Edit",
+        component:AdminModuleAdd
+      }
+    ]
+  },
+  {
+    path: "/Subjects",
+    name: "Subjects",
+    component () {
+      if (!store.getters['getIsCheckerLogedIn']) {
+        return PageParent
+      } else {
+        return PageNotFound
+      }
+    },
+    meta: {  header: true },
+    children:[
+      {
+        path:"",
+        component:AdminSubject
+      },
+      {
+        path:":id",
+        component:AdminBrancheView
+      },
+      {
+        path:"Add",
+        component:AdminSubjectAdd
+      },
+      {
+        path:"Edit",
+        component:AdminSubjectAdd
+      }
+    ]
+  },
+  {
+    path: "/Questions",
+    name: "Questions",
+    component () {
+      if (!store.getters['getIsCheckerLogedIn']) {
+        return PageParent
+      } else {
+        return PageNotFound
+      }
+    },
+    meta: {  header: true },
+    children:[
+      {
+        path:"",
+        component:AdminQuestions
+      },
+      {
+        path:":id",
+        component:AdminQuestionsList,
+      },
+      {
+        path:"Add",
         children:[
           {
-            path:"",
-            component:AdminModule
+            path:"Audio",
+            component:AdminQuestionAddAudio
+          },{
+            path:"Letter",
+            component:AdminQuestionAddLetter
           },
           {
-            path:":id",
-            component:AdminBrancheView
+            path:"Video",
+            component:AdminQuestionAddVideo
           },
           {
-            path:"Add",
-            component:AdminModuleAdd
+            path:"Text",
+            component:AdminQuestionAddSelect
+          },
+        ]
+      },
+      {
+        path:"Edit",
+        children:[
+          {
+            path:"Audio",
+            component:AdminQuestionAddAudio
           },
           {
-            path:"Edit",
-            component:AdminModuleAdd
+            path:"Text",
+            component:AdminQuestionAddSelect
+          },
+          {
+            path:"Video",
+            component:AdminQuestionAddVideo
+          },
+          {
+            path:"Letter",
+            component:AdminQuestionAddLetter
           }
         ]
-        },
-        {
-          path: "/Subjects",
-          name: "Subjects",
-          component: PageParent,
-          meta: {  header: true },
-          children:[
-            {
-              path:"",
-              component:AdminSubject
-            },
-            {
-              path:":id",
-              component:AdminBrancheView
-            },
-            {
-              path:"Add",
-              component:AdminSubjectAdd
-            },
-            {
-              path:"Edit",
-              component:AdminSubjectAdd
-            }
-          ]
-          },
-          {
-            path: "/Questions",
-            name: "Questions",
-            component: PageParent,
-            meta: {  header: true },
-            children:[
-              {
-                path:"",
-                component:AdminQuestions
-              },
-              {
-                path:":id",
-                component:AdminQuestionsList,
-              },
-              {
-                path:"Add",
-               children:[
-                  {
-                    path:"Audio",
-                    component:AdminQuestionAddAudio
-                  },{
-                    path:"Letter",
-                    component:AdminQuestionAddLetter
-                  },
-                  {
-                    path:"Video",
-                    component:AdminQuestionAddVideo
-                  },
-                  {
-                    path:"Text",
-                    component:AdminQuestionAddSelect
-                  },
-                ]
-              },
-              {
-                path:"Edit",
-                children:[
-                  {
-                    path:"Audio",
-                    component:AdminQuestionAddAudio
-                  },
-                  {
-                    path:"Text",
-                    component:AdminQuestionAddSelect
-                  },
-                  {
-                    path:"Video",
-                    component:AdminQuestionAddVideo
-                  },
-                  {
-                    path:"Letter",
-                    component:AdminQuestionAddLetter
-                  }
-                ]
-              }
-            ]
-            },
-          
-            {
-              path: "/Message",
-              name: "Message",
-              component: AdminMessage,
-              meta: {  header: true }
+      }
+    ]
+  },
+      
+  {
+    path: "/Message",
+    name: "Message",
+    component () {
+      if (!store.getters['getIsCheckerLogedIn']) {
+        return AdminMessage
+      } else {
+        return PageNotFound
+      }
+    },
+    meta: {  header: true }
+  
+  },
+  {
+    path: "/Log",
+    name: "Log",
+    component () {
+      if (!store.getters['getIsCheckerLogedIn']) {
+        return AdminLog
+      } else {
+        return PageNotFound
+      }
+    },
+    meta: {  header: true }
+  
+  },
+  {
+    path: "/Candidates",
+    name: "Candidates",     
             
-            },
-            {
-              path: "/Log",
-              name: "Log",
-              component: AdminLog,
-              meta: {  header: true }
-            
-            },
-            {
-              path: "/Candidates",
-              name: "Candidates",     
-                      
-              meta: {  header: true },
-              children:[
-                {
-                  path: "AdminCandidates",
-                  component:AdminCandidates, 
-                },
-                {
-                  path:"Add",
-                  component:AdminCandidatesAdd
-                }
-              ]
-            
-            },
+    meta: {  header: true },
+    children:[
+      {
+        path: "AdminCandidates",
+        component:AdminCandidates, 
+      },
+      {
+        path:"Add",
+        component:AdminCandidatesAdd
+      }
+    ]
+  
+  },
 
-            {
-        path: '/:catchAll(.*)*',
-        name: "PageNotFound",
-        component: PageNotFound,
-        meta: {  header: true }
-       },
+  {
+    path: '/:catchAll(.*)*',
+    name: "PageNotFound",
+    component: PageNotFound,
+    meta: {  header: true }
+  },
       
       
 
-  ];
+];
   
   const router = createRouter({
     history: createWebHistory(),

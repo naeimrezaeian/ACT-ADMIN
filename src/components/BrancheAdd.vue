@@ -12,19 +12,21 @@
                             <div class="item">
                                 <label for="name">Название филиала</label>
                                 <input type="text" id="name" v-model="branch.name" placeholder="Введите название">
-                                <div v-for="error in v$.branch.name.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.name.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="zip">Код филиала</label>
-                                <input type="text" id="zip" v-model="branch.branchCode" placeholder="145-288">
-                                <div v-for="error in v$.branch.branchCode.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <input type="text" id="zip" v-model="branch.branchCode"
+                                    placeholder="Введите 4-значный код филиала">
                             </div>
                         </div>
                         <div class="box">
                             <div class="item">
                                 <label for="name_s">Краткое название</label>
                                 <input type="text" id="name_s" v-model="branch.shortName" placeholder="Введите название">
-                                <div v-for="error in v$.branch.shortName.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.shortName.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="tip">Тип филиала</label>
@@ -33,7 +35,8 @@
                                     <option v-for="item in branchTypes" :key="item.key" :value="item.key">{{ item.value }}
                                     </option>
                                 </select>
-                                <div v-for="error in v$.branch.branchType.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.branchType.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                         </div>
                     </div>
@@ -44,7 +47,7 @@
                         </div>
                         <div class="bot">
                             <input type="file" ref="fileInput" style="display: none;" accept=".jpg, .jpeg, .png"
-                            @change="onFileSelected()">
+                                @change="onFileSelected()">
                             <button type="button" @click.prevent="selectFile()" class="down">Загрузить</button>
                             <button type="button" @click.prevent="deleteProfileImage()" class="remove">Удалить</button>
                         </div>
@@ -53,8 +56,8 @@
                 <div class="zag">
                     <span>Ответственные</span>
                     <button type="button" @click="addBranchUser" class="add">Добавить поле</button>
-                    <div v-if="v$.branch.branchSystemUsers?.$errors[0]?.$property == '0'"
-                        class="error-msg" style="margin: 5px 0 0 10px;">{{
+                    <div v-if="v$.branch.branchSystemUsers?.$errors[0]?.$property == '0'" class="error-msg"
+                        style="margin: 5px 0 0 10px;">{{
                             v$.branch.branchSystemUsers?.$errors[0].$message
                         }}
                     </div>
@@ -63,22 +66,18 @@
                     <div class="left">
                         <div v-for="(item, index) in branch.branchSystemUsers" :key="item?.id ?? index" class="box">
                             <div class="item">
-                                <label for="lico">пользователь</label>
-                                <select id="lico" v-model="item.userId">
+                                <label>пользователь</label>
+                                <select v-model="item.userId">
                                     <option value="" disabled selected>выбрать пользователя</option>
                                     <option v-for="user in usersNotInBranch" :key="user.id" :value="user.id">
-                                        {{ user.fullName }}</option>
+                                        {{ user.fullname }}</option>
                                 </select>
-                                <div v-for="error in v$.branch.branchSystemUsers[0].userId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.branchSystemUsers[0].userId.$errors" :key="error.$uid"
+                                    class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="item">
-                                <label for="otv">роль пользователя</label>
-                                <select id="otv" v-model="item.userRole">
-                                    <option value="" disabled selected>выберите роль пользователя</option>
-                                    <option v-for="role in branchUserTypes" :key="item?.id ?? index + role.key"
-                                        :value="role.key">{{ role.value }}</option>
-                                </select>
-                                <div v-for="error in v$.branch.branchSystemUsers[0].userRole.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <label>роль пользователя</label>
+                                <input :value="getUserRole(item.userId)" disabled />
                             </div>
                             <button type="button" @click="removeBranchUser(index)" class="delete" />
                         </div>
@@ -86,8 +85,8 @@
                 </div>
                 <div class="zag top_m">
                     <span>Адрес центра, реквизиты</span>
-                    <input type="file" ref="branchAttachments" multiple="true" style="display: none;"
-                    accept=".pdf" @change="onAttachmentSelected()">
+                    <input type="file" ref="branchAttachments" multiple="true" style="display: none;" accept=".pdf"
+                        @change="onAttachmentSelected()">
                     <button type="button" class="add" @click.prevent="addAttachment()">Прикрепить файлы к карточке</button>
                 </div>
                 <div class="box">
@@ -96,24 +95,28 @@
                             <div class="item">
                                 <label for="city">Город</label>
                                 <input type="text" id="city" v-model="branch.city" placeholder="Введите название">
-                                <div v-for="error in v$.branch.city.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.city.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="inn">ИНН</label>
                                 <input type="text" id="inn" v-model="branch.tin" placeholder="Введите название">
-                                <div v-for="error in v$.branch.tin.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.tin.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                         </div>
                         <div class="box">
                             <div class="item">
                                 <label for="adres">Фактический адрес</label>
                                 <input type="text" id="adres" v-model="branch.actualAddress" placeholder="Введите название">
-                                <div v-for="error in v$.branch.actualAddress.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.actualAddress.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="kpp">КПП</label>
                                 <input type="text" id="kpp" v-model="branch.checkpoint" placeholder="Введите название">
-                                <div v-for="error in v$.branch.checkpoint.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.checkpoint.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
 
                             </div>
                         </div>
@@ -122,16 +125,16 @@
                                 <label for="ur_adres">Юридический адрес</label>
                                 <input type="text" id="ur_adres" v-model="branch.legalAddress"
                                     placeholder="Введите название">
-                                <div v-for="error in v$.branch.legalAddress.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.legalAddress.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                         </div>
                     </div>
                     <div class="right">
                         <label>Загруженные файлы</label>
-                        <div v-for="item in docs" 
-                            :key="item" :value="item" class="files">
+                        <div v-for="item in docs" :key="item" :value="item" class="files">
                             <button type="button" class="remove_pdf" @click.prevent="deleteAttachment(item)"></button>
-                            <a class="file" href="#">{{item.fileFilename}}</a>
+                            <a class="file" href="#">{{ item.fileFilename }}</a>
                         </div>
                     </div>
                 </div>
@@ -200,7 +203,7 @@ import { useVuelidate } from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
 export default {
     name: "AdminBrancheAdd",
-    setup () {
+    setup() {
         return { v$: useVuelidate() }
     },
     data() {
@@ -214,7 +217,7 @@ export default {
             },
         }
     },
-    validations () {
+    validations() {
         return {
             branch: {
                 name: {
@@ -260,7 +263,7 @@ export default {
         if (this.$route.fullPath.endsWith('Edit')) {
             this.branch = this.getSelectedBranch;
             this.levels = await this.getLevels();
-            if(this.img){
+            if (this.img) {
                 this.downloadImage(this.img.fileId);
             }
         }
@@ -295,8 +298,8 @@ export default {
         img() {
             return this.getSelectedBranch.docs ? this.branch.docs.find(e => e.fileType === 'image') : '';
         },
-        docs(){
-            return this.branch.docs ? this.branch.docs.filter(e=>e.fileType==='document') : '';
+        docs() {
+            return this.branch.docs ? this.branch.docs.filter(e => e.fileType === 'document') : '';
         }
     },
     methods: {
@@ -312,8 +315,8 @@ export default {
             const result = await this.v$.$validate();
             if (result) {
                 this.$route.fullPath.endsWith('Edit') ?
-                await this.updateBranch(this.branch) :
-                await this.addBranch(this.branch)
+                    await this.updateBranch(this.branch) :
+                    await this.addBranch(this.branch)
             }
         },
         addBranchUser() {
@@ -355,35 +358,38 @@ export default {
         async onFileSelected() {
             const file = this.$refs.fileInput.files[0];
             let fileId = await this.uploadImageFile(file);
-            let obj = {fileId, fileType:'image'};
-            if(this.img){
-                this.branch.docs.splice(this.branch.docs.indexOf(this.img),1);
+            let obj = { fileId, fileType: 'image' };
+            if (this.img) {
+                this.branch.docs.splice(this.branch.docs.indexOf(this.img), 1);
             }
             this.branch.docs.push(obj);
             this.downloadImage(fileId);
         },
         async onAttachmentSelected() {
-            for(let i=0;i<this.$refs.branchAttachments.files.length;i++){
+            for (let i = 0; i < this.$refs.branchAttachments.files.length; i++) {
                 let file = this.$refs.branchAttachments.files[i];
                 let fileId = await this.uploadImageFile(file)
-                let obj = {fileFilename: file.name, fileId, fileType: 'document'};
+                let obj = { fileFilename: file.name, fileId, fileType: 'document' };
                 this.branch.docs.push(obj);
             }
         },
         async downloadImage(fileId) {
             let result = await this.downloadImageFile(fileId);
-            let blob = new Blob([result.data], {type: 'image/*'});
+            let blob = new Blob([result.data], { type: 'image/*' });
             let url = URL.createObjectURL(blob);
             this.$refs.profileImage.src = url;
         },
         deleteProfileImage() {
-            this.branch.docs.splice(this.img,1);
+            this.branch.docs.splice(this.img, 1);
             this.$refs.profileImage.src = this.defaultProfileImageUrl;
             this.$refs.fileInput.value = '';
         },
         deleteAttachment(val) {
-            this.branch.docs.splice(this.branch.docs.indexOf(val),1);
+            this.branch.docs.splice(this.branch.docs.indexOf(val), 1);
             this.$refs.branchAttachments.value = '';
+        },
+        getUserRole(userId) {
+            return this.branchUserTypes.find(x => x.key === this.usersNotInBranch.find(x => x.id === userId)?.role)?.value
         }
     },
 }

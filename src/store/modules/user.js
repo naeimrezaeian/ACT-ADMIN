@@ -10,7 +10,8 @@ export default {
         adminUsers: [],
         error: '',
         loading: false,
-        roles: []
+        roles: [],
+        isCheckerLogedIn: false,
     },
     actions: {
         async adminLogin({ commit }, { username, password }) {
@@ -29,7 +30,8 @@ export default {
                     const decodedToken = jwtDecode(token);
                     const allRoles = store.getters['getBranchUserType'];
                     const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-                    if (role.toLowerCase() === allRoles[3].key.toLowerCase()) {
+                    if (role.toLowerCase() === allRoles[4].key.toLowerCase()) {
+                        commit('updateIsCheckerLogedIn');
                         router.push('/UserExams');
                     } else {
                         router.push('/dashboard');
@@ -98,8 +100,13 @@ export default {
         },
         setUserToEdit({ commit }, data) {
             commit("updateSelectedUser", data)
-        }
-
+        },
+        async changePassword(/* eslint-disable-next-line no-unused-vars */ _, { currentPassword, newPassword }) {
+            await httpClient.post('/api/admin/users/ChangePassword', { currentPassword, newPassword })
+        },
+        async resetPassword(/* eslint-disable-next-line no-unused-vars */ _, data) {
+            await httpClient.post(`/api/admin/users/ResetPassword/${data}`)
+        },
     },
     mutations: {
         updateOnError(state, data) {
@@ -120,8 +127,10 @@ export default {
         },
         updateSelectedUser(state, data) {
             state.selectedUser = data
+        },
+        updateIsCheckerLogedIn(state) {
+            state.isCheckerLogedIn = true;
         }
-
     },
     getters: {
         getCurrentUser(state) {
@@ -142,6 +151,7 @@ export default {
         getAdminUsers(state) {
             return state.adminUsers
         },
-        getSelectedUser: (state) => state.selectedUser
+        getSelectedUser: (state) => state.selectedUser,
+        getIsCheckerLogedIn: (state) => state.isCheckerLogedIn,
     }
 }

@@ -46,10 +46,14 @@ export default {
         ],
         branchUserType: [{
             key: 'superAdmin',
-            value: 'Главный ответственный'
+            value: 'Супер администратор'
         },
         {
-            key: 'admin',
+            key: 'branchAdmin',
+            value: 'Администратор филиала'
+        },
+        {
+            key: 'responsible',
             value: 'Ответственное лицо'
         },
         {
@@ -195,9 +199,20 @@ export default {
                 confirmButtonText: 'Отправить окончательно',
                 width: 'auto',
                 height: 'auto',
-            }
+            },
+            successChangePassword: {
+                title: 'Измененный!',
+                text: 'твой пароль изменен.',
+                icon: 'success',
+            },
+            successResetPassword: {
+                title: 'Измененный!',
+                text: 'Пароль был сброшен.',
+                icon: 'success',
+            },
         },
         all: 'Bсе',
+        pdfErrorMessage: 'pdf не существует...',
         inputErrorMessages: {
             addUser: {
                 name: 'Фамилия Необходимый',
@@ -299,6 +314,7 @@ export default {
         getDocumentTypes: (state) => state.documentTypes,
         getUserExamStatus: (state) => state.userExamStatus,
         getAllForDropdowns: (state) => state.all,
+        getPdfErrorMessage: (state) => state.pdfErrorMessage,
         getinputErrorMessages: (state) => state.inputErrorMessages,
     }
 }
