@@ -127,6 +127,7 @@ export default {
         ...mapGetters({
             getUserExamToShow: 'getUserExamToShow',
             getPdfErrorMessage: 'getPdfErrorMessage',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
     },
     methods: {
@@ -275,4 +276,5 @@ export default {
     align-items: center;
     font-weight: bold;
     font-size: 30px;
-}</style>
+}
+</style>

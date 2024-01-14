@@ -19,6 +19,8 @@
                                 <label for="zip">Код филиала</label>
                                 <input type="text" id="zip" v-model="branch.branchCode"
                                     placeholder="Введите 4-значный код филиала">
+                                <div v-for="error in v$.branch.branchCode.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                         </div>
                         <div class="box">
