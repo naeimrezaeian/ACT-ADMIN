@@ -59,11 +59,7 @@ const routes = [
     path: "/Dashboard",
     name: "Dashboard",
     component () {
-      if (!store.getters['getIsCheckerLogedIn']) {
-        return AdminDashboard
-      } else {
-        return PageNotFound
-      }
+      return AdminDashboard
     },
     meta: {  header: true }
   },
@@ -71,11 +67,7 @@ const routes = [
     path: "/Users",
     name: "Users",
     component () {
-      if (!store.getters['getIsCheckerLogedIn']) {
-        return PageParent
-      } else {
-        return PageNotFound
-      }
+      return PageParent
     },
     meta: {  header: true },
     children:[
@@ -104,11 +96,7 @@ const routes = [
     path: "/Branches",
     name: "Branches",
     component () {
-      if (!store.getters['getIsCheckerLogedIn']) {
-        return PageParent
-      } else {
-        return PageNotFound
-      }
+      return PageParent
     },
     meta: {  header: true },
     children:[
@@ -138,11 +126,7 @@ const routes = [
     path: "/Levels",
     name: "Levels",
     component () {
-      if (!store.getters['getIsCheckerLogedIn']) {
-        return PageParent
-      } else {
-        return PageNotFound
-      }
+      return PageParent
     },
     meta: {  header: true },
     children:[
@@ -170,11 +154,7 @@ const routes = [
     path: "/Module",
     name: "Module",
     component () {
-      if (!store.getters['getIsCheckerLogedIn']) {
-        return PageParent
-      } else {
-        return PageNotFound
-      }
+      return PageParent
     },
     meta: {  header: true },
     children:[
@@ -200,11 +180,7 @@ const routes = [
     path: "/Subjects",
     name: "Subjects",
     component () {
-      if (!store.getters['getIsCheckerLogedIn']) {
-        return PageParent
-      } else {
-        return PageNotFound
-      }
+      return PageParent
     },
     meta: {  header: true },
     children:[
@@ -230,11 +206,7 @@ const routes = [
     path: "/Questions",
     name: "Questions",
     component () {
-      if (!store.getters['getIsCheckerLogedIn']) {
-        return PageParent
-      } else {
-        return PageNotFound
-      }
+      return PageParent
     },
     meta: {  header: true },
     children:[
@@ -294,11 +266,7 @@ const routes = [
     path: "/Message",
     name: "Message",
     component () {
-      if (!store.getters['getIsCheckerLogedIn']) {
-        return AdminMessage
-      } else {
-        return PageNotFound
-      }
+      return AdminMessage
     },
     meta: {  header: true }
   
@@ -307,11 +275,7 @@ const routes = [
     path: "/Log",
     name: "Log",
     component () {
-      if (!store.getters['getIsCheckerLogedIn']) {
-        return AdminLog
-      } else {
-        return PageNotFound
-      }
+      return AdminLog
     },
     meta: {  header: true }
   
@@ -345,9 +309,29 @@ const routes = [
 
 ];
   
-  const router = createRouter({
-    history: createWebHistory(),
-    routes,
-  });
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+router.beforeEach((to) => {
+  if (
+    (to.path === '/Dashboard' ||
+      to.path === '/Users' ||
+      to.path === '/Branches/Add' ||
+      to.path === '/Message'
+    ) && !store.getters['getIsAdminLogedIn']
+  ) {
+    return { name: 'PageNotFound' }
+  }
+
+  if (to.path === '/Branches' && !store.getters['getIsBranchAdminLogedIn']) {
+    return { name: 'PageNotFound' }
+  }
   
-  export default router;
+  if (to.path === '/UserExams' && !store.getters['getIsCheckerLogedIn']) {
+    return { name: 'PageNotFound' }
+  }
+})
+  
+export default router;
