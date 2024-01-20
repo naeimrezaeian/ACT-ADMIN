@@ -186,7 +186,6 @@ export default {
             branch: {
                 id: null,
                 branchSystemUsers: [],
-                docs: [],
                 branchExamLevels: [],
             },
         }
@@ -308,9 +307,11 @@ export default {
             this.$refs.profileImage.src = url;
         },
         deleteProfileImage() {
-            this.branch.docs.splice(this.img, 1);
-            this.$refs.profileImage.src = this.defaultProfileImageUrl;
-            this.$refs.fileInput.value = '';
+            if (this.img) {
+                this.branch.docs.splice(this.branch.docs.indexOf(this.img), 1);
+                this.$refs.profileImage.src = this.defaultProfileImageUrl;
+                this.$refs.fileInput.value = '';
+            }
         },
         deleteAttachment(val) {
             this.branch.docs.splice(this.branch.docs.indexOf(val), 1);
