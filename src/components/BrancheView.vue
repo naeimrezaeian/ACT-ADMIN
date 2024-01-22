@@ -525,6 +525,9 @@ export default {
       student: {}
     }
   },
+  beforeMount() {
+    this.resetBranchExams();
+  },
   mounted() {
     if (this.selectedBranch.docs) {
       let img = this.selectedBranch.docs.find(e => e.fileType === 'image');
@@ -577,6 +580,7 @@ export default {
       editUserInGroup: 'editUserInBranchExam',
       getAllStudents: 'getAllStudents',
       downloadImageFile: 'downloadFile',
+      resetBranchExams: 'resetBranchExams',
     }),
     async searchBranchExams() {
       await this.getBranchExams(this.filter);
