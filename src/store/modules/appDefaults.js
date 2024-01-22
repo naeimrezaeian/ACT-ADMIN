@@ -49,7 +49,11 @@ export default {
             value: 'Супер администратор'
         },
         {
-            key: 'admin',
+            key: 'branchAdmin',
+            value: 'Администратор филиала'
+        },
+        {
+            key: 'responsible',
             value: 'Ответственное лицо'
         },
         {
@@ -199,6 +203,11 @@ export default {
             successChangePassword: {
                 title: 'Измененный!',
                 text: 'твой пароль изменен.',
+                icon: 'success',
+            },
+            successResetPassword: {
+                title: 'Измененный!',
+                text: 'Пароль был сброшен.',
                 icon: 'success',
             },
         },
