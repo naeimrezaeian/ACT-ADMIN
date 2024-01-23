@@ -63,22 +63,18 @@
                 <div class="box">
                     <div class="left">
                         <div v-for="(item, index) in branch.branchSystemUsers" :key="item?.id ?? index" class="box">
-                            <div class="item">
-                                <label for="lico">пользователь</label>
-                                <select id="lico" v-model="item.userId">
+                            <div class="item special">
+                                <label>пользователь</label>
+                                <select v-model="item.userId">
                                     <option value="" disabled selected>выбрать пользователя</option>
                                     <option v-for="user in usersNotInBranch" :key="user.id" :value="user.id">
-                                        {{ user.fullName }}</option>
+                                        {{ user.fullname }}</option>
                                 </select>
                                 <div v-for="error in v$.branch.branchSystemUsers[0].userId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
-                            <div class="item">
-                                <label for="otv">роль пользователя</label>
-                                <select id="otv" v-model="item.userRole">
-                                    <option value="" disabled selected>выберите роль пользователя</option>
-                                    <option v-for="role in branchUserTypes" :key="item?.id ?? index + role.key"
-                                        :value="role.key">{{ role.value }}</option>
-                                </select>
+                            <div class="item special">
+                                <label>роль пользователя</label>
+                                <input :value="getUserRole(item.userId)" disabled />
                                 <div v-for="error in v$.branch.branchSystemUsers[0].userRole.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <button type="button" @click="removeBranchUser(index)" class="delete" />
@@ -209,7 +205,6 @@ export default {
             branch: {
                 id: null,
                 branchSystemUsers: [],
-                docs: [],
                 branchExamLevels: [],
             },
         }
@@ -377,16 +372,25 @@ export default {
             this.$refs.profileImage.src = url;
         },
         deleteProfileImage() {
-            this.branch.docs.splice(this.img, 1);
-            this.$refs.profileImage.src = this.defaultProfileImageUrl;
-            this.$refs.fileInput.value = '';
+            if (this.img) {
+                this.branch.docs.splice(this.branch.docs.indexOf(this.img), 1);
+                this.$refs.profileImage.src = this.defaultProfileImageUrl;
+                this.$refs.fileInput.value = '';
+            }
         },
         deleteAttachment(val) {
             this.branch.docs.splice(this.branch.docs.indexOf(val), 1);
             this.$refs.branchAttachments.value = '';
+        },
+        getUserRole(userId) {
+            return this.branchUserTypes.find(x => x.key === this.usersNotInBranch.find(x => x.id === userId)?.role)?.value
         }
     },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.special {
+    width: 45% !important;
+}
+</style>

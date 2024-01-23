@@ -51,7 +51,7 @@
                             </td>
                             <td>{{ item.city }}</td>
                             <td v-if="item.role == adminRoleTypes[0].key">-</td>
-                            <td v-else>{{ item.branchSystemUsers[0]?.branchName }}</td>
+                            <td v-else>{{ item.branchSystemUsers.find(x => x.userId == item.id)?.branchName }}</td>
                             <td>{{ item.email }}</td>
                             <td>{{ adminRoleTypes.find(x => x.key === item.role)?.value }}</td>
                             <td>{{ statusTypes.find(x => x.key === item.status)?.value }}</td>

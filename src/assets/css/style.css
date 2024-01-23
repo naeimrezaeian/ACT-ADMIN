@@ -6790,6 +6790,13 @@ footer .box .right ul li {
     margin: 0 20px 0 0;
 }
 
+.vue__time-picker input.vue__time-picker-input {
+    height: 58px !important;
+    border: 1px solid #C4C4C4;
+    font-size: 16px;
+    font-weight: 400;
+}
+
 .error-msg {
     margin-top: 2px;
     color: red;
