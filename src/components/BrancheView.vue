@@ -691,6 +691,7 @@ export default {
         examLevelId: "",
         examDate: "",
         comment: "",
+        branchId: this.selectedBranch.id,
       };
       await this.getBranchExams(this.filter);
     },
