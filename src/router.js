@@ -1,13 +1,13 @@
 import { createWebHistory, createRouter } from "vue-router";
 import store from "./store";
-import  AdminLogin from './components/Login.vue'
-import  AdminDashboard from './components/Dashboard.vue'
-import  AdminUsers from './components/Users.vue'
-import  AdminUserAdd from './components/UserAdd.vue'
-import  AdminUserView from './components/UserView.vue'
-import  AdminBranches from './components/Branches.vue'
-import  AdminBrancheAdd from './components/BrancheAdd.vue'
-import  AdminBrancheView from './components/BrancheView.vue'
+import AdminLogin from './components/Login.vue'
+import AdminDashboard from './components/Dashboard.vue'
+import AdminUsers from './components/Users.vue'
+import AdminUserAdd from './components/UserAdd.vue'
+import AdminUserView from './components/UserView.vue'
+import AdminBranches from './components/Branches.vue'
+import AdminBrancheAdd from './components/BrancheAdd.vue'
+import AdminBrancheView from './components/BrancheView.vue'
 import PageParent from './components/PageParent.vue'
 import PageNotFound from './components/404.vue'
 import AdminLevels from './components/Levels.vue'
@@ -25,24 +25,24 @@ import AdminQuestionAddSelect from './components/QuestionsAddSelect.vue'
 import AdminMessage from './components/Message.vue'
 import AdminLog from './components/Log.vue'
 import AdminCandidates from './components/Candidates.vue'
-import AdminCandidatesAdd from'./components/CandidatesAdd.vue'
-import AdminUserExams from'./components/UserExams.vue'
-import AdminCorrectingExam from'./components/CorrectingExam.vue'
+import AdminCandidatesAdd from './components/CandidatesAdd.vue'
+import AdminUserExams from './components/UserExams.vue'
+import AdminCorrectingExam from './components/CorrectingExam.vue'
 
 const routes = [
   {
     path: "/",
     name: "Login",
     component: AdminLogin,
-    meta: {  header: false }
-  
+    meta: { header: false }
+
   },
 
   {
     path: "/UserExams",
     name: "UserExams",
     component: PageParent,
-    meta: {  header: true },
+    meta: { header: true },
     children: [
       {
         path: "",
@@ -54,14 +54,14 @@ const routes = [
       }
     ]
   },
-  
+
   {
     path: "/Dashboard",
     name: "Dashboard",
     component () {
       return AdminDashboard
     },
-    meta: {  header: true }
+    meta: { header: true }
   },
   {
     path: "/Users",
@@ -69,54 +69,54 @@ const routes = [
     component () {
       return PageParent
     },
-    meta: {  header: true },
-    children:[
+    meta: { header: true },
+    children: [
       {
-        path:"",
-        component:AdminUsers
+        path: "",
+        component: AdminUsers
       },
       {
-        path:":id",
-        component:AdminUserView
+        path: ":id",
+        component: AdminUserView
       },
       {
-        path:"Add",
-        component:AdminUserAdd
+        path: "Add",
+        component: AdminUserAdd
       },
       {
-        path:"Edit",
-        component:AdminUserAdd
+        path: "Edit",
+        component: AdminUserAdd
       },
 
     ]
-    
+
   },
-    
+
   {
     path: "/Branches",
     name: "Branches",
     component () {
       return PageParent
     },
-    meta: {  header: true },
-    children:[
+    meta: { header: true },
+    children: [
       {
-        path:"",
-        component:AdminBranches
+        path: "",
+        component: AdminBranches
       },
       {
-        path:":id",
-        component:AdminBrancheView
+        path: ":id",
+        component: AdminBrancheView
       },
       {
-        path:"Add",
-        component:AdminBrancheAdd,
-        
+        path: "Add",
+        component: AdminBrancheAdd,
+
       },
       {
-        path:"Edit",
-        component:AdminBrancheAdd,
-        
+        path: "Edit",
+        component: AdminBrancheAdd,
+
       },
 
     ]
@@ -128,51 +128,51 @@ const routes = [
     component () {
       return PageParent
     },
-    meta: {  header: true },
-    children:[
+    meta: { header: true },
+    children: [
       {
-        path:"",
-        component:AdminLevels
+        path: "",
+        component: AdminLevels
       },
       {
-        path:":id",
-        component:AdminBrancheView
+        path: ":id",
+        component: AdminBrancheView
       },
       {
-        path:"Add",
-        component:AdminLevelAdd
+        path: "Add",
+        component: AdminLevelAdd
       },
       {
-        path:"Edit",
-        component:AdminLevelAdd
+        path: "Edit",
+        component: AdminLevelAdd
       },
 
     ]
 
-  },      
+  },
   {
     path: "/Module",
     name: "Module",
     component () {
       return PageParent
     },
-    meta: {  header: true },
-    children:[
+    meta: { header: true },
+    children: [
       {
-        path:"",
-        component:AdminModule
+        path: "",
+        component: AdminModule
       },
       {
-        path:":id",
-        component:AdminBrancheView
+        path: ":id",
+        component: AdminBrancheView
       },
       {
-        path:"Add",
-        component:AdminModuleAdd
+        path: "Add",
+        component: AdminModuleAdd
       },
       {
-        path:"Edit",
-        component:AdminModuleAdd
+        path: "Edit",
+        component: AdminModuleAdd
       }
     ]
   },
@@ -182,23 +182,23 @@ const routes = [
     component () {
       return PageParent
     },
-    meta: {  header: true },
-    children:[
+    meta: { header: true },
+    children: [
       {
-        path:"",
-        component:AdminSubject
+        path: "",
+        component: AdminSubject
       },
       {
-        path:":id",
-        component:AdminBrancheView
+        path: ":id",
+        component: AdminBrancheView
       },
       {
-        path:"Add",
-        component:AdminSubjectAdd
+        path: "Add",
+        component: AdminSubjectAdd
       },
       {
-        path:"Edit",
-        component:AdminSubjectAdd
+        path: "Edit",
+        component: AdminSubjectAdd
       }
     ]
   },
@@ -208,68 +208,68 @@ const routes = [
     component () {
       return PageParent
     },
-    meta: {  header: true },
-    children:[
+    meta: { header: true },
+    children: [
       {
-        path:"",
-        component:AdminQuestions
+        path: "",
+        component: AdminQuestions
       },
       {
-        path:":id",
-        component:AdminQuestionsList,
+        path: ":id",
+        component: AdminQuestionsList,
       },
       {
-        path:"Add",
-        children:[
+        path: "Add",
+        children: [
           {
-            path:"Audio",
-            component:AdminQuestionAddAudio
-          },{
-            path:"Letter",
-            component:AdminQuestionAddLetter
+            path: "Audio",
+            component: AdminQuestionAddAudio
+          }, {
+            path: "Letter",
+            component: AdminQuestionAddLetter
           },
           {
-            path:"Video",
-            component:AdminQuestionAddVideo
+            path: "Video",
+            component: AdminQuestionAddVideo
           },
           {
-            path:"Text",
-            component:AdminQuestionAddSelect
+            path: "Text",
+            component: AdminQuestionAddSelect
           },
         ]
       },
       {
-        path:"Edit",
-        children:[
+        path: "Edit",
+        children: [
           {
-            path:"Audio",
-            component:AdminQuestionAddAudio
+            path: "Audio",
+            component: AdminQuestionAddAudio
           },
           {
-            path:"Text",
-            component:AdminQuestionAddSelect
+            path: "Text",
+            component: AdminQuestionAddSelect
           },
           {
-            path:"Video",
-            component:AdminQuestionAddVideo
+            path: "Video",
+            component: AdminQuestionAddVideo
           },
           {
-            path:"Letter",
-            component:AdminQuestionAddLetter
+            path: "Letter",
+            component: AdminQuestionAddLetter
           }
         ]
       }
     ]
   },
-      
+
   {
     path: "/Message",
     name: "Message",
     component () {
       return AdminMessage
     },
-    meta: {  header: true }
-  
+    meta: { header: true }
+
   },
   {
     path: "/Log",
@@ -277,35 +277,35 @@ const routes = [
     component () {
       return AdminLog
     },
-    meta: {  header: true }
-  
+    meta: { header: true }
+
   },
   {
     path: "/Candidates",
-    name: "Candidates",     
-            
-    meta: {  header: true },
-    children:[
+    name: "Candidates",
+
+    meta: { header: true },
+    children: [
       {
         path: "AdminCandidates",
-        component:AdminCandidates, 
+        component: AdminCandidates,
       },
       {
-        path:"Add",
-        component:AdminCandidatesAdd
+        path: "Add",
+        component: AdminCandidatesAdd
       }
     ]
-  
+
   },
 
   {
     path: '/:catchAll(.*)*',
     name: "PageNotFound",
     component: PageNotFound,
-    meta: {  header: true }
+    meta: { header: true }
   },
-      
-      
+
+
 
 ];
   

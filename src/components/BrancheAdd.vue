@@ -55,7 +55,7 @@
                 <div class="box">
                     <div class="left">
                         <div v-for="(item, index) in branch.branchSystemUsers" :key="item?.id ?? index" class="box">
-                            <div class="item">
+                            <div class="item special">
                                 <label>пользователь</label>
                                 <select v-model="item.userId">
                                     <option value="" disabled selected>выбрать пользователя</option>
@@ -63,7 +63,7 @@
                                         {{ user.fullname }}</option>
                                 </select>
                             </div>
-                            <div class="item">
+                            <div class="item special">
                                 <label>роль пользователя</label>
                                 <input :value="getUserRole(item.userId)" disabled />
                             </div>
@@ -186,7 +186,6 @@ export default {
             branch: {
                 id: null,
                 branchSystemUsers: [],
-                docs: [],
                 branchExamLevels: [],
             },
         }
@@ -308,9 +307,11 @@ export default {
             this.$refs.profileImage.src = url;
         },
         deleteProfileImage() {
-            this.branch.docs.splice(this.img, 1);
-            this.$refs.profileImage.src = this.defaultProfileImageUrl;
-            this.$refs.fileInput.value = '';
+            if (this.img) {
+                this.branch.docs.splice(this.branch.docs.indexOf(this.img), 1);
+                this.$refs.profileImage.src = this.defaultProfileImageUrl;
+                this.$refs.fileInput.value = '';
+            }
         },
         deleteAttachment(val) {
             this.branch.docs.splice(this.branch.docs.indexOf(val), 1);
@@ -323,4 +324,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.special {
+    width: 45% !important;
+}
+</style>
