@@ -8,6 +8,7 @@ export default {
         userExamResults: [],
         manualCheckSubtests: [],
         UserExamToShow: {},
+        examRecords: [],
     },
     actions: {
         setShowEditStudentPopup({ commit }, data) {
@@ -170,6 +171,17 @@ export default {
                 return false
             }
         },
+        async reviewExamRecording({ commit }, userSubtestId) {
+            try {
+                const response = await httpClient.post(`/api/admin/branchexams/ReviewExamRecording/`, userSubtestId)
+                if (response.status === 200) {
+                    commit('updateExamRecords', response.data.result)
+                    return true
+                }
+            } catch (error) {
+                return false
+            }
+        },
     },
     mutations: {
         updateBranchExams: (state, data) => state.branchExams = data,
@@ -191,6 +203,7 @@ export default {
         },
         updateManualCheckSubtests: (state, data) => state.manualCheckSubtests = data,
         updateUserExamToShow: (state ,data) => state.UserExamToShow = data,
+        updateExamRecords: (state, data) => state.examRecords = data,
     },
     getters: {
         getBranchExams: (state) => state.branchExams,
@@ -200,5 +213,6 @@ export default {
         getUserExamResults: (state) => state.userExamResults,
         getManualCheckSubtests: (state) => state.manualCheckSubtests,
         getUserExamToShow: (state) => state.UserExamToShow,
+        getExamRecords: (state) => state.examRecords,
     }
 }

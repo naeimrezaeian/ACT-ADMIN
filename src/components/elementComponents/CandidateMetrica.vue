@@ -84,7 +84,9 @@
                                 <td>{{ value.mark }}</td>
                                 <td>{{ value.percentage }}%</td>
                                 <td>
-                                    <a href="#"> <img src="@/assets/img/icon5.svg" alt=""> </a>
+                                    <!-- <a class="show_popup_1" rel="popup_1">
+                                        <img src="@/assets/img/icon5.svg">
+                                    </a> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -93,6 +95,27 @@
             </div>
         </div>
         <button class="calaps" @click="$Jquery(`#${metricId}`).slideToggle()">Свернуть</button>
+    </div>
+    <a class="show_popup_1" rel="popup_1">
+        <img src="@/assets/img/icon5.svg">
+    </a>
+    <div class="wrapper">
+        <div class="popup popup_1" id="popup_1">
+            <div class="object">
+                <button type="button" class="clouse"><img src="@/assets/img/clouse.svg" alt=""></button>
+                <div class="sostav">
+                    <div class="title popup-title">Запись</div>
+                </div>
+                <div class="container">
+                    <div class="leftSide">
+
+                    </div>
+                    <div class="rightSide">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -121,11 +144,23 @@ export default {
             matrixIndex: null,
         }
     },
+    mounted() {
+        let self = this;
+        this.$Jquery('.show_popup_1').click(function () {
+            var popup_id = self.$Jquery(this).attr("rel")
+            self.$Jquery("#" + popup_id).show();
+        });
+        this.$Jquery('.clouse').click(function () {
+            self.$Jquery('.popup_1').hide();
+            self.$Jquery('body').removeClass('hide');
+        });
+    },
     computed: {
         ...mapGetters({
             sexTypes: 'getSexTypes',
             documentTypes: 'getDocumentTypes',
-            usersExamResult: 'getUserExamResults'
+            usersExamResult: 'getUserExamResults',
+            getExamRecords: 'getExamRecords',
         }),
         sexType() {
             return this.sexTypes.find((item) => item.key === this.student?.user?.sex);
@@ -144,6 +179,7 @@ export default {
             uploadIFile: 'uploadFile',
             downloadFile: 'downloadFile',
             uploadUserExam: 'uploadUserExam',
+            reviewExamRecording: 'reviewExamRecording',
         }),
         editStudent() {
             this.changeEditStudentPopup({ show: true, student: this.student.user, group: this.examGroup })
@@ -223,4 +259,29 @@ export default {
     padding-bottom: 20px !important;
     font-size: medium !important;
     font-weight: bold !important;
-}</style>
+}
+.object {
+    margin-top: 70px !important;
+    width: 60% !important;
+    height: 800px !important;
+}
+.popup-title {
+    margin-top: -50px !important;
+}
+
+.container {
+    width: 100% !important;
+    height: 700px !important;
+    display: flex;
+}
+.leftSide {
+    height: 100% !important;
+    width: 20% !important;
+    margin: 0 15px 0 -15px ;
+}
+.rightSide {
+    background-color: #E6F0F9;
+    height: 100% !important;
+    width: 80% !important;
+}
+</style>
