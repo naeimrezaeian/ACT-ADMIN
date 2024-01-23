@@ -74,24 +74,8 @@
                                     }}
                                     </option>
                                 </select>
+                                <div v-for="error in v$.user.role.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
-                            <div class="select">
-                                <label for="pol">Статус</label>
-                                <select name="pol" id="pol" v-model="user.status" style="width: 100%;">
-                                    <option value="" disabled selected>Выбрать</option>
-                                    <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}
-                                    </option>
-
-                                </select>
-                            </div> -->
-                            <!-- <div class="select" v-if="user.role && user.role != adminRoleTypes[0].key">
-                                <label for="roj">Филиал</label>
-                                <select name="roj" id="roj" class="usereditselect" v-model="user.branchId">
-                                    <option value="" disabled selected>Выбрать</option>
-                                    <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode +
-                                        '-' + item.name }}</option>
-                                </select>
-                            </div> -->
                         </div>
                     </div>
                     <div class="box">
@@ -281,9 +265,12 @@ export default {
 
         },
         async saveChanges() {
-            var userRoles = this.allRoles.filter(x => x.isSelected).map(x => x.id)
-            this.user.userRoles = userRoles
-            this.isEditMode ? await this.editSystemUser(this.user) : await this.addSystemUser(this.user)
+            const result = await this.v$.$validate();
+            if (result) {
+                var userRoles = this.allRoles.filter(x => x.isSelected).map(x => x.id)
+                this.user.userRoles = userRoles
+                this.isEditMode ? await this.editSystemUser(this.user) : await this.addSystemUser(this.user)
+            }
         },
         async resetPass() {
             await this.resetPassword(this.getSelectedUser.id);
@@ -299,6 +286,7 @@ export default {
             statusTypes: 'getStatusField',
             getSelectedUser: 'getSelectedUser',
             getSwalDeleteDialog: 'getSwalDeleteDialog',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
         firstColumn() {
             return this.allRoles.slice(0, Math.ceil(this.allRoles.length / 2));
