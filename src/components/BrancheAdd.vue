@@ -55,7 +55,7 @@
                 <div class="box">
                     <div class="left">
                         <div v-for="(item, index) in branch.branchSystemUsers" :key="item?.id ?? index" class="box">
-                            <div class="item">
+                            <div class="item special">
                                 <label>пользователь</label>
                                 <select v-model="item.userId">
                                     <option value="" disabled selected>выбрать пользователя</option>
@@ -63,7 +63,7 @@
                                         {{ user.fullname }}</option>
                                 </select>
                             </div>
-                            <div class="item">
+                            <div class="item special">
                                 <label>роль пользователя</label>
                                 <input :value="getUserRole(item.userId)" disabled />
                             </div>
@@ -324,4 +324,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.special {
+    width: 45% !important;
+}
+</style>
