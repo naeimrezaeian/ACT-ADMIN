@@ -12,20 +12,23 @@
                             <div class="item">
                                 <label for="name">Название филиала</label>
                                 <input type="text" id="name" v-model="branch.name" placeholder="Введите название">
-                                <div v-for="error in v$.branch.name.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.name.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="zip">Код филиала</label>
                                 <input type="text" id="zip" v-model="branch.branchCode"
                                     placeholder="Введите 4-значный код филиала">
-                                <div v-for="error in v$.branch.branchCode.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.branchCode.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                         </div>
                         <div class="box">
                             <div class="item">
                                 <label for="name_s">Краткое название</label>
                                 <input type="text" id="name_s" v-model="branch.shortName" placeholder="Введите название">
-                                <div v-for="error in v$.branch.shortName.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.shortName.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="tip">Тип филиала</label>
@@ -34,7 +37,8 @@
                                     <option v-for="item in branchTypes" :key="item.key" :value="item.key">{{ item.value }}
                                     </option>
                                 </select>
-                                <div v-for="error in v$.branch.branchType.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.branchType.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                         </div>
                     </div>
@@ -54,8 +58,8 @@
                 <div class="zag">
                     <span>Ответственные</span>
                     <button type="button" @click="addBranchUser" class="add">Добавить поле</button>
-                    <div v-if="v$.branch.branchSystemUsers?.$errors[0]?.$property == '0'"
-                        class="error-msg" style="margin: 5px 0 0 10px;">{{
+                    <div v-if="v$.branch.branchSystemUsers?.$errors[0]?.$property == '0'" class="error-msg"
+                        style="margin: 5px 0 0 10px;">{{
                             v$.branch.branchSystemUsers?.$errors[0].$message
                         }}
                     </div>
@@ -70,7 +74,8 @@
                                     <option v-for="user in usersNotInBranch" :key="user.id" :value="user.id">
                                         {{ user.fullname }}</option>
                                 </select>
-                                <div v-for="error in v$.branch.branchSystemUsers[0].userId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.branchSystemUsers[0].userId.$errors" :key="error.$uid"
+                                    class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="item special">
                                 <label>роль пользователя</label>
@@ -92,24 +97,28 @@
                             <div class="item">
                                 <label for="city">Город</label>
                                 <input type="text" id="city" v-model="branch.city" placeholder="Введите название">
-                                <div v-for="error in v$.branch.city.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.city.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="inn">ИНН</label>
                                 <input type="text" id="inn" v-model="branch.tin" placeholder="Введите название">
-                                <div v-for="error in v$.branch.tin.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.tin.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                         </div>
                         <div class="box">
                             <div class="item">
                                 <label for="adres">Фактический адрес</label>
                                 <input type="text" id="adres" v-model="branch.actualAddress" placeholder="Введите название">
-                                <div v-for="error in v$.branch.actualAddress.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.actualAddress.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="kpp">КПП</label>
                                 <input type="text" id="kpp" v-model="branch.checkpoint" placeholder="Введите название">
-                                <div v-for="error in v$.branch.checkpoint.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.checkpoint.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
 
                             </div>
                         </div>
@@ -118,7 +127,8 @@
                                 <label for="ur_adres">Юридический адрес</label>
                                 <input type="text" id="ur_adres" v-model="branch.legalAddress"
                                     placeholder="Введите название">
-                                <div v-for="error in v$.branch.legalAddress.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
+                                <div v-for="error in v$.branch.legalAddress.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                         </div>
                     </div>
@@ -195,7 +205,7 @@ import { useVuelidate } from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
 export default {
     name: "AdminBrancheAdd",
-    setup () {
+    setup() {
         return { v$: useVuelidate() }
     },
     data() {
@@ -208,7 +218,7 @@ export default {
             },
         }
     },
-    validations () {
+    validations() {
         return {
             branch: {
                 name: {
@@ -303,8 +313,8 @@ export default {
             const result = await this.v$.$validate();
             if (result) {
                 this.$route.fullPath.endsWith('Edit') ?
-                await this.updateBranch(this.branch) :
-                await this.addBranch(this.branch)
+                    await this.updateBranch(this.branch) :
+                    await this.addBranch(this.branch)
             }
         },
         addBranchUser() {
