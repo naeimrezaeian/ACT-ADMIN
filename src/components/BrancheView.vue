@@ -521,6 +521,7 @@ export default {
         examLevelId: "",
         examDate: "",
         comment: "",
+        branchId: "",
       },
       student: {}
     }
@@ -529,6 +530,7 @@ export default {
     this.resetBranchExams();
   },
   mounted() {
+    this.filter.branchId = this.selectedBranch?.id;
     if (this.selectedBranch.docs) {
       let img = this.selectedBranch.docs.find(e => e.fileType === 'image');
       if (img) {

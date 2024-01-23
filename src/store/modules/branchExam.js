@@ -26,6 +26,7 @@ export default {
                 filter?.examLevelId ? `examLevelId=${filter.examLevelId}` : null,
                 filter?.status ? `status=${filter.status}` : null,
                 filter?.comment ? `comment=${filter.comment}` : null,
+                filter?.branchId ? `branchId=${filter.branchId}` : null,
             ].filter(param => param !== null)
                 .join('&');
             const response = await httpClient.get(`/api/admin/branchexams?${params}`)
