@@ -69,8 +69,7 @@
                                 </select>
                                 <div v-for="error in v$.user.role.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
-                            </div>
-                            <div class="select">
+                            <!-- <div class="select">
                                 <label for="pol">Статус</label>
                                 <select name="pol" id="pol" v-model="user.status" style="width: 100%;">
                                     <option value="" disabled selected>Выбрать</option>
@@ -78,7 +77,7 @@
                                     </option>
 
                                 </select>
-                            </div>
+                            </div> -->
                             <!-- <div class="select" v-if="user.role && user.role != adminRoleTypes[0].key">
                                 <label for="roj">Филиал</label>
                                 <select name="roj" id="roj" class="usereditselect" v-model="user.branchId">
@@ -110,7 +109,7 @@
 
                                 </select>
                             </div>
-
+                        </div>
                         <div class="select" v-if="user.role && user.role != adminRoleTypes[0].key">
                             <label for="roj">Филиал</label>
                             <select name="roj" id="roj" class="usereditselect branchInput" v-model="user.branchId">
@@ -121,8 +120,6 @@
                             <div v-for="error in v$.user.branchId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
                     </div> -->
-
-                    </div>
                     <div class="usereditaccess">
                         <div class="title">Дополнительно</div>
 
@@ -168,16 +165,16 @@
                     <button type="button" class="btn save" @click="saveChanges">Сохранить</button>
 
                 </div>
-            <!-- </form> -->
-        <!-- </div>
+            </form>
+        </div>
 
-    </div> -->
+    </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { useVuelidate } from '@vuelidate/core'
-import { required, helpers, minLength, email, requiredIf } from '@vuelidate/validators'
+import { required, helpers, minLength, email } from '@vuelidate/validators'
 export default {
     name: "AdminUserAdd",
     setup () {
@@ -223,14 +220,6 @@ export default {
                 },
                 status: {
                     required: helpers.withMessage(this.getinputErrorMessages.addUser.status, required)
-                },
-                branchId: {
-                    requiredIf: helpers.withMessage(
-                        this.getinputErrorMessages.addUser.branchId,
-                        requiredIf(() => {
-                            return this.user.role != this.adminRoleTypes[0].key ? true : false;
-                        })
-                    )
                 },
             },
         }

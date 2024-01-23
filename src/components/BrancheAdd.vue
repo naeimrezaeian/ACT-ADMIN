@@ -75,7 +75,6 @@
                             <div class="item special">
                                 <label>роль пользователя</label>
                                 <input :value="getUserRole(item.userId)" disabled />
-                                <div v-for="error in v$.branch.branchSystemUsers[0].userRole.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <button type="button" @click="removeBranchUser(index)" class="delete" />
                         </div>
@@ -227,9 +226,6 @@ export default {
                 branchSystemUsers: [{
                     required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchSystemUsers, required),
                     userId: {
-                        required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchSystemUsers, required),
-                    },
-                    userRole: {
                         required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchSystemUsers, required),
                     },
                 }],
