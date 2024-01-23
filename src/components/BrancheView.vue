@@ -521,11 +521,16 @@ export default {
         examLevelId: "",
         examDate: "",
         comment: "",
+        branchId: "",
       },
       student: {}
     }
   },
+  beforeMount() {
+    this.resetBranchExams();
+  },
   mounted() {
+    this.filter.branchId = this.selectedBranch?.id;
     if (this.selectedBranch.docs) {
       let img = this.selectedBranch.docs.find(e => e.fileType === 'image');
       if (img) {
@@ -577,6 +582,7 @@ export default {
       editUserInGroup: 'editUserInBranchExam',
       getAllStudents: 'getAllStudents',
       downloadImageFile: 'downloadFile',
+      resetBranchExams: 'resetBranchExams',
     }),
     async searchBranchExams() {
       await this.getBranchExams(this.filter);

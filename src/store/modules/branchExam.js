@@ -27,6 +27,7 @@ export default {
                 filter?.examLevelId ? `examLevelId=${filter.examLevelId}` : null,
                 filter?.status ? `status=${filter.status}` : null,
                 filter?.comment ? `comment=${filter.comment}` : null,
+                filter?.branchId ? `branchId=${filter.branchId}` : null,
             ].filter(param => param !== null)
                 .join('&');
             const response = await httpClient.get(`/api/admin/branchexams?${params}`)
@@ -158,7 +159,7 @@ export default {
                 commit("updateManualCheckSubtests", response.data.result)
             }
         },
-        setUserExamToShow ({ commit }, data) {
+        async setUserExamToShow ({ commit }, data) {
             commit("updateUserExamToShow", data)
         },
         async setUserSubtestMark(/* eslint-disable-next-line no-unused-vars */ _, { userSubtestId, mark, comment }) {
@@ -170,6 +171,9 @@ export default {
             } catch (error) {
                 return false
             }
+        },
+        async resetBranchExams({ commit }) {
+            commit('resetBranchExams')
         },
         async reviewExamRecording({ commit }, userSubtestId) {
             try {
@@ -203,6 +207,7 @@ export default {
         },
         updateManualCheckSubtests: (state, data) => state.manualCheckSubtests = data,
         updateUserExamToShow: (state ,data) => state.UserExamToShow = data,
+        resetBranchExams: (state) => state.branchExams = [],
         updateExamRecords: (state, data) => state.examRecords = data,
     },
     getters: {
