@@ -177,7 +177,7 @@ export default {
         },
         async reviewExamRecording({ commit }, userSubtestId) {
             try {
-                const response = await httpClient.post(`/api/admin/branchexams/ReviewExamRecording/`, userSubtestId)
+                const response = await httpClient.get(`/api/admin/branchexams/ReviewExamRecording/${userSubtestId}`)
                 if (response.status === 200) {
                     commit('updateExamRecords', response.data.result)
                     return true

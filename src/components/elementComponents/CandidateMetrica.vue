@@ -84,9 +84,9 @@
                                 <td>{{ value.mark }}</td>
                                 <td>{{ value.percentage }}%</td>
                                 <td>
-                                    <!-- <a class="show_popup_1" rel="popup_1">
+                                    <a class="show_popup_1" rel="popup_1" @click="this.reviewExamRecording(value.userSubtestId)">
                                         <img src="@/assets/img/icon5.svg">
-                                    </a> -->
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -96,9 +96,9 @@
         </div>
         <button class="calaps" @click="$Jquery(`#${metricId}`).slideToggle()">Свернуть</button>
     </div>
-    <a class="show_popup_1" rel="popup_1">
+    <!-- <a class="show_popup_1" rel="popup_1">
         <img src="@/assets/img/icon5.svg">
-    </a>
+    </a> -->
     <div class="wrapper">
         <div class="popup popup_1" id="popup_1">
             <div class="object">
