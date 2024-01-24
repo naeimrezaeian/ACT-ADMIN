@@ -181,27 +181,27 @@ export default {
         return {
             user: {
                 family: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addUser.familly, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.familly, required),
                     minLength: helpers.withMessage(
                         this.getinputErrorMessages.addUser.famillyMin,
                         minLength(3)
                     ),
                 },
                 name: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addUser.name, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.name, required),
                     minLength: helpers.withMessage(
                         this.getinputErrorMessages.addUser.nameMin,
                         minLength(3)
                     ),
                 },
                 father: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addUser.father, required)
+                    required: helpers.withMessage(this.getinputErrorMessages.father, required)
                 },
                 sex: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addUser.sex, required)
+                    required: helpers.withMessage(this.getinputErrorMessages.sex, required)
                 },
                 birthDate: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addUser.birthDate, required)
+                    required: helpers.withMessage(this.getinputErrorMessages.birthDate, required)
                 },
                 email: {
                     required: helpers.withMessage(this.getinputErrorMessages.addUser.email, required),
@@ -211,7 +211,7 @@ export default {
                     required: helpers.withMessage(this.getinputErrorMessages.addUser.role, required)
                 },
                 status: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addUser.status, required)
+                    required: helpers.withMessage(this.getinputErrorMessages.status, required)
                 },
             },
         }

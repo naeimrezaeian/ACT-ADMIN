@@ -163,18 +163,18 @@ export default {
         return {
             student: {
                 family: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.familly, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.familly, required),
                     minLength: minLength(3)
                 },
                 name: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.name, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.name, required),
                     minLength: minLength(3)
                 },
                 father: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.father, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.father, required),
                 },
                 sex: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.sex, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.sex, required),
                 },
                 nationality: {
                     required: helpers.withMessage(this.getinputErrorMessages.addStudent.nationality, required),
@@ -183,7 +183,7 @@ export default {
                     required: helpers.withMessage(this.getinputErrorMessages.addStudent.placeOfBirth, required),
                 },
                 birthDate: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addStudent.birthDate, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.birthDate, required),
                 },
                 refNumber: {
                     required: helpers.withMessage(this.getinputErrorMessages.addStudent.refNumber, required),

@@ -200,26 +200,26 @@ export default {
         return {
             newQuestionBase: {
                 title: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addQuestionBase.title, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.title, required),
                 },
                 type: {
                     required: helpers.withMessage(this.getinputErrorMessages.addQuestionBase.type, required),
                 },
                 status: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addQuestionBase.status, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.status, required),
                 },
                 subtest: {
                     examModule: {
                         examLevelId: {
-                            required: helpers.withMessage(this.getinputErrorMessages.addQuestionBase.examLevelId, required),
+                            required: helpers.withMessage(this.getinputErrorMessages.examLevel, required),
                         },
                     },
                     examModuleId: {
-                        required: helpers.withMessage(this.getinputErrorMessages.addQuestionBase.examModuleId, required),
+                        required: helpers.withMessage(this.getinputErrorMessages.examModule, required),
                     },
                 },
                 subtestId: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addQuestionBase.subtestId, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.addQuestionBase.subtest, required),
                 },
             },
         }

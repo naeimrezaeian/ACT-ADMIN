@@ -59,6 +59,7 @@
                             <option v-for="item in subtesCheckType" :key="item.key" :value="item.key">{{ item.value }}
                             </option>
                         </select>
+                        <div v-for="error in v$.subtest.checkType.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="video">Видео запись</label>
@@ -343,7 +344,7 @@ export default {
         return {
             subtest: {
                 title: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.title, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.title, required),
                 },
                 maxScore: {
                     required: helpers.withMessage(this.getinputErrorMessages.addSubtest.maxScore, required),
@@ -353,14 +354,17 @@ export default {
                 },
                 examModule: {
                     examLevelId: {
-                        required: helpers.withMessage(this.getinputErrorMessages.addSubtest.examLevelId, required),
+                        required: helpers.withMessage(this.getinputErrorMessages.examLevel, required),
                     },
                 },
                 examModuleId: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.examModuleId, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.examModule, required),
                 },
                 questionType: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.questionType, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.subtestType, required),
+                },
+                checkType: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.checkType, required),
                 },
             },
         }

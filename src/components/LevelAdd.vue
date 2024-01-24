@@ -77,10 +77,10 @@ export default {
         return {
             examlevel: {
                 title: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addLevel.title, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.title, required),
                 },
                 shortName: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addLevel.shortName, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.shortName, required),
                 },
             },
         }

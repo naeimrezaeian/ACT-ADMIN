@@ -83,10 +83,10 @@ export default {
         return {
             examModule: {
                 title: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addModule.title, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.title, required),
                 },
                 examLevelId: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addModule.examLevelId, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.examLevel, required),
                 },
             },
         }

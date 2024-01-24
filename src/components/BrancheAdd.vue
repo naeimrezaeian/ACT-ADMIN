@@ -228,7 +228,7 @@ export default {
                     required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchCode, required),
                 },
                 shortName: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addBranch.shortName, required),
+                    required: helpers.withMessage(this.getinputErrorMessages.shortName, required),
                 },
                 branchType: {
                     required: helpers.withMessage(this.getinputErrorMessages.addBranch.branchType, required),
