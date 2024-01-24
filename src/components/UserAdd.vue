@@ -205,7 +205,7 @@ export default {
                 },
                 email: {
                     required: helpers.withMessage(this.getinputErrorMessages.addUser.email, required),
-                    email
+                    email: helpers.withMessage(this.getinputErrorMessages.addUser.emailValid, email),
                 },
                 role: {
                     required: helpers.withMessage(this.getinputErrorMessages.addUser.role, required)
