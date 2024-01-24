@@ -16,11 +16,13 @@
                 <div class="box">
                     <select v-model="filter.level">
                         <option value="" disabled selected>Выбрать уровень</option>
+                        <option value="" v-if="levels.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="({ id, title }, index) in levels" :key="index" :value="id">{{ title }}</option>
 
                     </select>
                     <select v-model="filter.status">
                         <option value="" disabled selected>Выбрать статус</option>
+                        <option value="" v-if="statuses.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="({ key, value }, index) in statuses" :key="index" :value="key">{{ value }}
                         </option>
                     </select>
@@ -64,7 +66,7 @@
                             <td>{{ item.examLevel.title }}</td>
                             <td>{{ item.date }}</td>
                             <td>{{ item.createdBy.name + ' ' + item.createdBy.family }}</td>
-                            <td>{{ item.description }}</td>
+                            <td v-html="item.description"></td>
                             <td>{{ item.status }}</td>
                         </tr>
 
@@ -131,7 +133,13 @@ export default {
             })
         },
         async resetFilter() {
-            this.filter = { page: 1, pageSize: this.defaultPaging.pageSize }
+            this.filter = {
+                level: '',
+                status: '',
+                moduleName: '',
+                page: 1,
+                pageSize: this.defaultPaging.pageSize
+            }
             await this.fetchModules(this.filter)
         },
         async onPageChange(page) {
@@ -166,7 +174,8 @@ export default {
             modules: 'getModules',
             defaultPaging: 'getDefaultPaging',
             paging: 'getPaging',
-            getSwalDeleteDialog:'getSwalDeleteDialog'
+            getSwalDeleteDialog:'getSwalDeleteDialog',
+            allForDropdowns: 'getAllForDropdowns',
         }),
         selectAllModules:{
             get(){

@@ -13,8 +13,7 @@
                     </div>
                     <div class="item">
                         <label for="time">Время прохождения</label>
-                        <input type="time" placeholder="_ _ : _ _" id="time" onfocus="(this.type='time')" v-model="time"
-                            step="60">
+                        <vue-timepicker hide-clear-button input-width="100%" v-model="time"></vue-timepicker>
                     </div>
                     <div class="item">
                         <label for="col">Количество баллов</label>
@@ -48,19 +47,13 @@
                         </select>
                     </div>
                     <div class="item">
-                        <label for="tip_p">Тип проверки</label>
-                        <select id="tip_p" v-model="subtest.checkType">
-                            <option value="" disabled selected>Автоматический</option>
-                            <option v-for="item in subtesCheckType" :key="item.key" :value="item.key">{{ item.value }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="item">
                         <label for="video">Видео запись</label>
                         <select id="video" v-model="cameraRecord">
                             <option value="" disabled selected>Автоматический</option>
                             <option v-for="item in boolTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                         </select>
+                    </div>
+                    <div class="item">
                     </div>
                 </div>
                 <div class="item">
@@ -124,7 +117,7 @@
                                                         class="checkbox">
                                                     <label :for="question.id"></label>
                                                 </div>
-                                                <div class="name">{{ question.questionTexts[0].questionTitle }}</div>
+                                                <div class="name" v-html="question.questionTexts[0].questionTitle"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -295,6 +288,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue'
+import VueTimepicker from 'vue3-timepicker/src/VueTimepicker.vue'
 import { mapActions, mapGetters } from 'vuex'
 
 const Tinyconfig = {
@@ -319,7 +313,6 @@ export default {
             Tinyconfig,
             selectAll: false,
             subtest: {
-                checkType: 'auto',
                 cameraRecord: false,
                 maxTime: 0,
                 examModule: {
@@ -332,11 +325,12 @@ export default {
         if (this.isEditMode) {
             this.subtest = this.editSubtest
             await this.getSubtestVariatns(this.subtest.id)
-            await this.getQuestionBases({ status: 'active', subtest: this.subtest.id, page: 0, pageSize: 0, includeQuestions: true })
+            await this.getQuestionBases({ status: 'active', subtest: this.subtest.id, page: 0, pageSize: 0 })
         }
     },
     components: {
-        'editor': Editor
+        'editor': Editor,
+        VueTimepicker,
     },
     computed: {
         ...mapGetters({
@@ -348,7 +342,6 @@ export default {
             editSubtest: 'getEditSubtest',
             subtestVariants: 'getSubtestVariants',
             questionBase: 'getQuestionBase',
-            subtesCheckType: 'getSubtestCheckType'
         }),
         selectAllVariants: {
             get() {

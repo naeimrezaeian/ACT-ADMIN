@@ -46,10 +46,14 @@ export default {
         ],
         branchUserType: [{
             key: 'superAdmin',
-            value: 'Главный ответственный'
+            value: 'Супер администратор'
         },
         {
-            key: 'admin',
+            key: 'branchAdmin',
+            value: 'Администратор филиала'
+        },
+        {
+            key: 'responsible',
             value: 'Ответственное лицо'
         },
         {
@@ -79,22 +83,22 @@ export default {
             cssClass: 'proverka pro'
         },
         {
-            key: 'VerificationCompleted',
+            key: 'verificationCompleted',
             value: 'Проверка завершена',
             cssClass: 'proverka'
         },
         {
-            key: 'Acts',
+            key: 'acts',
             value: 'Требуются акты',
             cssClass: 'proverka treb'
         },
         {
-            key: 'Archived',
+            key: 'archived',
             value: 'В архиве',
             cssClass: 'proverka arhiv'
         },
         {
-            key: 'Rejected',
+            key: 'rejected',
             value: 'Отклонено',
             cssClass: 'proverka red'
         },
@@ -123,6 +127,47 @@ export default {
                 value: 'Преподаватель'
             }
         ],
+        documentTypes: [
+            {
+                key: 'birthCertificate',
+                value: 'Свидетельство о рождении'
+            },
+            {
+                key: 'passport',
+                value: 'Паспорт'
+            },
+            {
+                key: 'rightOfResidence',
+                value: 'Права'
+            }
+        ],
+        userExamStatus: [
+            {
+                key: 'created',
+                value: 'Новая'
+            },
+            {
+                key: 'active',
+                value: 'Активна'
+            },
+            {
+                key: 'passed',
+                value: 'Пройдена',
+
+            },
+            {
+                key: 'success',
+                value: 'Успешно',
+            },
+            {
+                key: 'failed',
+                value: 'Не успешно',
+            },
+            {
+                key: 'waitingForCheck',
+                value: 'Ожидает проверки'
+            }
+        ],
         defaultPaging: { pageSize: 10, maxVisibleButtons: 5 },
         paging: {},
         swalDeleteDialogConfig: {
@@ -134,17 +179,43 @@ export default {
                 cancelButtonText: 'Отменить',
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Удалить'
+                confirmButtonText: 'Удалить',
+                width: 'auto',
+                height: 'auto',
             },
             successDelete: {
                 title: 'Deleted!',
                 text: 'Your file has been deleted.',
                 icon: 'success',
-            }
-        }
+            },
+            branchExamDonePrompt: {
+                title: 'поставить экзамен как выполненный?',
+                text: "экзамен будет переведен в статус выполнено",
+                icon: 'info',
+                showCancelButton: true,
+                cancelButtonText: 'Отменить',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Отправить окончательно',
+                width: 'auto',
+                height: 'auto',
+            },
+            successChangePassword: {
+                title: 'Измененный!',
+                text: 'твой пароль изменен.',
+                icon: 'success',
+            },
+            successResetPassword: {
+                title: 'Измененный!',
+                text: 'Пароль был сброшен.',
+                icon: 'success',
+            },
+        },
+        all: 'Bсе',
+        pdfErrorMessage: 'pdf не существует...',
     },
     mutations: {
-        updatePaging: (state, data) => state.paging = data
+        updatePaging: (state, data) => state.paging = data,
     },
     getters: {
         getStatusField: (state) => state.statusField,
@@ -158,6 +229,10 @@ export default {
         getExamStatus: (state) => state.examStatus,
         getSubtestCheckType: (state) => state.subtestCheckType,
         getSexTypes: (state) => state.sexType,
-        getAdminRoleTypes: (state) => state.adminRoleTypes
+        getAdminRoleTypes: (state) => state.adminRoleTypes,
+        getDocumentTypes: (state) => state.documentTypes,
+        getUserExamStatus: (state) => state.userExamStatus,
+        getAllForDropdowns: (state) => state.all,
+        getPdfErrorMessage: (state) => state.pdfErrorMessage,
     }
 }

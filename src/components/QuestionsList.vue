@@ -3,9 +3,9 @@
         <nav class="bread">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Патент</a></li>
-                <li class="breadcrumb-item"><a href="#">Модуль 1</a></li>
-                <li class="breadcrumb-item"><a href="#">Чтение</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Тип вопроса «Список»</li>
+                <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.examModule.title }}</a></li>
+                <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.title }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Тип вопроса {{ getSelectedQuestionBase.type }}</li>
             </ol>
         </nav>
         <div class="vopros">
@@ -35,8 +35,7 @@
                                 <label :for="item.id"></label>
                             </td>
                             <td>
-                                <router-link :to="{ path: 'Edit/' + item.type }" @click="setQuestionToEdit(item)">{{
-                                    item?.questionTexts[0]?.questionTitle }}</router-link>
+                                <router-link :to="{ path: 'Edit/' + item.type }" @click="setQuestionToEdit(item)" v-html="item?.questionTexts[0]?.questionTitle"></router-link>
                             </td>
                             <td>{{ item.type }}</td>
                             <td>{{ item.status }}</td>
@@ -167,7 +166,7 @@ export default {
                     element.isSelected=newVal
                 });
             }
-        }
+        },
     },
     methods: {
         ...mapActions({
@@ -191,7 +190,7 @@ export default {
 
             }
 
-        }
+        },
     }
 }
 </script>

@@ -6,7 +6,10 @@
                 <div :class="examGroupStatus.cssClass">
                     <span>{{ examGroupStatus.value }}</span>
                     <span class="nomer">№ {{ examGroup.examCode }}</span>
+                    <span v-if="examGroup.status != getExamStatus[4].key && examGroup.status != getExamStatus[5].key"
+                        class="delete" @click="deleteBranchExam"></span>
                 </div>
+
             </div>
             <div id="svo-6">
                 <div class="box">
@@ -24,11 +27,7 @@
                 </div>
                 <div :id="`svo-${examGroup.id}`">
                     <div class="bot bots">
-                        <button type="button" class="def">Протокол</button>
-                        <button type="button" class="def">Список</button>
-                        <button type="button" class="add show_popup" rel="popup1">
-                            Добавить пользователя
-                        </button>
+                        <ExamGroupButtons :examGroup="examGroup" />
                     </div>
                     <div class="table">
                         <table>
@@ -40,19 +39,24 @@
                                     <th>Национальность</th>
                                     <th>Миграционная карта</th>
                                     <th>Статус</th>
+                                    <th></th>
                                 </tr>
-                                <template v-for="(user, index) in [1, 2, 3]" :key="index">
-                                    <tr @click="toggleUserMetrica(`g1user-${index}`)">
-                                        <td>134-187</td>
-                                        <td>Макарев Р.В.</td>
-                                        <td>Гражданство</td>
-                                        <td>Узбекистан</td>
-                                        <td>АВ1234567890</td>
-                                        <td>Пройден</td>
+                                <template v-for="user in examGroup.userExamLevels" :key="user.id">
+                                    <tr @click="toggleUserMetrica(`g1user-${user.id}`, user.userId)" style="cursor: pointer;">
+                                        <td>{{ user.user.username }}</td>
+                                        <td>{{ user.user.fullName }}</td>
+                                        <td>{{ examGroup.examLevel.title }}</td>
+                                        <td>{{ user.user.nationality }}</td>
+                                        <td>{{ user.user.migrationCard }}</td>
+                                        <td>{{ getUserExamStatus(user.status) }}</td>
+                                        <td><span
+                                                v-if="examGroup.status != getExamStatus[4].key && examGroup.status != getExamStatus[5].key"
+                                                class="delete" @click.prevent="deleteStudent(user.user)"></span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" class="non-pading">
-                                            <AdminCandidateMetrica :metricId="`g1user-${index}`" />
+                                            <AdminCandidateMetrica :metricId="`g1user-${user.id}`" :examGroup="examGroup"
+                                                :student="user" />
                                         </td>
                                     </tr>
                                 </template>
@@ -69,43 +73,63 @@
 </template>
 <script>
 import AdminCandidateMetrica from "./elementComponents/CandidateMetrica.vue";
-import { mapGetters } from 'vuex';
+import ExamGroupButtons from "./elementComponents/ExamGroupButtons.vue";
+import { mapGetters, mapActions } from 'vuex';
 export default {
     name: "ExamGroup",
     components: {
-        AdminCandidateMetrica
+        AdminCandidateMetrica,
+        ExamGroupButtons,
     },
     props: {
         examGroup: {
             type: Object,
             required: true,
-        },
-    },
-    mounted() {
-        let self = this;
-        this.$Jquery(".show_popup").click(function () {
-            var popup_id = self.$Jquery(this).attr("rel");
-            self.$Jquery("#" + popup_id).show();
-        });
-
-        this.$Jquery(".clouse").click(function () {
-            self.$Jquery(".popup").hide();
-            self.$Jquery("body").removeClass("hide");
-        });
+        }
     },
     computed: {
+
         examGroupStatus() {
             return this.getExamStatus.find((item) => item.key === this.examGroup.status);
         },
-        ...mapGetters({ getExamStatus: 'getExamStatus' }),
+        ...mapGetters({
+            getExamStatus: 'getExamStatus',
+            userExamStatus: 'getUserExamStatus',
+            getSwalDeleteDialog: 'getSwalDeleteDialog',
+        }),
     },
     methods: {
+        ...mapActions({
+            setSelectedGroup: 'setSelectedBranchExam',
+            deleteExamGroup: 'deleteBranchExam',
+            deleteStudentFromBranchExam: 'deleteStudentFromBranchExam',
+            getAllStudents: 'getAllStudents',
+            getUserExamResult: 'getUserResultMatrix',
+        }),
         toggleUsers() {
             this.$Jquery(`#svo-${this.examGroup.id}`).slideToggle()
         },
-        toggleUserMetrica(id) {
-            this.$Jquery(`#${id}`).slideToggle()
-        }
+        toggleUserMetrica(metricId, userId) {
+            this.$Jquery(`#${metricId}`).slideToggle()
+            this.getUserExamResult({ studentId: userId, examGroupId: this.examGroup.id });
+        },
+        async deleteBranchExam() {
+            const result = await this.Swal.fire(this.getSwalDeleteDialog.prompt);
+            if (result.isConfirmed) {
+                await this.deleteExamGroup(this.examGroup.id);
+            }
+        },
+
+        getUserExamStatus(status) {
+            return this.userExamStatus.find((item) => item.key === status)?.value;
+        },
+        async deleteStudent(student) {
+            const result = await this.Swal.fire(this.getSwalDeleteDialog.prompt);
+            if (result.isConfirmed) {
+                await this.deleteStudentFromBranchExam(student.id);
+                await this.getAllStudents({ groupId: this.examGroup.id });
+            }
+        },
     },
 };
 </script>

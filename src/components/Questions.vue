@@ -12,23 +12,27 @@
                     <input type="text" class="serch_in" v-model="filter.name"
                         placeholder="Поиск по составителю или вопросу">
                     <span class="lup"></span>
-                    <button type="button" class="btn" @click="searchQuestions">Найти</button>
+                    <button type="button" class="btn" @click="searchQuestions()">Найти</button>
                 </div>
                 <div class="box">
                     <select v-model="filter.level">
                         <option value="" disabled selected>Выбрать уровень</option>
+                        <option value="" v-if="levels.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in levels" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.module">
                         <option value="" disabled selected>Выбрать модуль</option>
-                        <option v-for="item in modules" :key="item.id" :value="item.id">{{ item.title }}</option>
+                        <option value="" v-if="filter.level && filterLevelModules.length > 0">{{ allForDropdowns }}</option>
+                        <option v-for="item in filterLevelModules" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.subtest">
                         <option value="" disabled selected>Выбрать субтест</option>
-                        <option v-for="item in subtests" :key="item.id" :value="item.id">{{ item.title }}</option>
+                        <option value="" v-if="filter.module && filterMoudleSubtests.length > 0">{{ allForDropdowns }}</option>
+                        <option v-for="item in filterMoudleSubtests" :key="item.id" :value="item.id">{{ item.title }}</option>
                     </select>
                     <select v-model="filter.status">
                         <option value="" disabled selected>Статус базы</option>
+                        <option value="" v-if="statuses.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in statuses" :key="item.key" :value="item.key">{{ item.value }}</option>
                     </select>
                     <div class="bot">
@@ -64,7 +68,7 @@
                         </li>
                         <li>
                             <span>Тип</span>
-                            <strong>{{ item.type }}</strong>
+                            <strong>{{ subtestType(item.type) }}</strong>
                         </li>
                         <li>
                             <span>Составитель</span>
@@ -122,7 +126,7 @@
                         <div class="item">
                             <label for="model">Модуль</label>
                             <select id="model" v-model="newQuestionBase.subtest.examModuleId">
-                                <option value="" disabled selected>Модуль 1</option>
+                                <option value="" disabled selected>Выбрать модуль</option>
                                 <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}
                                 </option>
                             </select>
@@ -160,14 +164,22 @@ export default {
     },
     data() {
         return {
-            filter: {},
+            filter: {
+                name: '',
+                level: '',
+                module: '',
+                subtest: '',
+                status: '',
+                page: 1
+            },
             newQuestionBase: {
                 subtest: {
                     examModuleId: '',
                     examModule: {
                         examLevelId: ''
                     }
-                }
+                },
+                subtestId: '',
             },
             isEdit: false,
             currentPage: 1,
@@ -200,16 +212,27 @@ export default {
             subtestTypes: 'getSubtestTypes',
             defaultPaging: 'getDefaultPaging',
             paging: 'getPaging',
-            getSwalDeleteDialog: 'getSwalDeleteDialog'
+            getSwalDeleteDialog: 'getSwalDeleteDialog',
+            allForDropdowns: 'getAllForDropdowns',
         }),
         levelModules: {
             get() {
-                return this.modules.filter(x => x.examLevelId === this.newQuestionBase.subtest.examModule.examLevelId)
+                return this.modules.filter(e => e.examLevelId == this.newQuestionBase.subtest.examModule.examLevelId)
+            }
+        },
+        filterLevelModules: {
+            get() {
+                return this.modules.filter(e => e.examLevelId === this.filter.level)
             }
         },
         moudleSubtests: {
             get() {
-                return this.subtests.filter(x => x.examModuleId == this.newQuestionBase.subtest.examModuleId)
+                return this.subtests.filter(e => e.examModuleId == this.newQuestionBase.subtest.examModuleId && e.questionType === this.newQuestionBase.type)
+            }
+        },
+        filterMoudleSubtests: {
+            get() {
+                return this.subtests.filter(e => e.examModuleId === this.filter.module)
             }
         }
     },
@@ -228,7 +251,15 @@ export default {
             await this.getQuestionBases(this.filter)
         },
         async resetFilters() {
-            this.filter = {}
+            this.filter = {
+                name: '',
+                level: '',
+                module: '',
+                subtest: '',
+                status: '',
+                page: 1,
+                pageSize: this.defaultPaging.pageSize
+            }
             await this.getQuestionBases(this.filter)
         },
         async addNewQuestionBase() {
@@ -253,7 +284,8 @@ export default {
                     examModule: {
                         examLevelId: ''
                     }
-                }
+                },
+                subtestId: ''
             }
         },
         async onPageChange(page) {
@@ -269,9 +301,9 @@ export default {
                 await this.onPageChange(this.currentPage)
                 this.Swal.fire(this.getSwalDeleteDialog.successDelete)
             }
-
-
-
+        },
+        subtestType(val) {
+            return this.subtestTypes.filter(x => x.key == val)[0].value
         }
     },
     watch: {
@@ -285,6 +317,12 @@ export default {
             if (!oldVal) {
                 this.newQuestionBase.subtestId = ''
             }
+        },
+        'filter.level': function () {
+            this.filter.module = '';
+        },
+        'filter.module': function () {
+            this.filter.subtest = '';
         }
     }
 }

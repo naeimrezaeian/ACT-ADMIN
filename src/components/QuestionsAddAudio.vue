@@ -7,19 +7,19 @@
             <nav class="bread">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Патент</a></li>
-                    <li class="breadcrumb-item"><a href="#">Модуль 1</a></li>
-                    <li class="breadcrumb-item"><a href="#">Чтение</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Тип вопроса «Аудирование»</li>
+                    <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.examModule.title }}</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.title }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Тип вопроса {{ getSelectedQuestionBase.type }}</li>
                 </ol>
             </nav>
             <form>
                 <div class="item">
                     <label for="vopr">Напишите название вопроса</label>
-                    <input type="text" v-model="newQuestion.desc" id="vopr">
+                    <input type="text" v-model="getNewQuestion.desc" id="vopr">
                 </div>
                 <div class="box">
                     <label for="subtest">Укажите количество прослушиваний</label>
-                    <select id="subtest" v-model="newQuestion.listenLimitCount">
+                    <select id="subtest" v-model="getNewQuestion.listenLimitCount">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -32,23 +32,23 @@
                     </select>
                 </div>
                 <div class="audi">
-                    <div class="box" v-if="!newQuestion.fileId">
+                    <div class="box" v-if="!getNewQuestion.fileId">
                         <button type="input" class="add" @click.prevent="selectFile">Загрузить аудио</button>
                         <input type="file" ref="fileInput" style="display: none;" accept=".mp3,.wav,.ogg"
                             @change="onFileSelected" multiple="false" />
                         <span>Загрузите файл в формате mp3, wav, ogg</span>
                     </div>
-                    <div class="box" v-if="newQuestion.fileId">
+                    <div class="box" v-if="getNewQuestion.fileId">
                         <audio ref="audioPlayer" controls="controls">
                             <source type="audio/mpeg" />
                         </audio>
                         <button type="button" class="delete" @click="removeQuestionFile(index)">Удалить</button>
                     </div>
                 </div>
-                <div v-for="(question, index) in newQuestion.questionTexts" :key="question.id" class="audi">
+                <div v-for="(question, questionIndex) in  getNewQuestion.questionTexts " :key="question.id" class="audi">
                     <div class="box">
                         <button type="button" class="edit">Редактировать</button>
-                        <button type="button" class="delete" @click="removequestion(index)">Удалить</button>
+                        <button type="button" class="delete" @click="removequestion(questionIndex)">Удалить</button>
                     </div>
                     <div class="item">
                         <label :for="question.id">Введите текст вопроса</label>
@@ -56,12 +56,7 @@
                             :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh" v-model="question.questionTitle">
                         </editor>
                     </div>
-                    <div class="box" v-for="(answer, index) in question.answers" :key="answer.id">
-                        <label for="od_1" class="blue">###_{{ index + 1 }}</label>
-                        <input type="text" v-model="answer.answer" id="od_1">
-                        <button type="button" v-if="index === (question.answers.length - 1)" class="add"
-                            @click="addNewAnswerOption(question)">Добавить вариант ответа</button>
-                    </div>
+                    <answersAdd :questionIndex="questionIndex"></answersAdd>
                 </div>
                 <button type="button" class="add" @click="addNewQuestion">Добавить вопрос</button>
                 <div class="botom">
@@ -75,6 +70,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue'
+import answersAdd from './answersAdd.vue'
 import { mapActions, mapGetters } from 'vuex'
 const Tinyconfig = {
     selector: '#tiny',
@@ -93,57 +89,59 @@ const Tinyconfig = {
 export default {
     name: "AdminQuestionAudio",
     components: {
-        'editor': Editor
+        'editor': Editor,
+        answersAdd
     },
     data() {
         return {
             Tinyconfig,
             questionBase: null,
-            newQuestion: {
-                questionType: 'audio',
-                status: 'active',
-                listenLimitCount: 1,
-                questionTexts: [{
-                    questionTitle: '',
-                    answers: [{
-                        answer: ''
-                    }]
-                }
-
-                ],
-
-            }
         }
+    },
+    async created() {
+        await this.setNewQuestion({
+            questionType: 'audio',
+            status: 'active',
+            listenLimitCount: 1,
+            questionTexts: [{
+                questionTitle: '',
+                answers: [{
+                    answer: ''
+                }]
+            }],
+        })
     },
     mounted() {
 
         this.questionBase = this.getSelectedQuestionBase
         if (this.$route.fullPath.toLocaleLowerCase().endsWith('edit/audio')) {
             this.downloadQuestionFile(this.getSelectedQuestion.fileId)
-            this.newQuestion = this.getSelectedQuestion
+            this.setNewQuestion(this.getSelectedQuestion)
         }
     },
     computed: {
-        ...mapGetters({ getSelectedQuestionBase: 'getSelectedQuestionBase', getSelectedQuestion: 'getSelectedQuestion' })
+        ...mapGetters({
+            getSelectedQuestionBase: 'getSelectedQuestionBase',
+            getSelectedQuestion: 'getSelectedQuestion',
+            getNewQuestion: 'getNewQuestion',
+        })
     },
     methods: {
-        ...mapActions({ addQuestion: 'addQuestion', editQuestion: 'editQuestion', downloadAudioFile: 'downloadFile', uploadAudioFile: 'uploadFile' }),
-        addNewAnswerOption(question) { question.answers.push({ answer: '' }) },
-        addNewQuestion() {
-            this.newQuestion.questionTexts.push({
-                questionTitle: '',
-                answers: [{
-                    answer: ''
-                }]
-            })
-        },
-        removeQuestionFile() { this.newQuestion.fileId = null },
-        removequestion(index) { this.newQuestion.questionTexts.splice(index, 1) },
+        ...mapActions({
+            addQuestion: 'addQuestion',
+            editQuestion: 'editQuestion',
+            downloadAudioFile: 'downloadFile',
+            uploadAudioFile: 'uploadFile',
+            setNewQuestion: 'setNewQuestion',
+            addNewQuestion: 'addNewQuestion',
+            removequestion: 'removequestion',
+        }),
+        removeQuestionFile() { this.getNewQuestion.fileId = null },
         async saveShanges() {
-            this.newQuestion.questionBaseId = this.questionBase.id
+            this.getNewQuestion.questionBaseId = this.questionBase.id
             this.$route.fullPath.toLocaleLowerCase().endsWith('edit/audio') ?
-                await this.editQuestion(this.newQuestion) :
-                await this.addQuestion(this.newQuestion)
+                await this.editQuestion(this.getNewQuestion) :
+                await this.addQuestion(this.getNewQuestion)
         },
         selectFile() {
             this.$refs.fileInput.click();
@@ -151,7 +149,7 @@ export default {
         onFileSelected() {
             const file = this.$refs.fileInput.files[0];
             this.uploadAudioFile(file).then((result) => {
-                this.newQuestion.fileId = result
+                this.getNewQuestion.fileId = result
                 this.downloadQuestionFile(result)
             })
         },
@@ -162,7 +160,7 @@ export default {
                 this.$refs.audioPlayer.src = url
                 this.$refs.audioPlayer.load()
             })
-        }
+        },
     }
 
 }

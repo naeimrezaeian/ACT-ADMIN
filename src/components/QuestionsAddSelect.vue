@@ -7,29 +7,24 @@
             <nav class="bread">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Патент</a></li>
-                    <li class="breadcrumb-item"><a href="#">Модуль 1</a></li>
-                    <li class="breadcrumb-item"><a href="#">Чтение</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Тип вопроса «Список»</li>
+                    <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.examModule.title }}</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ getSelectedQuestionBase.subtest.title }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Тип вопроса {{ getSelectedQuestionBase.type }}</li>
                 </ol>
             </nav>
             <form>
                 <div class="item">
                     <label for="vopr">Напишите название вопроса</label>
-                    <input type="text" v-model="newQuestion.desc" id="vopr">
+                    <input type="text" v-model="getNewQuestion.desc" id="vopr">
                 </div>
                 <div class="item">
                     <label for="tiny">Введите текст вопроса</label>
                     <editor id="tiny" :init="Tinyconfig" :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
-                        v-model="newQuestion.questionTexts[0].questionTitle">
+                        v-model="getNewQuestion.questionTexts[0].questionTitle">
                     </editor>
 
                 </div>
-                <div class="box" v-for="(item, index) in newQuestion.questionTexts[0].answers" :key="index">
-                    <label for="od_1" class="blue">###_{{ index + 1 }}</label>
-                    <input type="text" v-model="item.answer">
-                    <button v-if="index === (newQuestion.questionTexts[0].answers.length - 1)" type="button" class="add" @click="addnewAnswerOption">Добавить вариант
-                        ответа</button>
-                </div>
+                <answersAdd :questionIndex="0"></answersAdd>
                 <div class="botom">
                     <router-link to="/Questions" class="btn otmena">Отменить</router-link>
                     <button type="button" class="btn save" @click="saveShanges">Создать</button>
@@ -41,6 +36,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue'
+import answersAdd from './answersAdd.vue'
 import { mapActions, mapGetters } from 'vuex'
 const Tinyconfig = {
     selector: '#tiny',
@@ -59,46 +55,53 @@ const Tinyconfig = {
 export default {
     name: "AdminQuestionSelect",
     components: {
-        'editor': Editor
+        'editor': Editor,
+        answersAdd,
     },
     data() {
         return {
             Tinyconfig,
             questionBase: null,
-            
-            newQuestion: {
-                questionType:'text',
-                status:'active',
-                questionTexts:[{
-                    questionTitle:'',
-                    answers: [{
-                    answer: ''
-                }]
-                }
-                    
-                ],
-                
-            }
         }
     },
-    mounted() {
+    async created() {
+        await this.setNewQuestion({
+            questionType:'text',
+            status:'active',
+            questionTexts:[{
+                questionTitle:'',
+                answers: [{
+                    answer: ''
+                }]
+            }],
+        })
+    },
+    async mounted() {
         this.questionBase = this.getSelectedQuestionBase
         if(this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')){
-            this.newQuestion=this.getSelectedQuestion
+            await this.setNewQuestion(this.getSelectedQuestion)
         }
     },
     computed: {
-        ...mapGetters({ getSelectedQuestionBase: 'getSelectedQuestionBase',getSelectedQuestion:'getSelectedQuestion' })
+        ...mapGetters({ 
+            getSelectedQuestionBase: 'getSelectedQuestionBase',
+            getSelectedQuestion:'getSelectedQuestion',
+            getNewQuestion: 'getNewQuestion',
+        }),
     },
     methods:{
-        ...mapActions({addQuestion:'addQuestion',editQuestion:'editQuestion'}),
+        ...mapActions({
+            addQuestion:'addQuestion',
+            editQuestion:'editQuestion',
+            setNewQuestion: 'setNewQuestion',
+        }),
         addnewAnswerOption(){this.newQuestion.questionTexts[0].answers.push({answer:''})},
         async saveShanges(){
-            this.newQuestion.questionBaseId=this.questionBase.id
+            this.getNewQuestion.questionBaseId = this.questionBase.id
             this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')?
-            await this.editQuestion(this.newQuestion):
-            await this.addQuestion(this.newQuestion)
-        }
+            await this.editQuestion(this.getNewQuestion):
+            await this.addQuestion(this.getNewQuestion)
+        },
     }
 
 }

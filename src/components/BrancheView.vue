@@ -29,12 +29,10 @@
               <div class="lr">
                 <div class="title">Ответственные</div>
                 <ul>
-                  <li><span>Ответственный</span> Иванов Иван Иванович</li>
-                  <li>
-                    <span>Главный ответственный</span> Иванов Иван Иванович
+                  <li v-for="user in selectedBranch.branchSystemUsers" :key="user.id">
+                    <span>{{ returnRole(user.userRole) }}</span>
+                    {{ user.fullName }}
                   </li>
-                  <li><span>Официальное лицо</span> Иванов Иван Иванович</li>
-                  <li><span>Проверяющий</span> Иванов Иван Иванович</li>
                 </ul>
               </div>
             </div>
@@ -53,7 +51,7 @@
                   <li><span>КПП</span> {{ selectedBranch.checkpoint }}</li>
                 </ul>
               </div>
-              <div class="lr">
+              <!-- <div class="lr">
                 <div class="title">Документы</div>
                 <ul>
                   <li><span>Номер договора (1)</span> №1234567890-1</li>
@@ -61,21 +59,20 @@
                   <li><span>Номер договора (2)</span> №1234567890-2</li>
                   <li><span>Дата договова (2)</span> 24.05.2022</li>
                 </ul>
-              </div>
+              </div> -->
             </div>
             <div class="box">
               <div class="lf">
                 <div class="title">Прикрепленные файлы</div>
                 <div class="files">
-                  <a class="file" href="#">Договор 1.pdf</a>
-                  <a class="file" href="#">Договор 2.pdf</a>
-                  <a class="file" href="#">Договор 3.pdf</a>
+                  <a v-for="item in docs" :key="item" :value="item" @click.prevent="downloadDocument(item)"
+                    class="file">{{ item.fileFilename }}</a>
                 </div>
               </div>
               <div class="lr">
                 <div class="title">Фотография</div>
                 <div class="img">
-                  <img src="@/assets/img/ava.svg" alt="" />
+                  <img :src="deafultImageUrl" ref="branchImage" alt="" />
                 </div>
               </div>
             </div>
@@ -85,18 +82,23 @@
           <div class="title">ЭКЗАМЕНЫ ФИЛИАЛА</div>
           <div class="serch">
             <form>
-              <div class="box">
+              <div class="box" style="width: 97.7%;">
                 <input type="text" placeholder="Выбрать период" onfocus="(this.type='date')" class="dats"
                   v-model="filter.examDate" />
                 <select v-model="filter.examLevelId">
                   <option value="" disabled selected>Гражданство</option>
+                  <option value="" v-if="selectedBranch.branchExamLevels.length > 0">{{ allForDropdowns }}</option>
                   <option v-for="item in selectedBranch.branchExamLevels" :key="item.id" :value="item.id">
                     {{ item.examLevelTitle }}</option>
                 </select>
                 <select v-model="filter.status">
                   <option value="" disabled selected>Выбрать статус</option>
+                  <option value="" v-if="examStatus.length > 0">{{ allForDropdowns }}</option>
                   <option v-for="item in examStatus" :key="item.key" :value="item.key">{{ item.value }}</option>
                 </select>
+                <div class="bot">
+                  <button type="button" class="rezet" @click="resetFilters()">Сбросить фильтры</button>
+                </div>
               </div>
               <div class="box">
                 <input type="text" class="serch_in" placeholder="Напишите запрос для поиска" v-model="filter.comment" />
@@ -106,7 +108,7 @@
             </form>
           </div>
           <ExamGroup v-for="item in branchExams" :key="item.id" :examGroup="item" />
-          <div class="doc_fil">
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -141,8 +143,8 @@
             <button class="calaps" onclick="$('#svo-2').slideToggle()">
               Свернуть
             </button>
-          </div>
-          <div class="doc_fil">
+          </div> -->
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -187,8 +189,8 @@
             <button class="calaps" onclick="$('#svo-3').slideToggle()">
               Свернуть
             </button>
-          </div>
-          <div class="doc_fil">
+          </div> -->
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -230,8 +232,8 @@
             <button class="calaps" onclick="$('#svo-4').slideToggle()">
               Свернуть
             </button>
-          </div>
-          <div class="doc_fil">
+          </div> -->
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -282,8 +284,8 @@
             <button class="calaps" onclick="$('#svo-5').slideToggle()">
               Свернуть
             </button>
-          </div>
-          <div class="doc_fil">
+          </div> -->
+          <!-- <div class="doc_fil">
             <div class="doc_svo">
               <div class="info">
                 <div class="name">Гражданство</div>
@@ -335,7 +337,6 @@
                         </tr>
                         <tr>
                           <td colspan="6" class="non-pading">
-                            <AdminCandidateMetrica metricId="g1user-1" />
                           </td>
                         </tr>
 
@@ -349,7 +350,6 @@
                         </tr>
                         <tr>
                           <td colspan="6" class="non-pading">
-                            <AdminCandidateMetrica metricId="g1user-2" />
                           </td>
                         </tr>
                       </tbody>
@@ -361,13 +361,13 @@
             <button class="calaps" onclick="$('#svo-10').slideToggle()">
               Свернуть
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
 
-  <div class="popup" id="popup1">
+  <!-- <div class="popup" id="editStudentPopup">
     <div class="object objectCandidates">
       <button type="button" class="clouse">
         <img src="@/assets/img/clouse.svg" alt="" />
@@ -380,25 +380,24 @@
               <div class="box">
                 <div class="item">
                   <label for="fio">Фамилия</label>
-                  <input type="text" id="fio" name="fio" value="" />
+                  <input type="text" id="fio" name="fio" v-model="student.family" />
                 </div>
                 <div class="item">
                   <label for="name">Имя</label>
-                  <input type="text" id="name" name="name" value="" />
+                  <input type="text" id="name" name="name" v-model="student.name" />
                 </div>
               </div>
               <div class="box">
                 <div class="item">
                   <label for="och">Отчество</label>
-                  <input type="text" id="och" name="och" value="" />
+                  <input type="text" id="och" name="och" v-model="student.father" />
                 </div>
                 <div class="item">
                   <div class="select">
                     <label for="pol">Пол</label>
-                    <select name="pol" id="pol">
+                    <select name="pol" id="pol" v-model="student.sex">
                       <option value="" disabled selected>Выбрать</option>
-                      <option value="муж">муж</option>
-                      <option value="жен">жен</option>
+                      <option v-for="item in sexTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                     </select>
                   </div>
                 </div>
@@ -406,24 +405,20 @@
               <div class="box">
                 <div class="item">
                   <label for="naci">Национальность</label>
-                  <input type="text" id="naci" name="naci" value="" />
+                  <input type="text" id="naci" name="naci" v-model="student.nationality" />
                 </div>
                 <div class="item">
                   <label for="roj">Место рождения</label>
-                  <select name="roj" id="roj">
-                    <option value="" disabled selected>Выбрать город</option>
-                    <option value="Москва">Москва</option>
-                    <option value="Санк-Петербург">Санк-Петербург</option>
-                  </select>
+                  <input type="text" id="roj" name="roj" v-model="student.placeOfBirth" />
                 </div>
                 <div class="item">
                   <label for="date">Дата рождения</label>
                   <input type="text" placeholder="__.__.____" onfocus="(this.type='date')" id="date" name="date"
-                    class="dats" />
+                    class="dats" v-model="student.birthDate" />
                 </div>
                 <div class="item">
                   <label for="sprav">Справка для пересдачи</label>
-                  <input type="text" id="sprav" name="sprav" value="" placeholder="Номер справки" />
+                  <input type="text" id="sprav" name="sprav" v-model="student.refNumber" placeholder="Номер справки" />
                 </div>
               </div>
             </div>
@@ -444,28 +439,24 @@
               <div class="box">
                 <div class="item doc_item_1">
                   <label for="doc">Документ</label>
-                  <select name="doc" id="doc">
-                    <option value="Паспорт">Паспорт</option>
-                    <option value="Свидетельство о рождении">
-                      Свидетельство о рождении
-                    </option>
-                    <option value="Права">Права</option>
+                  <select name="doc" id="doc" v-model="student.document">
+                    <option v-for="item in documentTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                   </select>
                 </div>
                 <div class="item doc_item_2">
                   <div select="select">
                     <label for="date_v">Дата выдачи</label>
                     <input type="text" placeholder="__.__.____" onfocus="(this.type='date')" id="date_v" name="date_v"
-                      class="dats" />
+                      class="dats" v-model="student.issueDate" />
                   </div>
                 </div>
                 <div class="item doc_item_3">
                   <label for="kem">Кем выдан</label>
-                  <input type="text" id="kem" name="kem" value="" />
+                  <input type="text" id="kem" name="kem" v-model="student.issueBy" />
                 </div>
                 <div class="item doc_item_4">
                   <label for="cart">Миграционная карта</label>
-                  <input type="text" id="cart" name="cart" value="" />
+                  <input type="text" id="cart" name="cart" v-model="student.migrationCard" />
                 </div>
               </div>
               <div class="box">
@@ -503,24 +494,25 @@
               </div>
             </div>
             <div class="botom">
-              <button type="button" class="btn save">Сохранить</button>
+              <button type="button" class="btn save" @click="saveStudent">Сохранить</button>
             </div>
           </form>
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
+  <EditStudentPopup v-if="showEditStudentPopup"></EditStudentPopup>
 </template>
 
 <script>
+import EditStudentPopup from "./elementComponents/EditStudent.vue"
 import { mapActions, mapGetters } from "vuex";
-import AdminCandidateMetrica from "./elementComponents/CandidateMetrica.vue";
 import ExamGroup from "./ExamGroup.vue";
 export default {
   name: "AdminBrancheView",
   components: {
-    AdminCandidateMetrica,
-    ExamGroup
+    ExamGroup,
+    EditStudentPopup
   },
   data() {
     return {
@@ -529,33 +521,73 @@ export default {
         examLevelId: "",
         examDate: "",
         comment: "",
-      }
+      },
+      student: {}
     }
   },
   mounted() {
-    let self = this;
-    this.$Jquery(".show_popup").click(function () {
-      var popup_id = self.$Jquery(this).attr("rel");
-      self.$Jquery("#" + popup_id).show();
-    });
+    if (this.selectedBranch.docs) {
+      let img = this.selectedBranch.docs.find(e => e.fileType === 'image');
+      if (img) {
+        this.downloadImage(img.fileId);
+      }
+    }
 
-    this.$Jquery(".clouse").click(function () {
-      self.$Jquery(".popup").hide();
-      self.$Jquery("body").removeClass("hide");
-    });
+    // let self = this;
+    // this.$Jquery(".show_popup").click(function () {
+    //   var popup_id = self.$Jquery(this).attr("rel")
+    //   var userId = self.$Jquery(this).attr("data-user-id")
+    //   var groupId = self.$Jquery(this).attr("data-group-id")
+    //   var student = self.branchExams.find(x => x.id === groupId)?.userExamLevels.find(x => x.id === userId)
+    //   console.log(userId, groupId, student)
+    //   self.student = student?.user ?? {}
+    //   self.student.groupId = groupId
+    //   self.$Jquery("#" + popup_id).show();
+    // });
+
+    // this.$Jquery(".clouse").click(function () {
+    //   self.$Jquery(".popup").hide();
+    //   self.$Jquery("body").removeClass("hide");
+    // });
   },
   computed: {
     ...mapGetters({
       selectedBranch: "getSelectedBranch",
       examStatus: "getExamStatus",
-      branchExams: "getBranchExams"
+      branchExams: "getBranchExams",
+      sexTypes: 'getSexTypes',
+      documentTypes: 'getDocumentTypes',
+      getSelectedGroup: 'getSelectedBranchExam',
+      showEditStudentPopup: 'getShowEditStudentPopup',
+      allForDropdowns: 'getAllForDropdowns',
+      getBranchUserType: 'getBranchUserType',
     }),
+    deafultImageUrl() {
+      return require('@/assets/img/ava.svg');
+    },
+    docs() {
+      return this.selectedBranch.docs ? this.selectedBranch.docs.filter(e => e.fileType === 'document') : '';
+    }
   },
   methods: {
-    ...mapActions({ getBranchExams: "fetchBranchExams", addBranchExam: "createBranchExam" }),
+    ...mapActions({
+      getBranchExams: "fetchBranchExams",
+      addBranchExam: "createBranchExam",
+      addUserToGroup: 'addUserToBranchExam',
+      editUserInGroup: 'editUserInBranchExam',
+      getAllStudents: 'getAllStudents',
+      downloadImageFile: 'downloadFile',
+    }),
     async searchBranchExams() {
       await this.getBranchExams(this.filter);
     },
+    // async saveStudent() {
+    //   this.student.groupId ??= this.getSelectedGroup?.id
+    //   this.student.id ? await this.editUserInGroup(this.student) : await this.addUserToGroup(this.student)
+    //   this.$Jquery(".popup").hide();
+    //   this.$Jquery("body").removeClass("hide");
+    //   await this.getAllStudents({ groupId: this.student.groupId })
+    // },
     async addGroup() {
       let self = this;
       var responsibleElement = `<select id="responsible">
@@ -569,7 +601,7 @@ export default {
 
         input: "select",
         html:
-          '<input id="examDate" type="text" placeholder="Дата экзамена" onfocus="(this.type=\'date\')" class="dats" />' +
+          '<input id="examDate" type="text" placeholder="Дата экзамена" onfocus="(this.type=\'date\')" class="dats addBranchGroup-dats" />' +
           '<input id="comment"  type="text" placeholder="Комменатрий" />' +
           responsibleElement,
         inputOptions: {
@@ -594,9 +626,10 @@ export default {
             return;
           }
           const now = new Date();
+          now.setHours(0, 0, 0, 0);
           examDate = new Date(document.getElementById("examDate").value);
 
-          if (examDate <= now) {
+          if (examDate < now) {
             self.Swal.showValidationMessage("Дата экзамена должна быть больше текущей даты");
             return;
           }
@@ -630,7 +663,34 @@ export default {
 
       });
     },
-
+    async downloadImage(fileId) {
+      let result = await this.downloadImageFile(fileId);
+      let blob = new Blob([result.data], { type: 'image/*' });
+      let url = URL.createObjectURL(blob);
+      this.$refs.branchImage.src = url;
+    },
+    async downloadDocument(file) {
+      let result = await this.downloadImageFile(file.fileId);
+      let blob = new Blob([result.data], { type: 'application/pdf' });
+      let url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = file.fileFilename;
+      link.click();
+      URL.revokeObjectURL(url);
+    },
+    async resetFilters(){
+      this.filter = {
+        status: "",
+        examLevelId: "",
+        examDate: "",
+        comment: "",
+      };
+      await this.getBranchExams(this.filter);
+    },
+    returnRole(val) {
+      return this.getBranchUserType.filter(x => x.key == val)[0].value
+    }
   },
 };
 </script>

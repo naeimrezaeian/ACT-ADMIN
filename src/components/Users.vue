@@ -12,19 +12,24 @@
                 <div class="box">
                     <select v-model="filter.status">
                         <option value="" disabled selected>Выбрать статус</option>
+                        <option value="" v-if="statusTypes.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                     </select>
                     <input type="text" class="inputFilter" placeholder="Выбрать город" v-model="filter.city">
                     <select v-model="filter.branch">
                         <option value="" disabled selected>Выбрать филиал</option>
+                        <option value="" v-if="branches.length > 0">{{ allForDropdowns }}</option>
                         <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode + '-' +
                             item.name }}</option>
                     </select>
+                    <div class="bot">
+                        <button type="button" class="rezet" @click="resetFilter()">Сбросить фильтры</button>
+                    </div>
                 </div>
                 <div class="box">
                     <input type="text" class="serch_in" placeholder="Поиск по фамилии" v-model="filter.name">
                     <span class="lup"></span>
-                    <button type="button" class="btn">Поиск</button>
+                    <button type="button" class="btn" @click="searchUsers()">Поиск</button>
                 </div>
             </form>
         </div>
@@ -46,7 +51,7 @@
                             </td>
                             <td>{{ item.city }}</td>
                             <td v-if="item.role == adminRoleTypes[0].key">-</td>
-                            <td v-else>{{ item.branchSystemUsers[0]?.branchName }}</td>
+                            <td v-else>{{ item.branchSystemUsers.find(x => x.userId == item.id)?.branchName }}</td>
                             <td>{{ item.email }}</td>
                             <td>{{ adminRoleTypes.find(x => x.key === item.role)?.value }}</td>
                             <td>{{ statusTypes.find(x => x.key === item.status)?.value }}</td>
@@ -87,7 +92,12 @@ export default {
         await this.getAdminUsers({ page: 1, pageSize: this.defaultPaging.pageSize })
     },
     methods: {
-        ...mapActions({ fetchAllRoles: 'getAllRoles', getAllBranches: 'fetchSimplifiedBranches', getAdminUsers: 'getAllAdminUsers', setUserToEdit: 'setUserToEdit' }),
+        ...mapActions({
+            fetchAllRoles: 'getAllRoles',
+            getAllBranches: 'fetchSimplifiedBranches',
+            getAdminUsers: 'getAllAdminUsers',
+            setUserToEdit: 'setUserToEdit'
+        }),
         async search() {
             await this.getAdminUsers({ page: this.filter.currentPage, pageSize: this.defaultPaging.pageSize, ...this.filter })
         },
@@ -97,13 +107,32 @@ export default {
         },
         editUser(user) {
             this.setUserToEdit(user)
+        },
+        async searchUsers() {
+            await this.getAdminUsers(this.filter);
+        },
+        async resetFilter() {
+            this.filter = {
+                status: '',
+                city: '',
+                branch: '',
+                name: '',
+                currentPage: 1,
+                pageSize: this.defaultPaging.pageSize
+            };
+            await this.getAdminUsers(this.filter);
         }
-
     },
     computed: {
         ...mapGetters({
-            allRoles: 'getAllRoles', branches: 'getSimplifiedBranches', statusTypes: 'getStatusField', adminUsers: 'getAdminUsers', defaultPaging: 'getDefaultPaging',
-            paging: 'getPaging', adminRoleTypes: 'getBranchUserType'
+            allRoles: 'getAllRoles',
+            branches: 'getSimplifiedBranches',
+            statusTypes: 'getStatusField',
+            adminUsers: 'getAdminUsers',
+            defaultPaging: 'getDefaultPaging',
+            paging: 'getPaging',
+            adminRoleTypes: 'getBranchUserType',
+            allForDropdowns: 'getAllForDropdowns',
         })
     }
 }
