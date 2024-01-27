@@ -51,7 +51,14 @@
                     <div class="box">
                         <div class="item">
                             <label for="naci">Адрес электронной почты</label>
-                            <input type="text" id="naci" name="naci" v-model="user.email">
+                            <input type="text" id="naci" name="naci" v-model="user.email" :disabled="isEditMode">
+                            <svg v-if="!isEditMode && showSvg && !this.emailResult.exists" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="alert-success" viewBox="0 0 16 16">
+                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                            </svg>
+                            <svg v-if="!isEditMode && showSvg && this.emailResult.exists" @mouseover="emailErrToolip = true" @mouseleave="emailErrToolip = false" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="alert-err" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                            <div v-if="emailErrToolip" class="alert-err-text">электронная почта существует</div>
                             <div v-for="error in v$.user.email.$errors" :key="error.$uid" class="error-msg">{{
                                 error.$message }}</div>
                         </div>
@@ -174,7 +181,12 @@ export default {
     },
     data() {
         return {
-            user: {}
+            user: {},
+            emailErrToolip: false,
+            showSvg: false,
+            emailResult: {
+                exists: true
+            },
         }
     },
     validations() {
@@ -221,6 +233,7 @@ export default {
         this.getAllBranches()
         await this.fetchAllRoles()
         if (this.isEditMode) {
+            this.emailResult.exists = false;
             this.user = this.getSelectedUser;
             this.user.birthDate = new Date(this.user.birthDate).toLocaleDateString();
             this.user.userClaims.forEach(element => {
@@ -242,6 +255,7 @@ export default {
             addSystemUser: 'addNewSystemUser',
             editSystemUser: 'editSystemUser',
             resetPassword: 'resetPassword',
+            isEmailExists: 'isEmailExists',
         }),
         selectFile() {
             this.$refs.fileInput.click();
@@ -266,7 +280,7 @@ export default {
         },
         async saveChanges() {
             const result = await this.v$.$validate();
-            if (result) {
+            if (result && !this.emailResult.exists) {
                 var userRoles = this.allRoles.filter(x => x.isSelected).map(x => x.id)
                 this.user.userRoles = userRoles
                 this.isEditMode ? await this.editSystemUser(this.user) : await this.addSystemUser(this.user)
@@ -276,6 +290,15 @@ export default {
             await this.resetPassword(this.getSelectedUser.id);
             this.Swal.fire(this.getSwalDeleteDialog.successResetPassword);
         },
+        async checkIsEmailExists() {
+            if (!this.isEditMode && !this.v$.user.email.$silentErrors.length) {
+                const response = await this.isEmailExists(this.user.email);
+                this.emailResult = response.data.result;
+                this.showSvg = true;
+            } else {
+                this.showSvg = false;
+            }
+        }
     },
     computed: {
         ...mapGetters({
@@ -302,6 +325,11 @@ export default {
                 return this.$route.fullPath.toLocaleLowerCase().endsWith("edit")
             }
         }
+    },
+    watch: {
+        'user.email': function () {
+            this.checkIsEmailExists();
+        },
     }
 }
 </script>
@@ -329,4 +357,29 @@ export default {
     cursor: default;
     background-color: #E6F0F9;
     color: rgba(16, 16, 16, 0.3);
-}</style>
+}
+.alert-success {
+    width: 25px;
+    height: 25px;
+    color: green;
+    position: absolute;
+    margin: -42px 0 0 345px;
+}
+.alert-err {
+    width: 30px;
+    height: 30px;
+    color: red;
+    position: absolute;
+    margin: -45px 0 0 345px;
+}
+.alert-err-text {
+  background-color: red;
+  width: auto;
+  color: #fff;
+  border-radius: 3px;
+  padding: 5px;
+  position: absolute;
+  margin: -70px 0 0 345px;
+  z-index: 1;
+}
+</style>
