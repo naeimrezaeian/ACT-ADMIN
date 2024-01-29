@@ -210,6 +210,16 @@ export default {
                 text: 'Пароль был сброшен.',
                 icon: 'success',
             },
+            audioNotUploaded: {
+                title: 'Аудио не загружено!',
+                text: 'Пожалуйста, загрузите аудио.',
+                icon: 'warning',
+            },
+            videoNotUploaded: {
+                title: 'Bидео не загружено!',
+                text: 'Пожалуйста, загрузите видео.',
+                icon: 'warning',
+            },
         },
         all: 'Bсе',
         pdfErrorMessage: 'pdf не существует...',

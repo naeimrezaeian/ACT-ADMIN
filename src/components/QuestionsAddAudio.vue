@@ -154,6 +154,7 @@ export default {
             getNewQuestion: 'getNewQuestion',
             getinputErrorMessages: 'getinputErrorMessages',
             getShowCorrectAnswerErr: 'getShowCorrectAnswerErr',
+            getSwalDeleteDialog: 'getSwalDeleteDialog',
         })
     },
     methods: {
@@ -176,10 +177,14 @@ export default {
                 checkErr = result
             })
             if (result && !checkErr) {
-                this.getNewQuestion.questionBaseId = this.questionBase.id
-                this.$route.fullPath.toLocaleLowerCase().endsWith('edit/audio') ?
-                    await this.editQuestion(this.getNewQuestion) :
-                    await this.addQuestion(this.getNewQuestion)                                
+                if (this.getNewQuestion.fileId) {
+                    this.getNewQuestion.questionBaseId = this.questionBase.id
+                    this.$route.fullPath.toLocaleLowerCase().endsWith('edit/audio') ?
+                        await this.editQuestion(this.getNewQuestion) :
+                        await this.addQuestion(this.getNewQuestion)                             
+                } else {
+                    this.Swal.fire(this.getSwalDeleteDialog.audioNotUploaded);
+                }
             }
         },
         selectFile() {

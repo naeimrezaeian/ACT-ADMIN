@@ -34,7 +34,7 @@
                 </div>
                 <div class="audi">
                     <div class="box" v-if="!getNewQuestion.fileId">
-                        <button type="button" class="add" @click.prevent="selectFile">Загрузить аудио</button>
+                        <button type="button" class="add" @click.prevent="selectFile">Загрузить Bидео</button>
                         <span>Загрузите файл в формате mp4, avi, mkv</span>
                         <input type="file" ref="fileInput" style="display: none;" accept=".mp4,.avi,.mkv"
                             @change="onFileSelected" multiple="false" />
@@ -154,6 +154,7 @@ export default {
             getNewQuestion: 'getNewQuestion',
             getinputErrorMessages: 'getinputErrorMessages',
             getShowCorrectAnswerErr: 'getShowCorrectAnswerErr',
+            getSwalDeleteDialog: 'getSwalDeleteDialog',
         })
     },
     methods: {
@@ -176,10 +177,14 @@ export default {
                 checkErr = result
             })
             if (result && !checkErr) {
-                this.getNewQuestion.questionBaseId = this.questionBase.id
-                this.$route.fullPath.toLocaleLowerCase().endsWith('edit/video') ?
-                    await this.editQuestion(this.getNewQuestion) :
-                    await this.addQuestion(this.getNewQuestion)
+                if (this.getNewQuestion.fileId) {
+                    this.getNewQuestion.questionBaseId = this.questionBase.id
+                    this.$route.fullPath.toLocaleLowerCase().endsWith('edit/video') ?
+                        await this.editQuestion(this.getNewQuestion) :
+                        await this.addQuestion(this.getNewQuestion)
+                } else {
+                    this.Swal.fire(this.getSwalDeleteDialog.videoNotUploaded);
+                }
             }
         },
         selectFile() {
