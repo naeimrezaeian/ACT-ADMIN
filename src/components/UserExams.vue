@@ -93,10 +93,10 @@ export default {
         ActPagination,
     },
     async mounted() {
-        await this.manualCheckSubtests({ page: 1, pageSize: this.defaultPaging.pageSize });
         await this.getBranches({});
         await this.fetchLevels({});
         await this.fetchModules({});
+        await this.manualCheckSubtests({ page: 1, pageSize: this.defaultPaging.pageSize });
     },
     computed: {
         ...mapGetters({

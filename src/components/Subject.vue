@@ -107,9 +107,9 @@ export default {
         }
     },
     async mounted() {
-        await this.fetchSubtests({ page: 1, pageSize: this.defaultPaging.pageSize })
         await this.fetchLevels({})
         await this.fetchModules({})
+        await this.fetchSubtests({ page: 1, pageSize: this.defaultPaging.pageSize })
     },
     methods: {
         ...mapActions({
