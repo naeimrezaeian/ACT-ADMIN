@@ -101,8 +101,9 @@ export default {
             selectAll:false
         }
     },
-    mounted() {
-        this.fetchModules({
+    async mounted() {
+        await this.fetchLevels({})
+        await this.fetchModules({
             level: this.filter.level || null,
             status: this.filter.status || null,
             moduleName: this.filter.moduleName || null,
@@ -110,7 +111,6 @@ export default {
             pageSize: this.defaultPaging.pageSize
 
         })
-        this.fetchLevels({})
     },
     methods: {
         ...mapActions({

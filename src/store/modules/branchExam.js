@@ -156,6 +156,7 @@ export default {
             const response = await httpClient.get(`/api/admin/branchexams/GetManualCheckSubtests/?${params}`)
             if (response.status === 200) {
                 commit("updateManualCheckSubtests", response.data.result)
+                commit('updatePaging',response.data.meta)
             }
         },
         async setUserExamToShow ({ commit }, data) {
