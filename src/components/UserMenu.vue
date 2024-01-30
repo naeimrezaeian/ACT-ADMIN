@@ -26,14 +26,17 @@
                             <div class="item">
                                 <label for="uroven">Старый Пароль</label>
                                 <input type="password" v-model="currentPass">
+                                <div v-for="error in v$.currentPass.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="model">Новый Пароль</label>
                                 <input type="password" v-model="newPass">
+                                <div v-for="error in v$.newPass.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="item">
                                 <label for="uroven">Подтвердите Новый Пароль</label>
-                                <input type="password">
+                                <input type="password" v-model="confirmPass">
+                                <div v-for="error in v$.confirmPass.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
                             <div class="botom">
                                 <button type="button" class="btn save" @click="changePass()">Сохранить</button>
@@ -50,13 +53,39 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import router from '@/router';
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers, minLength, sameAs } from '@vuelidate/validators'
 export default {
     name:'AdminUserMenu',
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             fullName: '',
             currentPass: '',
             newPass: '',
+            confirmPass: '',
+        }
+    },
+    validations () {
+        return {
+            currentPass: {
+                required: helpers.withMessage(this.getinputErrorMessages.changePassword.currentPass, required),
+            },
+            newPass: {
+                required: helpers.withMessage(this.getinputErrorMessages.changePassword.newPass, required),
+                minLength: helpers.withMessage(
+                    this.getinputErrorMessages.changePassword.newPassMin,
+                    minLength(8)
+                ),
+            },
+            confirmPass: {
+                sameAsPassword: helpers.withMessage(
+                    this.getinputErrorMessages.changePassword.confirmPass,
+                    sameAs(this.newPass)
+                ),
+            },
         }
     },
     mounted() {
@@ -75,6 +104,7 @@ export default {
     computed: {
         ...mapGetters({
             getSwalDeleteDialog: 'getSwalDeleteDialog',
+            getinputErrorMessages: 'getinputErrorMessages',
         })
     },
     methods: {
@@ -91,10 +121,13 @@ export default {
             router.push({ name: 'Login' })
         },
         async changePass() {
-            await this.changePassword({ currentPassword: this.currentPass , newPassword: this.newPass });
-            this.Swal.fire(this.getSwalDeleteDialog.successChangePassword);
-            this.currentPass = '', this.newPass = '';
-            this.$Jquery('.popup').hide();
+            const result = await this.v$.$validate();
+            if (result) {
+                await this.changePassword({ currentPassword: this.currentPass , newPassword: this.newPass });
+                this.Swal.fire(this.getSwalDeleteDialog.successChangePassword);
+                this.currentPass = '', this.newPass = '', this.confirmPass = '';
+                this.$Jquery('.popup').hide();
+            }
         }
     },
 }
@@ -165,12 +198,9 @@ export default {
 .object {
     margin-top: 200px !important;
     width: 30% !important;
-    height: 500px !important;
+    height: auto !important;
 }
 .item {
-    margin-bottom: 20px !important;
-}
-.save {
-    margin-top: -25px;
+    margin-bottom: 30px !important;
 }
 </style>
