@@ -94,6 +94,7 @@
                         <div class="item">
                             <label for="name">Название базы</label>
                             <input type="text" id="name" v-model="newQuestionBase.title">
+                            <div v-for="error in v$.newQuestionBase.title.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
                         <div class="item">
                             <label for="subtest">Тип вопроса</label>
@@ -102,6 +103,7 @@
                                 <option v-for="item in subtestTypes" :key="item.key" :value="item.key">{{ item.value }}
                                 </option>
                             </select>
+                            <div v-for="error in v$.newQuestionBase.type.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
 
                         <div class="item">
@@ -110,6 +112,7 @@
                                 <option value="" disabled selected>Выбрать статус</option>
                                 <option v-for="item in statuses" :key="item.key" :value="item.key">{{ item.value }}</option>
                             </select>
+                            <div v-for="error in v$.newQuestionBase.status.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
 
 
@@ -121,6 +124,7 @@
                                 <option value="" disabled selected>Выбрать уровень</option>
                                 <option v-for="item in levels" :key="item.id" :value="item.id">{{ item.title }}</option>
                             </select>
+                            <div v-for="error in v$.newQuestionBase.subtest.examModule.examLevelId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
 
                         <div class="item">
@@ -130,6 +134,7 @@
                                 <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}
                                 </option>
                             </select>
+                            <div v-for="error in v$.newQuestionBase.subtest.examModuleId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
 
 
@@ -140,6 +145,7 @@
                                 <option v-for="item in moudleSubtests" :key="item.id" :value="item.id">{{ item.title }}
                                 </option>
                             </select>
+                            <div v-for="error in v$.newQuestionBase.subtestId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
 
                     </div>
@@ -157,8 +163,13 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import ActPagination from './elementComponents/ActPagination.vue'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 export default {
     name: "AdminQuestions",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     components: {
         ActPagination
     },
@@ -183,6 +194,34 @@ export default {
             },
             isEdit: false,
             currentPage: 1,
+        }
+    },
+    validations () {
+        return {
+            newQuestionBase: {
+                title: {
+                    required: helpers.withMessage(this.getinputErrorMessages.title, required),
+                },
+                type: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addQuestionBase.type, required),
+                },
+                status: {
+                    required: helpers.withMessage(this.getinputErrorMessages.status, required),
+                },
+                subtest: {
+                    examModule: {
+                        examLevelId: {
+                            required: helpers.withMessage(this.getinputErrorMessages.examLevel, required),
+                        },
+                    },
+                    examModuleId: {
+                        required: helpers.withMessage(this.getinputErrorMessages.examModule, required),
+                    },
+                },
+                subtestId: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addQuestionBase.subtest, required),
+                },
+            },
         }
     },
     async mounted() {
@@ -214,6 +253,7 @@ export default {
             paging: 'getPaging',
             getSwalDeleteDialog: 'getSwalDeleteDialog',
             allForDropdowns: 'getAllForDropdowns',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
         levelModules: {
             get() {
@@ -263,14 +303,16 @@ export default {
             await this.getQuestionBases(this.filter)
         },
         async addNewQuestionBase() {
-            this.isEdit ?
+            const result = await this.v$.$validate();
+            if (result) {
+                this.isEdit ?
                 await this.editQuestionBase(this.newQuestionBase) :
                 await this.createNewQuestionBase(this.newQuestionBase)
-
-            await this.getQuestionBases({})
-            this.$Jquery('.popup').hide()
-            this.$Jquery('body').removeClass('hide')
-            this.isEdit = false;
+                await this.getQuestionBases({})
+                this.$Jquery('.popup').hide()
+                this.$Jquery('body').removeClass('hide')
+                this.isEdit = false;
+            }
         },
         selectToEdit(data) {
             this.isEdit = true

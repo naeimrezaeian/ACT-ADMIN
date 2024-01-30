@@ -16,6 +16,7 @@
                 <div class="item">
                     <label for="vopr">Напишите название вопроса</label>
                     <input type="text" v-model="getNewQuestion.desc" id="vopr">
+                    <div v-for="error in v$.getNewQuestion.desc.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                 </div>
                 <div class="box">
                     <label for="subtest">Укажите количество прослушиваний</label>
@@ -33,7 +34,7 @@
                 </div>
                 <div class="audi">
                     <div class="box" v-if="!getNewQuestion.fileId">
-                        <button type="button" class="add" @click.prevent="selectFile">Загрузить аудио</button>
+                        <button type="button" class="add" @click.prevent="selectFile">Загрузить Bидео</button>
                         <span>Загрузите файл в формате mp4, avi, mkv</span>
                         <input type="file" ref="fileInput" style="display: none;" accept=".mp4,.avi,.mkv"
                             @change="onFileSelected" multiple="false" />
@@ -55,8 +56,14 @@
                         <editor :id="question.id" :init="Tinyconfig"
                             :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh" v-model="question.questionTitle">
                         </editor>
+                        <div v-for="error in v$.getNewQuestion.questionTexts.$each.$response.$errors[questionIndex].questionTitle"
+                            :key="error" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <answersAdd :questionIndex="questionIndex"></answersAdd>
+                    <p v-for="error of v$.$errors" :key="error.$uid"></p>
+                    <div v-if="getShowCorrectAnswerErr[questionIndex]" class="error-msg">{{ 
+                        getinputErrorMessages.addAnswers.correctAnswer
+                    }}</div>
                 </div>
                 <button type="button" class="add" @click="addNewQuestion">Добавить вопрос</button>
                 <div class="botom">
@@ -72,6 +79,8 @@
 import Editor from '@tinymce/tinymce-vue'
 import answersAdd from './answersAdd.vue'
 import { mapActions, mapGetters } from 'vuex'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 const Tinyconfig = {
     selector: '#tiny',
     height: 214,
@@ -87,12 +96,30 @@ const Tinyconfig = {
 
 }
 export default {
-
     name: "AdminQuestionVideo",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             Tinyconfig,
             questionBase: null,
+        }
+    },
+    validations () {
+        return {
+            getNewQuestion: {
+                desc: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addQuestion.desc, required),
+                },
+                questionTexts: {
+                    $each: helpers.forEach({
+                        questionTitle: {
+                            required: helpers.withMessage(this.getinputErrorMessages.addQuestion.questionTitle, required),
+                        },
+                    }),
+                },
+            },
         }
     },
     components: {
@@ -113,7 +140,8 @@ export default {
         })
     },
     mounted() {
-        this.questionBase = this.getSelectedQuestionBase
+        this.setShowCorrectAnswerErr();
+        this.questionBase = this.getSelectedQuestionBase;
         if (this.$route.fullPath.toLocaleLowerCase().endsWith('edit/video')) {
             this.downloadQuestionFile(this.getSelectedQuestion.fileId)
             this.setNewQuestion(this.getSelectedQuestion)
@@ -124,6 +152,9 @@ export default {
             getSelectedQuestionBase: 'getSelectedQuestionBase',
             getSelectedQuestion: 'getSelectedQuestion',
             getNewQuestion: 'getNewQuestion',
+            getinputErrorMessages: 'getinputErrorMessages',
+            getShowCorrectAnswerErr: 'getShowCorrectAnswerErr',
+            getSwalDeleteDialog: 'getSwalDeleteDialog',
         })
     },
     methods: {
@@ -135,13 +166,26 @@ export default {
             setNewQuestion: 'setNewQuestion',
             addNewQuestion: 'addNewQuestion',
             removequestion: 'removequestion',
+            setShowCorrectAnswerErr: 'setShowCorrectAnswerErr',
+            checkShowCorrectAnswerErr: 'checkShowCorrectAnswerErr',
         }),
         removeQuestionFile() { this.getNewQuestion.fileId = null },
         async saveShanges() {
-            this.getNewQuestion.questionBaseId = this.questionBase.id
-            this.$route.fullPath.toLocaleLowerCase().endsWith('edit/video') ?
-                await this.editQuestion(this.getNewQuestion) :
-                await this.addQuestion(this.getNewQuestion)
+            const result = await this.v$.$validate();
+            let checkErr;
+            await this.checkShowCorrectAnswerErr().then(result => {
+                checkErr = result
+            })
+            if (result && !checkErr) {
+                if (this.getNewQuestion.fileId) {
+                    this.getNewQuestion.questionBaseId = this.questionBase.id
+                    this.$route.fullPath.toLocaleLowerCase().endsWith('edit/video') ?
+                        await this.editQuestion(this.getNewQuestion) :
+                        await this.addQuestion(this.getNewQuestion)
+                } else {
+                    this.Swal.fire(this.getSwalDeleteDialog.videoNotUploaded);
+                }
+            }
         },
         selectFile() {
             this.$refs.fileInput.click();

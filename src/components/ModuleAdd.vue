@@ -10,6 +10,7 @@
                     <div class="item">
                         <label for="name">Название модуль</label>
                         <input type="text" id="name" v-model="examModule.title">
+                        <div v-for="error in v$.examModule.title.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="itemsmall">
                         <label for="status">Уровень</label>
@@ -17,6 +18,7 @@
                             <option value="" disabled selected>Выбрать уровень</option>
                             <option v-for="item in levels" :key="item.id" :value="item.id">{{ item.title }}</option>
                         </select>
+                        <div v-for="error in v$.examModule.examLevelId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="itemsmall">
                         <label for="urov">Статус</label>
@@ -49,6 +51,8 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import { mapGetters } from 'vuex';
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 const Tinyconfig = {
     selector: '#tiny',
     height: 214,
@@ -66,10 +70,25 @@ const Tinyconfig = {
 import { mapActions } from 'vuex';
 export default {
     name: "AdminModuleAdd",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             Tinyconfig,
             examModule: {status:'active'}
+        }
+    },
+    validations () {
+        return {
+            examModule: {
+                title: {
+                    required: helpers.withMessage(this.getinputErrorMessages.title, required),
+                },
+                examLevelId: {
+                    required: helpers.withMessage(this.getinputErrorMessages.examLevel, required),
+                },
+            },
         }
     },
     mounted() {
@@ -82,15 +101,26 @@ export default {
         'editor': Editor
     },
     computed: {
-        ...mapGetters({ statuses: 'getStatusField', levels: 'getExamLevels',examModuleEdit:'getEditModule' })
+        ...mapGetters({
+            statuses: 'getStatusField',
+            levels: 'getExamLevels',
+            examModuleEdit:'getEditModule',
+            getinputErrorMessages: 'getinputErrorMessages',
+        })
     },
     methods: {
-        ...mapActions({ fetchLevels: 'getLevels', addNewModule: 'addNewModule', editModule: 'editModule' }),
+        ...mapActions({
+            fetchLevels: 'getLevels',
+            addNewModule: 'addNewModule',
+            editModule: 'editModule',
+        }),
         async saveChanges() {
-            console.log('sdfsdf')
-            this.$route.fullPath.endsWith('Edit') ?
+            const result = await this.v$.$validate();
+            if (result) {
+                this.$route.fullPath.endsWith('Edit') ?
                 await this.editModule(this.examModule) :
                 await this.addNewModule(this.examModule)
+            }
         }
     }
 

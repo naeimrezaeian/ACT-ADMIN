@@ -1,6 +1,7 @@
 export default {
     state: {
         newQuestion: null,
+        showCorrectAnswerErr: [true],
     },
     actions: {
         setNewQuestion({ commit }, data) {
@@ -21,6 +22,17 @@ export default {
         removequestion({ commit }, questionIndex) {
             commit('removequestion', questionIndex)
         },
+        setShowCorrectAnswerErr({ commit }) {
+            commit('setShowCorrectAnswerErr')
+        },
+        checkShowCorrectAnswerErr({ state }) {
+            const length = (state.showCorrectAnswerErr).length;
+            let counter = 0;
+            for (let i = 0; i < length; i++) {
+                state.showCorrectAnswerErr[i] ? null : counter ++;
+            }
+            return counter == length ? false : true;
+        }
     },
     mutations: {
         setNewQuestion(state, data) {
@@ -30,6 +42,8 @@ export default {
             state.newQuestion.questionTexts[questionIndex].answers.push({answer:''})
         },
         deleteAnswer(state, { questionIndex, answerIndex }) {
+            state.newQuestion.questionTexts[questionIndex].answers[answerIndex].isCorrectAnswer == true ?
+                state.showCorrectAnswerErr[questionIndex] = true : null ;
             state.newQuestion.questionTexts[questionIndex].answers.splice(answerIndex, 1)
         },
         checkAnswer(state, { questionIndex, answerIndex }) {
@@ -37,6 +51,7 @@ export default {
                 state.newQuestion.questionTexts[questionIndex].answers[i].isCorrectAnswer = false;
             }
             state.newQuestion.questionTexts[questionIndex].answers[answerIndex].isCorrectAnswer = true;
+            state.showCorrectAnswerErr[questionIndex] = false;
         },
         addNewQuestion(state) {
             state.newQuestion.questionTexts.push({
@@ -44,13 +59,19 @@ export default {
                 answers: [{
                     answer: ''
                 }]
-            })
+            });
+            state.showCorrectAnswerErr.push(true);
         },
         removequestion(state, questionIndex) {
-            state.newQuestion.questionTexts.splice(questionIndex, 1)
+            state.newQuestion.questionTexts.splice(questionIndex, 1);
+            state.showCorrectAnswerErr.splice(questionIndex, 1);
+        },
+        setShowCorrectAnswerErr(state) {
+            state.showCorrectAnswerErr = [true];
         },
     },
     getters: {
         getNewQuestion: (state) => state.newQuestion,
+        getShowCorrectAnswerErr: (state) => state.showCorrectAnswerErr,
     }
 }
