@@ -267,7 +267,7 @@ export default {
                 await this.editQuestionBase(this.newQuestionBase) :
                 await this.createNewQuestionBase(this.newQuestionBase)
 
-            await this.getQuestionBases({ page: 1, pageSize: this.defaultPaging.pageSize })
+            await this.getQuestionBases({ page: this.currentPage, pageSize: this.defaultPaging.pageSize })
             this.$Jquery('.popup').hide()
             this.$Jquery('body').removeClass('hide')
             this.isEdit = false;
@@ -285,7 +285,8 @@ export default {
                         examLevelId: ''
                     }
                 },
-                subtestId: ''
+                subtestId: '',
+                status: 'active',
             }
         },
         async onPageChange(page) {
