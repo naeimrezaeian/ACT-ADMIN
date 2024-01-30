@@ -11,7 +11,9 @@ export default {
         error: '',
         loading: false,
         roles: [],
+        isAdminLogedIn: false,
         isCheckerLogedIn: false,
+        isBranchAdminLogedIn: false,
     },
     actions: {
         async adminLogin({ commit }, { username, password }) {
@@ -26,16 +28,8 @@ export default {
                     localStorage.setItem("user", JSON.stringify(response.data.result.user))
                     sessionStorage.setItem('isAuth', 'true');
                     httpClient.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.result.token;
-                    commit("updateLoggedinUser", response.data.result.user)
-                    const decodedToken = jwtDecode(token);
-                    const allRoles = store.getters['getBranchUserType'];
-                    const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-                    if (role.toLowerCase() === allRoles[4].key.toLowerCase()) {
-                        commit('updateIsCheckerLogedIn');
-                        router.push('/UserExams');
-                    } else {
-                        router.push('/dashboard');
-                    }
+                    commit("updateLoggedinUser", response.data.result.user);
+                    store.dispatch('setUserRole', token);
                 }
                 else {
                     console.log('error in response')
@@ -113,6 +107,31 @@ export default {
             store.dispatch('loader/resetShowPermission')
             return response;
         },
+        async setUserRole({ commit }, data) {
+            const decodedToken = jwtDecode(data);
+            const allRoles = store.getters['getBranchUserType'];
+            const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            if (role.toLowerCase() === allRoles[4].key.toLowerCase()) {
+                commit('resetIsAdminLogedIn');
+                commit('resetIsBranchAdminLogedIn');
+                commit('updateIsCheckerLogedIn');
+                router.push('/UserExams');
+            } else if (
+                role.toLowerCase() === allRoles[1].key.toLowerCase() ||
+                role.toLowerCase() === allRoles[2].key.toLowerCase() ||
+                role.toLowerCase() === allRoles[3].key.toLowerCase()
+            ) {
+                commit('resetIsAdminLogedIn');
+                commit('resetIsCheckerLogedIn');
+                commit('updateIsBranchAdminLogedIn');
+                router.push('/Branches')
+            } else {
+                commit('updateIsAdminLogedIn');
+                commit('updateIsCheckerLogedIn');
+                commit('updateIsBranchAdminLogedIn');
+                router.push('/dashboard')
+            }
+        },
     },
     mutations: {
         updateOnError(state, data) {
@@ -136,7 +155,22 @@ export default {
         },
         updateIsCheckerLogedIn(state) {
             state.isCheckerLogedIn = true;
-        }
+        },
+        resetIsCheckerLogedIn(state) {
+            state.isCheckerLogedIn = false;
+        },
+        updateIsBranchAdminLogedIn(state) {
+            state.isBranchAdminLogedIn = true;
+        },
+        resetIsBranchAdminLogedIn(state) {
+            state.isBranchAdminLogedIn = false;
+        },
+        updateIsAdminLogedIn(state) {
+            state.isAdminLogedIn = true;
+        },
+        resetIsAdminLogedIn(state) {
+            state.isAdminLogedIn = false;
+        },
     },
     getters: {
         getCurrentUser(state) {
@@ -158,6 +192,8 @@ export default {
             return state.adminUsers
         },
         getSelectedUser: (state) => state.selectedUser,
+        getIsAdminLogedIn: (state) => state.isAdminLogedIn,
         getIsCheckerLogedIn: (state) => state.isCheckerLogedIn,
+        getIsBranchAdminLogedIn: (state) => state.isBranchAdminLogedIn,
     }
 }
