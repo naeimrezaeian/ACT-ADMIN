@@ -53,15 +53,6 @@
                         <div v-for="error in v$.subtest.questionType.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
-                        <label for="tip_p">Тип проверки</label>
-                        <select id="tip_p" v-model="subtest.checkType">
-                            <option value="" disabled selected>Автоматический</option>
-                            <option v-for="item in subtesCheckType" :key="item.key" :value="item.key">{{ item.value }}
-                            </option>
-                        </select>
-                        <div v-for="error in v$.subtest.checkType.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
-                    </div>
-                    <div class="item">
                         <label for="video">Видео запись</label>
                         <select id="video" v-model="cameraRecord">
                             <option value="" disabled selected>Автоматический</option>
@@ -362,9 +353,6 @@ export default {
                 },
                 questionType: {
                     required: helpers.withMessage(this.getinputErrorMessages.addSubtest.subtestType, required),
-                },
-                checkType: {
-                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.checkType, required),
                 },
             },
         }
