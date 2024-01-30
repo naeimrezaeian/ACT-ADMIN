@@ -6796,3 +6796,16 @@ footer .box .right ul li {
     font-size: 16px;
     font-weight: 400;
 }
+
+.error-msg {
+    margin-top: 2px;
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
+    animation: error-msg 1s infinite alternate linear;
+}
+@keyframes error-msg {
+    100% {
+        opacity: 5%;
+    }
+}

@@ -101,6 +101,12 @@ export default {
         async resetPassword(/* eslint-disable-next-line no-unused-vars */ _, data) {
             await httpClient.post(`/api/admin/users/ResetPassword/${data}`)
         },
+        async isEmailExists(/* eslint-disable-next-line no-unused-vars */ _, data) {
+            store.dispatch('loader/updateShowPermission')
+            const response = await httpClient.post(`/api/admin/users/isEmailExists`, { email: data })
+            store.dispatch('loader/resetShowPermission')
+            return response;
+        },
         async setUserRole({ commit }, data) {
             const decodedToken = jwtDecode(data);
             const allRoles = store.getters['getBranchUserType'];

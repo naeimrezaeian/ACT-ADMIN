@@ -11,16 +11,22 @@
                         <div class="item">
                             <label for="fio">Фамилия</label>
                             <input type="text" id="fio" name="fio" v-model="user.family">
+                            <div v-for="error in v$.user.family.$errors" :key="error.$uid" class="error-msg">{{
+                                error.$message }}</div>
                         </div>
                         <div class="item">
                             <label for="name">Имя</label>
                             <input type="text" id="name" name="name" v-model="user.name">
+                            <div v-for="error in v$.user.name.$errors" :key="error.$uid" class="error-msg">{{ error.$message
+                            }}</div>
                         </div>
                     </div>
                     <div class="box">
                         <div class="item">
                             <label for="och">Отчество</label>
                             <input type="text" id="och" name="och" v-model="user.father">
+                            <div v-for="error in v$.user.father.$errors" :key="error.$uid" class="error-msg">{{
+                                error.$message }}</div>
                         </div>
                         <div class="item">
                             <div class="select">
@@ -30,52 +36,59 @@
                                     <option v-for="item in sexTypes" :key="item.key" :value="item.key">{{ item.value }}
                                     </option>
                                 </select>
+                                <div v-for="error in v$.user.sex.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                             <div class="select">
                                 <label for="date">Дата рождения</label>
                                 <input type="text" placeholder="__.__.____" onfocus="(this.type='date')" id="date"
                                     name="date" class="dats" v-model="user.birthDate">
+                                <div v-for="error in v$.user.birthDate.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
                             </div>
                         </div>
                     </div>
                     <div class="box">
                         <div class="item">
                             <label for="naci">Адрес электронной почты</label>
-                            <input type="text" id="naci" name="naci" v-model="user.email">
+                            <input type="text" id="naci" name="naci" v-model="user.email" :disabled="isEditMode">
+                            <svg v-if="!isEditMode && showSvg && !this.emailResult.exists" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="alert-success" viewBox="0 0 16 16">
+                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                            </svg>
+                            <svg v-if="!isEditMode && showSvg && this.emailResult.exists" @mouseover="emailErrToolip = true" @mouseleave="emailErrToolip = false" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="alert-err" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                            <div v-if="emailErrToolip" class="alert-err-text">электронная почта существует</div>
+                            <div v-for="error in v$.user.email.$errors" :key="error.$uid" class="error-msg">{{
+                                error.$message }}</div>
                         </div>
                         <div class="item">
                             <div class="select">
+                                <label for="pol">Статус</label>
+                                <select name="pol" id="pol" v-model="user.status">
+                                    <option value="" disabled selected>Выбрать</option>
+                                    <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}
+                                    </option>
+                                </select>
+                                <div v-for="error in v$.user.status.$errors" :key="error.$uid" class="error-msg">{{
+                                    error.$message }}</div>
+                            </div>
+                            <div class="select">
                                 <label for="pol">Роль</label>
-                                <select name="pol" id="pol" v-model="user.role">
+                                <select class="role" name="pol" id="pol" v-model="user.role">
                                     <option value="" disabled selected>Выбрать</option>
                                     <option v-for="item in adminRoleTypes" :key="item.key" :value="item.key">{{ item.value
                                     }}
                                     </option>
                                 </select>
+                                <div v-for="error in v$.user.role.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                             </div>
-                            <div class="select">
-                                <label for="pol">Статус</label>
-                                <select name="pol" id="pol" v-model="user.status" style="width: 100%;">
-                                    <option value="" disabled selected>Выбрать</option>
-                                    <option v-for="item in statusTypes" :key="item.key" :value="item.key">{{ item.value }}
-                                    </option>
-
-                                </select>
-                            </div>
-                            <!-- <div class="select" v-if="user.role && user.role != adminRoleTypes[0].key">
-                                <label for="roj">Филиал</label>
-                                <select name="roj" id="roj" class="usereditselect" v-model="user.branchId">
-                                    <option value="" disabled selected>Выбрать</option>
-                                    <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode +
-                                        '-' + item.name }}</option>
-                                </select>
-                            </div> -->
                         </div>
-
                     </div>
                     <div class="box">
                         <div class="item">
-                            <button type="button" class="btn-reset" @click="resetPass()" :disabled="!this.isEditMode">Сброс пароля</button>
+                            <button type="button" class="btn-reset" @click="resetPass()" :disabled="!this.isEditMode">Сброс
+                                пароля</button>
                         </div>
                     </div>
                     <!-- <div class="box">
@@ -94,7 +107,15 @@
 
                                 </select>
                             </div>
-
+                        </div>
+                        <div class="select" v-if="user.role && user.role != adminRoleTypes[0].key">
+                            <label for="roj">Филиал</label>
+                            <select name="roj" id="roj" class="usereditselect branchInput" v-model="user.branchId">
+                                <option value="" disabled selected>Выбрать</option>
+                                <option v-for="item in branches" :key="item.id" :value="item.id">{{ item.branchCode +
+                                    '-' + item.name }}</option>
+                            </select>
+                            <div v-for="error in v$.user.branchId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                         </div>
                     </div> -->
 
@@ -151,11 +172,60 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers, minLength, email } from '@vuelidate/validators'
 export default {
     name: "AdminUserAdd",
+    setup() {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
-            user: {}
+            user: {},
+            emailErrToolip: false,
+            showSvg: false,
+            emailResult: {
+                exists: true
+            },
+        }
+    },
+    validations() {
+        return {
+            user: {
+                family: {
+                    required: helpers.withMessage(this.getinputErrorMessages.familly, required),
+                    minLength: helpers.withMessage(
+                        this.getinputErrorMessages.addUser.famillyMin,
+                        minLength(3)
+                    ),
+                },
+                name: {
+                    required: helpers.withMessage(this.getinputErrorMessages.name, required),
+                    minLength: helpers.withMessage(
+                        this.getinputErrorMessages.addUser.nameMin,
+                        minLength(3)
+                    ),
+                },
+                father: {
+                    required: helpers.withMessage(this.getinputErrorMessages.father, required)
+                },
+                sex: {
+                    required: helpers.withMessage(this.getinputErrorMessages.sex, required)
+                },
+                birthDate: {
+                    required: helpers.withMessage(this.getinputErrorMessages.birthDate, required)
+                },
+                email: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.email, required),
+                    email: helpers.withMessage(this.getinputErrorMessages.addUser.emailValid, email),
+                },
+                role: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addUser.role, required)
+                },
+                status: {
+                    required: helpers.withMessage(this.getinputErrorMessages.status, required)
+                },
+            },
         }
     },
     async mounted() {
@@ -163,6 +233,7 @@ export default {
         this.getAllBranches()
         await this.fetchAllRoles()
         if (this.isEditMode) {
+            this.emailResult.exists = false;
             this.user = this.getSelectedUser;
             this.user.birthDate = new Date(this.user.birthDate).toLocaleDateString();
             this.user.userClaims.forEach(element => {
@@ -184,6 +255,7 @@ export default {
             addSystemUser: 'addNewSystemUser',
             editSystemUser: 'editSystemUser',
             resetPassword: 'resetPassword',
+            isEmailExists: 'isEmailExists',
         }),
         selectFile() {
             this.$refs.fileInput.click();
@@ -199,7 +271,6 @@ export default {
             const blob = new Blob([result.data], { type: 'image/*' });
             var url = URL.createObjectURL(blob);
             this.$refs.profileImage.src = url;
-            //this.$refs.profileImage.load()
         },
         deleteUserProfileImage() {
             this.user.userImageId = null
@@ -208,14 +279,26 @@ export default {
 
         },
         async saveChanges() {
-            var userRoles = this.allRoles.filter(x => x.isSelected).map(x => x.id)
-            this.user.userRoles = userRoles
-            this.isEditMode ? await this.editSystemUser(this.user) : await this.addSystemUser(this.user)
+            const result = await this.v$.$validate();
+            if (result && !this.emailResult.exists) {
+                var userRoles = this.allRoles.filter(x => x.isSelected).map(x => x.id)
+                this.user.userRoles = userRoles
+                this.isEditMode ? await this.editSystemUser(this.user) : await this.addSystemUser(this.user)
+            }
         },
         async resetPass() {
             await this.resetPassword(this.getSelectedUser.id);
             this.Swal.fire(this.getSwalDeleteDialog.successResetPassword);
         },
+        async checkIsEmailExists() {
+            if (!this.isEditMode && !this.v$.user.email.$silentErrors.length) {
+                const response = await this.isEmailExists(this.user.email);
+                this.emailResult = response.data.result;
+                this.showSvg = true;
+            } else {
+                this.showSvg = false;
+            }
+        }
     },
     computed: {
         ...mapGetters({
@@ -226,6 +309,7 @@ export default {
             statusTypes: 'getStatusField',
             getSelectedUser: 'getSelectedUser',
             getSwalDeleteDialog: 'getSwalDeleteDialog',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
         firstColumn() {
             return this.allRoles.slice(0, Math.ceil(this.allRoles.length / 2));
@@ -241,6 +325,11 @@ export default {
                 return this.$route.fullPath.toLocaleLowerCase().endsWith("edit")
             }
         }
+    },
+    watch: {
+        'user.email': function () {
+            this.checkIsEmailExists();
+        },
     }
 }
 </script>
@@ -258,13 +347,39 @@ export default {
     font-weight: 500;
     transition: background-color .5s;
 }
+
 .btn-reset:hover {
     background-color: #2057A1;
     color: #fff;
 }
+
 .btn-reset:disabled:hover {
     cursor: default;
     background-color: #E6F0F9;
     color: rgba(16, 16, 16, 0.3);
+}
+.alert-success {
+    width: 25px;
+    height: 25px;
+    color: green;
+    position: absolute;
+    margin: -42px 0 0 345px;
+}
+.alert-err {
+    width: 30px;
+    height: 30px;
+    color: red;
+    position: absolute;
+    margin: -45px 0 0 345px;
+}
+.alert-err-text {
+  background-color: red;
+  width: auto;
+  color: #fff;
+  border-radius: 3px;
+  padding: 5px;
+  position: absolute;
+  margin: -70px 0 0 345px;
+  z-index: 1;
 }
 </style>
