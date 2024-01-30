@@ -295,8 +295,10 @@ export default {
                 const response = await this.isEmailExists(this.user.email);
                 this.emailResult = response.data.result;
                 this.showSvg = true;
+                this.emailErrToolip = false;
             } else {
                 this.showSvg = false;
+                this.emailErrToolip = false;
             }
         }
     },
