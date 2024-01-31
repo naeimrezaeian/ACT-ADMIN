@@ -33,7 +33,7 @@
 
                 <div class="item">
                     <label for="mess">Описание</label>
-                    <editor id="tiny" :init="Tinyconfig" :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
+                    <editor id="tiny" :init="Tinyconfig" api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
                         v-model="examModule.description"></editor>
                 </div>
                 <div class="botom">

@@ -21,7 +21,7 @@
                 <div class="item">
                     <label for="tiny">Введите текст вопроса</label>
                     <editor id="tiny" v-model="newQuestion.questionTexts[0].questionTitle" :init="Tinyconfig"
-                        :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh">
+                        api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh">
                     </editor>
                     <div v-for="error in v$.newQuestion.questionTexts[0].questionTitle.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                 </div>

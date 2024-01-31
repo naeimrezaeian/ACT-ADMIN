@@ -20,7 +20,7 @@
                 </div>
                 <div class="item">
                     <label for="tiny">Введите текст вопроса</label>
-                    <editor id="tiny" :init="Tinyconfig" :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
+                    <editor id="tiny" :init="Tinyconfig" api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
                         v-model="getNewQuestion.questionTexts[0].questionTitle">
                     </editor>
                     <div v-for="error in v$.getNewQuestion.questionTexts[0].questionTitle.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
