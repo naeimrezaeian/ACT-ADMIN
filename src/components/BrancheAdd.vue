@@ -79,7 +79,7 @@
                             </div>
                             <div class="item special">
                                 <label>роль пользователя</label>
-                                <input :value="getUserRole(item.userId)" disabled />
+                                <input :value="getUserRole(item.userId, index)" disabled />
                             </div>
                             <button type="button" @click="removeBranchUser(index)" class="delete" />
                         </div>
@@ -388,7 +388,9 @@ export default {
             this.branch.docs.splice(this.branch.docs.indexOf(val), 1);
             this.$refs.branchAttachments.value = '';
         },
-        getUserRole(userId) {
+        getUserRole(userId, ind) {
+            this.branch.branchSystemUsers[ind].userRole = this.usersNotInBranch.find(x => x.id === userId)?.role;
+            this.branch.branchSystemUsers[ind].fullName = this.usersNotInBranch.find(x => x.id === userId)?.fullname;
             return this.branchUserTypes.find(x => x.key === this.usersNotInBranch.find(x => x.id === userId)?.role)?.value
         }
     },
