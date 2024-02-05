@@ -215,6 +215,7 @@ export default {
                 id: null,
                 branchSystemUsers: [],
                 branchExamLevels: [],
+                docs: [],
             },
         }
     },
@@ -294,7 +295,7 @@ export default {
             return require('@/assets/img/ava.svg');
         },
         img() {
-            return this.getSelectedBranch.docs ? this.branch.docs.find(e => e.fileType === 'image') : '';
+            return this.branch.docs ? this.branch.docs.find(e => e.fileType === 'image') : '';
         },
         docs() {
             return this.branch.docs ? this.branch.docs.filter(e => e.fileType === 'document') : '';
