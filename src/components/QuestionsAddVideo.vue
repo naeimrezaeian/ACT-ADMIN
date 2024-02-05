@@ -54,7 +54,7 @@
                     <div class="item">
                         <label :for="question.id">Введите текст вопроса</label>
                         <editor :id="question.id" :init="Tinyconfig"
-                            :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh" v-model="question.questionTitle">
+                            api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh" v-model="question.questionTitle">
                         </editor>
                         <div v-for="error in v$.getNewQuestion.questionTexts.$each.$response.$errors[questionIndex].questionTitle"
                             :key="error" class="error-msg">{{ error.$message }}</div>
