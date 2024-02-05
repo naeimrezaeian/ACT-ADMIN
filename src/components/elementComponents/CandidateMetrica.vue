@@ -69,7 +69,7 @@
                                 :class="[(item.matrix).indexOf(value) % 2 == 0 ? 'even-row' : 'odd-row']">
                                 <td>
                                     <div class="first-col">
-                                        <a href="">{{ value.subtestTitle }}</a>
+                                        <a href="" style="text-align: start;">{{ value.subtestTitle }}</a>
                                         <button type="button" class="add add-btn"
                                             v-if="value.isManualCheck && !value.userAnswerFileId"
                                             @click.prevent="addFile(value, itemIndex, valueIndex)"></button>
