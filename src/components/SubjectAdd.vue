@@ -96,7 +96,7 @@
                                         <button type="button" class="edit" @click="toggleVariantEdit(item)"></button>
                                     </div>
                                     <div class="text" v-for="(question, index) in item.questions" :key="question.id">
-                                        <div class="txt" v-html="question?.question?.questionTexts[0]?.questionTitle"></div>
+                                        <div class="txt" v-html="question?.question?.desc"></div>
                                         <button type="button" class="delete"
                                             @click="removeQuestionFromVariant(item, index)"></button>
                                     </div>
@@ -123,7 +123,7 @@
                                                         class="checkbox">
                                                     <label :for="question.id"></label>
                                                 </div>
-                                                <div class="name" v-html="question.questionTexts[0].questionTitle"></div>
+                                                <div class="name" v-html="question.desc"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -297,7 +297,7 @@ import Editor from '@tinymce/tinymce-vue'
 import VueTimepicker from 'vue3-timepicker/src/VueTimepicker.vue'
 import { mapActions, mapGetters } from 'vuex'
 import { useVuelidate } from '@vuelidate/core'
-import { required, helpers } from '@vuelidate/validators'
+import { required, helpers, minValue, maxValue } from '@vuelidate/validators'
 const Tinyconfig = {
     selector: '#tiny',
     height: 214,
@@ -339,9 +339,21 @@ export default {
                 },
                 maxScore: {
                     required: helpers.withMessage(this.getinputErrorMessages.addSubtest.maxScore, required),
+                    minValue: helpers.withMessage(
+                        `${this.getinputErrorMessages.addSubtest.maxScoreMin} 1`,
+                        minValue(1)
+                    ),
                 },
                 passingScore: {
                     required: helpers.withMessage(this.getinputErrorMessages.addSubtest.passingScore, required),
+                    minValue: helpers.withMessage(
+                        `${this.getinputErrorMessages.addSubtest.passingScoreMin} 0`,
+                        minValue(0)
+                    ),
+                    maxValue: helpers.withMessage(
+                        `${this.getinputErrorMessages.addSubtest.passingScoreMax} ${this.subtest.maxScore}`,
+                        maxValue(this.subtest.maxScore)
+                    ),
                 },
                 examModule: {
                     examLevelId: {
