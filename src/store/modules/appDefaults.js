@@ -254,7 +254,10 @@ export default {
             },
             addSubtest: {
                 maxScore: 'Введите максимальный балл',
+                maxScoreMin: 'минимальный балл',
                 passingScore: 'Введите проходной балл',
+                passingScoreMin: 'Mинимaльный проходной балл',
+                passingScoreMax: 'Maкcимaльный проходной балл',
                 subtestType: 'Введите тип субтеста',
                 checkType: 'Введите тип проверки',
             },
