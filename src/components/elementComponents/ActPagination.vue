@@ -69,7 +69,8 @@ export default {
             //     return this.totalPages - this.maxVisibleButtons;
             // }
             if((this.totalPages-this.currentPage) < this.maxVisibleButtons){
-                return this.totalPages - this.maxVisibleButtons+1;
+                return this.totalPages < this.maxVisibleButtons ? 1 :
+                    this.totalPages - this.maxVisibleButtons+1;
             }
             // When inbetween
             return this.currentPage - 1;

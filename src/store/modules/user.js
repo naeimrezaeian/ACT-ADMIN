@@ -107,6 +107,12 @@ export default {
         async resetPassword(/* eslint-disable-next-line no-unused-vars */ _, data) {
             await httpClient.post(`/api/admin/users/ResetPassword/${data}`)
         },
+        async isEmailExists(/* eslint-disable-next-line no-unused-vars */ _, data) {
+            store.dispatch('loader/updateShowPermission')
+            const response = await httpClient.post(`/api/admin/users/isEmailExists`, { email: data })
+            store.dispatch('loader/resetShowPermission')
+            return response;
+        },
     },
     mutations: {
         updateOnError(state, data) {

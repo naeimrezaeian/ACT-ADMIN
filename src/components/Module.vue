@@ -66,7 +66,7 @@
                             <td>{{ item.examLevel.title }}</td>
                             <td>{{ item.date }}</td>
                             <td>{{ item.createdBy.name + ' ' + item.createdBy.family }}</td>
-                            <td v-html="item.description"></td>
+                            <td v-html="item.description" class="desc"></td>
                             <td>{{ item.status }}</td>
                         </tr>
 
@@ -101,8 +101,9 @@ export default {
             selectAll:false
         }
     },
-    mounted() {
-        this.fetchModules({
+    async mounted() {
+        await this.fetchLevels({})
+        await this.fetchModules({
             level: this.filter.level || null,
             status: this.filter.status || null,
             moduleName: this.filter.moduleName || null,
@@ -110,7 +111,6 @@ export default {
             pageSize: this.defaultPaging.pageSize
 
         })
-        this.fetchLevels({})
     },
     methods: {
         ...mapActions({
@@ -192,4 +192,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.desc {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+</style>

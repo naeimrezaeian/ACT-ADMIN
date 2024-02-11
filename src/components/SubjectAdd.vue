@@ -10,6 +10,7 @@
                     <div class="item">
                         <label for="zag">Заголовок</label>
                         <input type="text" id="zag" v-model="subtest.title">
+                        <div v-for="error in v$.subtest.title.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="time">Время прохождения</label>
@@ -18,10 +19,12 @@
                     <div class="item">
                         <label for="col">Количество баллов</label>
                         <input type="text" id="col" v-model.number="subtest.maxScore">
+                        <div v-for="error in v$.subtest.maxScore.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="col_p">Проходной балл</label>
                         <input type="text" id="col_p" v-model.number="subtest.passingScore">
+                        <div v-for="error in v$.subtest.passingScore.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                 </div>
                 <div class="box">
@@ -31,6 +34,7 @@
                             <option value="" disabled selected>Выбрать уровень</option>
                             <option v-for="item in levels" :key="item.id" :value="item.id">{{ item.title }}</option>
                         </select>
+                        <div v-for="error in v$.subtest.examModule.examLevelId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="model">Модуль</label>
@@ -38,6 +42,7 @@
                             <option value="" disabled selected>Выбрать модуль</option>
                             <option v-for="item in levelModules" :key="item.id" :value="item.id">{{ item.title }}</option>
                         </select>
+                        <div v-for="error in v$.subtest.examModuleId.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="tip">Тип субътеста</label>
@@ -45,6 +50,7 @@
                             <option value="" disabled selected>Выбрать тип</option>
                             <option v-for="item in subtestTypes" :key="item.key" :value="item.key">{{ item.value }}</option>
                         </select>
+                        <div v-for="error in v$.subtest.questionType.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                     </div>
                     <div class="item">
                         <label for="video">Видео запись</label>
@@ -58,7 +64,7 @@
                 </div>
                 <div class="item">
                     <label for="text">Описание</label>
-                    <editor id="tiny" :init="Tinyconfig" :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
+                    <editor id="tiny" :init="Tinyconfig" api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
                         v-model="subtest.desc">
                     </editor>
                 </div>
@@ -90,7 +96,7 @@
                                         <button type="button" class="edit" @click="toggleVariantEdit(item)"></button>
                                     </div>
                                     <div class="text" v-for="(question, index) in item.questions" :key="question.id">
-                                        <div class="txt" v-html="question?.question?.questionTexts[0]?.questionTitle"></div>
+                                        <div class="txt" v-html="question?.question?.desc"></div>
                                         <button type="button" class="delete"
                                             @click="removeQuestionFromVariant(item, index)"></button>
                                     </div>
@@ -117,7 +123,7 @@
                                                         class="checkbox">
                                                     <label :for="question.id"></label>
                                                 </div>
-                                                <div class="name" v-html="question.questionTexts[0].questionTitle"></div>
+                                                <div class="name" v-html="question.desc"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -290,7 +296,8 @@
 import Editor from '@tinymce/tinymce-vue'
 import VueTimepicker from 'vue3-timepicker/src/VueTimepicker.vue'
 import { mapActions, mapGetters } from 'vuex'
-
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers, minValue, maxValue } from '@vuelidate/validators'
 const Tinyconfig = {
     selector: '#tiny',
     height: 214,
@@ -308,6 +315,9 @@ const Tinyconfig = {
 
 export default {
     name: "AdminSubjectAdd",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             Tinyconfig,
@@ -319,6 +329,44 @@ export default {
 
                 }
             }
+        }
+    },
+    validations () {
+        return {
+            subtest: {
+                title: {
+                    required: helpers.withMessage(this.getinputErrorMessages.title, required),
+                },
+                maxScore: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.maxScore, required),
+                    minValue: helpers.withMessage(
+                        `${this.getinputErrorMessages.addSubtest.maxScoreMin} 1`,
+                        minValue(1)
+                    ),
+                },
+                passingScore: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.passingScore, required),
+                    minValue: helpers.withMessage(
+                        `${this.getinputErrorMessages.addSubtest.passingScoreMin} 0`,
+                        minValue(0)
+                    ),
+                    maxValue: helpers.withMessage(
+                        `${this.getinputErrorMessages.addSubtest.passingScoreMax} ${this.subtest.maxScore}`,
+                        maxValue(this.subtest.maxScore)
+                    ),
+                },
+                examModule: {
+                    examLevelId: {
+                        required: helpers.withMessage(this.getinputErrorMessages.examLevel, required),
+                    },
+                },
+                examModuleId: {
+                    required: helpers.withMessage(this.getinputErrorMessages.examModule, required),
+                },
+                questionType: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addSubtest.subtestType, required),
+                },
+            },
         }
     },
     async mounted() {
@@ -342,6 +390,8 @@ export default {
             editSubtest: 'getEditSubtest',
             subtestVariants: 'getSubtestVariants',
             questionBase: 'getQuestionBase',
+            subtesCheckType: 'getSubtestCheckType',
+            getinputErrorMessages: 'getinputErrorMessages',
         }),
         selectAllVariants: {
             get() {
@@ -430,11 +480,14 @@ export default {
             });
         },
         async saveShanges() {
-            this.isEditMode ?
+            const result = await this.v$.$validate();
+            if (result) {
+                this.isEditMode ?
                 await this.editCurrentSubtest(this.subtest) :
                 await this.addSubtest(this.subtest)
-            if (this.isEditMode) {
-                this.updateSubtestVariant({ subtestId: this.subtest.id, variants: this.subtestVariants })
+                if (this.isEditMode) {
+                    this.updateSubtestVariant({ subtestId: this.subtest.id, variants: this.subtestVariants })
+                }
             }
         }
     },

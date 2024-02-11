@@ -25,7 +25,7 @@
 
                     </div>
                     <div class="item">
-                        <div class="txt" v-html="examLevel.desc"></div>
+                        <div class="txt desc" v-html="examLevel.desc"></div>
                     </div>
                 </div>
 
@@ -50,4 +50,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.desc {
+    overflow: auto;
+    max-height: 300px;
+}
+</style>

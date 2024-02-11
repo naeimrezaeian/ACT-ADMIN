@@ -16,14 +16,15 @@
                 <div class="item">
                     <label for="vopr">Напишите название вопроса</label>
                     <input type="text" v-model="newQuestion.desc" id="vopr">
+                    <div v-for="error in v$.newQuestion.desc.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                 </div>
                 <div class="item">
                     <label for="tiny">Введите текст вопроса</label>
                     <editor id="tiny" v-model="newQuestion.questionTexts[0].questionTitle" :init="Tinyconfig"
-                        :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh">
+                        api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh">
                     </editor>
+                    <div v-for="error in v$.newQuestion.questionTexts[0].questionTitle.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                 </div>
-
                 <div class="botom">
                     <router-link to="/Questions" class="btn otmena">Отменить</router-link>
                     <button type="button" class="btn save" @click="saveShanges">Создать</button>
@@ -36,6 +37,8 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import { mapActions, mapGetters } from 'vuex'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 const Tinyconfig = {
     selector: '#tiny',
     height: 214,
@@ -52,6 +55,9 @@ const Tinyconfig = {
 }
 export default {
     name: "AdminQuestionLetter",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     components: {
         'editor': Editor
     },
@@ -71,6 +77,20 @@ export default {
             }
         }
     },
+    validations () {
+        return {
+            newQuestion: {
+                desc: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addQuestion.desc, required),
+                },
+                questionTexts: [{
+                    questionTitle: {
+                        required: helpers.withMessage(this.getinputErrorMessages.addQuestion.questionTitle, required),
+                    },
+                }]
+            },
+        }
+    },
     mounted() {
         this.questionBase = this.getSelectedQuestionBase
         if (this.$route.fullPath.toLocaleLowerCase().endsWith('edit/letter')) {
@@ -78,15 +98,25 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({ getSelectedQuestionBase: 'getSelectedQuestionBase', getSelectedQuestion: 'getSelectedQuestion' })
+        ...mapGetters({
+            getSelectedQuestionBase: 'getSelectedQuestionBase',
+            getSelectedQuestion: 'getSelectedQuestion',
+            getinputErrorMessages: 'getinputErrorMessages',
+        })
     },
     methods: {
-        ...mapActions({ addQuestion: 'addQuestion', editQuestion: 'editQuestion' }),
+        ...mapActions({
+            addQuestion: 'addQuestion',
+            editQuestion: 'editQuestion'
+        }),
         async saveShanges() {
-            this.newQuestion.questionBaseId = this.questionBase.id
-            this.$route.fullPath.toLocaleLowerCase().endsWith('edit/letter') ?
-                await this.editQuestion(this.newQuestion) :
-                await this.addQuestion(this.newQuestion)
+            const result = await this.v$.$validate();
+            if (result) {
+                this.newQuestion.questionBaseId = this.questionBase.id
+                this.$route.fullPath.toLocaleLowerCase().endsWith('edit/letter') ?
+                    await this.editQuestion(this.newQuestion) :
+                    await this.addQuestion(this.newQuestion)
+            }
         }
     }
 

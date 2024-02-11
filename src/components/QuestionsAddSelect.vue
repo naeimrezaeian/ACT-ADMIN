@@ -16,15 +16,20 @@
                 <div class="item">
                     <label for="vopr">Напишите название вопроса</label>
                     <input type="text" v-model="getNewQuestion.desc" id="vopr">
+                    <div v-for="error in v$.getNewQuestion.desc.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                 </div>
                 <div class="item">
                     <label for="tiny">Введите текст вопроса</label>
-                    <editor id="tiny" :init="Tinyconfig" :api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
+                    <editor id="tiny" :init="Tinyconfig" api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
                         v-model="getNewQuestion.questionTexts[0].questionTitle">
                     </editor>
-
+                    <div v-for="error in v$.getNewQuestion.questionTexts[0].questionTitle.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                 </div>
                 <answersAdd :questionIndex="0"></answersAdd>
+                <p v-for="error of v$.$errors" :key="error.$uid"></p>
+                <div v-if="getShowCorrectAnswerErr[0]" class="error-msg">{{ 
+                    getinputErrorMessages.addAnswers.correctAnswer
+                }}</div>
                 <div class="botom">
                     <router-link to="/Questions" class="btn otmena">Отменить</router-link>
                     <button type="button" class="btn save" @click="saveShanges">Создать</button>
@@ -38,6 +43,8 @@
 import Editor from '@tinymce/tinymce-vue'
 import answersAdd from './answersAdd.vue'
 import { mapActions, mapGetters } from 'vuex'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
 const Tinyconfig = {
     selector: '#tiny',
     height: 214,
@@ -54,6 +61,9 @@ const Tinyconfig = {
 }
 export default {
     name: "AdminQuestionSelect",
+    setup () {
+        return { v$: useVuelidate() }
+    },
     components: {
         'editor': Editor,
         answersAdd,
@@ -62,6 +72,20 @@ export default {
         return {
             Tinyconfig,
             questionBase: null,
+        }
+    },
+    validations () {
+        return {
+            getNewQuestion: {
+                desc: {
+                    required: helpers.withMessage(this.getinputErrorMessages.addQuestion.desc, required),
+                },
+                questionTexts: [{
+                    questionTitle: {
+                        required: helpers.withMessage(this.getinputErrorMessages.addQuestion.questionTitle, required),
+                    },
+                }]
+            },
         }
     },
     async created() {
@@ -77,7 +101,8 @@ export default {
         })
     },
     async mounted() {
-        this.questionBase = this.getSelectedQuestionBase
+        this.setShowCorrectAnswerErr();
+        this.questionBase = this.getSelectedQuestionBase;
         if(this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')){
             await this.setNewQuestion(this.getSelectedQuestion)
         }
@@ -87,6 +112,8 @@ export default {
             getSelectedQuestionBase: 'getSelectedQuestionBase',
             getSelectedQuestion:'getSelectedQuestion',
             getNewQuestion: 'getNewQuestion',
+            getinputErrorMessages: 'getinputErrorMessages',
+            getShowCorrectAnswerErr: 'getShowCorrectAnswerErr',
         }),
     },
     methods:{
@@ -94,13 +121,22 @@ export default {
             addQuestion:'addQuestion',
             editQuestion:'editQuestion',
             setNewQuestion: 'setNewQuestion',
+            setShowCorrectAnswerErr: 'setShowCorrectAnswerErr',
+            checkShowCorrectAnswerErr: 'checkShowCorrectAnswerErr',
         }),
         addnewAnswerOption(){this.newQuestion.questionTexts[0].answers.push({answer:''})},
         async saveShanges(){
-            this.getNewQuestion.questionBaseId = this.questionBase.id
-            this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')?
-            await this.editQuestion(this.getNewQuestion):
-            await this.addQuestion(this.getNewQuestion)
+            const result = await this.v$.$validate();
+            let checkErr;
+            await this.checkShowCorrectAnswerErr().then(result => {
+                checkErr = result
+            })
+            if (result && !checkErr) {
+                this.getNewQuestion.questionBaseId = this.questionBase.id
+                this.$route.fullPath.toLocaleLowerCase().endsWith('edit/text')?
+                await this.editQuestion(this.getNewQuestion):
+                await this.addQuestion(this.getNewQuestion)
+            }
         },
     }
 

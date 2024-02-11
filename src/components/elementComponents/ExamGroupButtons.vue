@@ -1,6 +1,6 @@
 <template>
     <template v-if="examGroup.status == getExamStatus[0].key">
-        <button type="button" class="def" @click="downloadProtocolFile">Скачать список студентов</button>
+        <button type="button" class="def" @click="downloadStudentListFile">Скачать список студентов</button>
         <button type="button" class="btn" @click="doneBranchExam">
             Отправить окончательно
         </button>
@@ -17,7 +17,7 @@
             Отправить окончательно
         </button></template>
     <template v-if="examGroup.status == getExamStatus[2].key">
-        <button type="button" class="def" @click="downloadProtocolFile">Протокол</button>
+        <button type="button" class="def" @click="downloadStudentListFile">Протокол</button>
         <button type="button" class="def" @click="downloadListFile">Список</button>
         <!-- <button type="button" class="def">Загрузить акт</button>
         <button type="button" class="def">
@@ -96,6 +96,16 @@ export default {
         },
         async downloadListFile() {
             let result = await this.getListFile(this.examGroup.id);
+            let blob = new Blob([result.data], { type: 'application/pdf' });
+            let url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `list-${this.examGroup.examLevel.title}-${this.examGroup.id}.pdf`
+            link.click();
+            URL.revokeObjectURL(url);
+        },
+        async downloadStudentListFile() {
+            let result = await this.getStudentListFile(this.examGroup.id);
             let blob = new Blob([result.data], { type: 'application/pdf' });
             let url = URL.createObjectURL(blob);
             const link = document.createElement('a');
