@@ -39,16 +39,6 @@
                     <div class="item">
                         <div class="name">Миграционная карта</div>
                         <div class="text">{{ student.user.migrationCard }}</div>
-                        <!-- <div class="box">
-                            <div class="item">
-                                <div class="name">Серия</div>
-                                <div class="text">4012</div>
-                            </div>
-                            <div class="item">
-                                <div class="name">№</div>
-                                <div class="text">302678</div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -84,7 +74,7 @@
                                 <td>{{ value.mark }}</td>
                                 <td>{{ value.percentage }}%</td>
                                 <td>
-                                    <a class="show_popup_1" rel="popup_1" @click="this.reviewExamRecording(value.userSubtestId)">
+                                    <a @click="reviewRecords(value.userSubtestId)">
                                         <img src="@/assets/img/icon5.svg">
                                     </a>
                                 </td>
@@ -96,22 +86,28 @@
         </div>
         <button class="calaps" @click="$Jquery(`#${metricId}`).slideToggle()">Свернуть</button>
     </div>
-    <!-- <a class="show_popup_1" rel="popup_1">
-        <img src="@/assets/img/icon5.svg">
-    </a> -->
-    <div class="wrapper">
-        <div class="popup popup_1" id="popup_1">
+    <div class="wrapper" >
+        <div class="popup" :style="[showPopUp ? 'display: block' : 'display: none']">
             <div class="object">
-                <button type="button" class="clouse"><img src="@/assets/img/clouse.svg" alt=""></button>
+                <button type="button" class="clouse" @click="closePopUp()">
+                    <img src="@/assets/img/clouse.svg" alt="">
+                </button>
                 <div class="sostav">
-                    <div class="title popup-title">Запись</div>
+                    <div class="title popup-title">Рекорды</div>
                 </div>
                 <div class="container">
                     <div class="leftSide">
-
+                        <ol v-if="getExamRecords.length">
+                            <li v-for="item in getExamRecords" :key="item" class="records" ref="records"
+                                @click="playVideo(item.filename, $event)">
+                                {{' ( ' + item.createDateTime + ' )' }}
+                            </li>
+                        </ol>
+                        <h3 v-if="!getExamRecords.length" class="not">нечего показывать !</h3>
                     </div>
                     <div class="rightSide">
-
+                        <video :style="[isVideoPlaying ? 'display: block' : 'display: none']"
+                            controls="controls" style="width: 100%; height: auto;" ref="videoPlayer"></video>
                     </div>
                 </div>
             </div>
@@ -142,18 +138,9 @@ export default {
             subtestObj: null,
             examIndex: null,
             matrixIndex: null,
+            isVideoPlaying: false,
+            showPopUp: false,
         }
-    },
-    mounted() {
-        let self = this;
-        this.$Jquery('.show_popup_1').click(function () {
-            var popup_id = self.$Jquery(this).attr("rel")
-            self.$Jquery("#" + popup_id).show();
-        });
-        this.$Jquery('.clouse').click(function () {
-            self.$Jquery('.popup_1').hide();
-            self.$Jquery('body').removeClass('hide');
-        });
     },
     computed: {
         ...mapGetters({
@@ -212,6 +199,25 @@ export default {
             link.click();
             URL.revokeObjectURL(url);
         },
+        playVideo(address, event) {
+            for (let i in this.$refs.records) {
+                this.$refs.records[i].style.fontSize = '16px';
+            }
+            event.target.style.color = '#0079C1';
+            event.target.style.fontSize = '18px';
+            this.isVideoPlaying = true;
+            this.$refs.videoPlayer.src = `https://api.rudn.site:7064/${address}`;
+            this.$refs.videoPlayer.play();
+        },
+        async reviewRecords(userSubtestId) {
+            await this.reviewExamRecording(userSubtestId);
+            this.$refs.videoPlayer.src = '';
+            this.isVideoPlaying = false;
+            this.showPopUp = true;
+        },
+        closePopUp() {
+            this.showPopUp = false;
+        }
     }
 }
 </script>
@@ -277,11 +283,26 @@ export default {
 .leftSide {
     height: 100% !important;
     width: 20% !important;
-    margin: 0 15px 0 -15px ;
+    margin: 0 15px 0 -15px;
 }
 .rightSide {
     background-color: #E6F0F9;
     height: 100% !important;
     width: 80% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.records {
+    margin-top: 30px;
+    cursor: pointer;
+    color: #919191;
+}
+.records:hover {
+    color: #0079C1;
+}
+.not {
+    color: #919191;
 }
 </style>
