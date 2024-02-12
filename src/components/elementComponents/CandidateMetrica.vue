@@ -97,12 +97,19 @@
                 </div>
                 <div class="container">
                     <div class="leftSide">
-                        <ol v-if="getExamRecords.length">
-                            <li v-for="item in getExamRecords" :key="item" class="records" ref="records"
+                        <ul v-if="getExamRecords.length">
+                            <div v-for="(item, index) in getExamRecords" :key="item" class="records"
                                 @click="playVideo(item.filename, $event)">
-                                {{' ( ' + item.createDateTime + ' )' }}
-                            </li>
-                        </ol>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="webcam" viewBox="0 0 16 16">
+                                    <path d="M0 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H9.269c.144.162.33.324.531.475a7 7 0 0 0 .907.57l.014.006.003.002A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.224-.947l.003-.002.014-.007a5 5 0 0 0 .268-.148 7 7 0 0 0 .639-.421c.2-.15.387-.313.531-.475H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/>
+                                    <path d="M8 6.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m7 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+                                </svg>
+                                <li ref="records">
+                                    {{`Session${index+1}` }} <br>
+                                    {{ `${getLocalTime(item.createDateTime)}` }}
+                                </li>
+                            </div>
+                        </ul>
                         <h3 v-if="!getExamRecords.length" class="not">нечего показывать !</h3>
                     </div>
                     <div class="rightSide">
@@ -201,10 +208,9 @@ export default {
         },
         playVideo(address, event) {
             for (let i in this.$refs.records) {
-                this.$refs.records[i].style.fontSize = '16px';
+                this.$refs.records[i].style.color = '#919191';
             }
             event.target.style.color = '#0079C1';
-            event.target.style.fontSize = '18px';
             this.isVideoPlaying = true;
             this.$refs.videoPlayer.src = `https://api.rudn.site:7064/${address}`;
             this.$refs.videoPlayer.play();
@@ -217,6 +223,14 @@ export default {
         },
         closePopUp() {
             this.showPopUp = false;
+        },
+        getLocalTime(utc) {
+            const now = new Date(`${utc} UTC`);
+            const month = ((now.getMonth() + 1) < 10 ? '0' : '') + (now.getMonth() + 1)
+            const day = ((now.getDate() + 1) < 10 ? '0' : '') + (now.getDate() + 1)
+            const date = `${now.getFullYear()}-${month}-${day}`;
+            const time = `${now.getHours()}:${now.getMinutes()}`
+            return date + ' ' + time;
         }
     }
 }
@@ -295,12 +309,21 @@ export default {
     overflow: hidden;
 }
 .records {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
     margin-top: 30px;
     cursor: pointer;
     color: #919191;
 }
 .records:hover {
     color: #0079C1;
+}
+.webcam {
+    color: #919191;
+    width: 18px;
+    height: 18px;
+    margin: 0 10px 0 -10px;
 }
 .not {
     color: #919191;
