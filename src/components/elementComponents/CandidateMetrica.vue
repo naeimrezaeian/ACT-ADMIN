@@ -298,8 +298,10 @@ export default {
     height: 100% !important;
     width: 20% !important;
     margin: 0 15px 0 -15px;
+    overflow: auto;
 }
 .rightSide {
+    border-radius: 10px;
     background-color: #E6F0F9;
     height: 100% !important;
     width: 80% !important;
@@ -323,7 +325,7 @@ export default {
     color: #919191;
     width: 18px;
     height: 18px;
-    margin: 0 10px 0 -10px;
+    margin: 0 10px 0 0;
 }
 .not {
     color: #919191;
