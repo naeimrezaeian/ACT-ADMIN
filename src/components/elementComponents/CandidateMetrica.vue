@@ -286,6 +286,7 @@ export default {
     height: 800px !important;
 }
 .popup-title {
+    color: black !important;
     margin-top: -50px !important;
 }
 
