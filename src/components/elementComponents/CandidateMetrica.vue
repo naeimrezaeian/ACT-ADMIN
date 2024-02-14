@@ -39,16 +39,6 @@
                     <div class="item">
                         <div class="name">Миграционная карта</div>
                         <div class="text">{{ student.user.migrationCard }}</div>
-                        <!-- <div class="box">
-                            <div class="item">
-                                <div class="name">Серия</div>
-                                <div class="text">4012</div>
-                            </div>
-                            <div class="item">
-                                <div class="name">№</div>
-                                <div class="text">302678</div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -84,7 +74,9 @@
                                 <td>{{ value.mark }}</td>
                                 <td>{{ value.percentage }}%</td>
                                 <td>
-                                    <a href="#"> <img src="@/assets/img/icon5.svg" alt=""> </a>
+                                    <a @click="reviewRecords(value.userSubtestId)">
+                                        <img src="@/assets/img/icon5.svg">
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -93,6 +85,40 @@
             </div>
         </div>
         <button class="calaps" @click="$Jquery(`#${metricId}`).slideToggle()">Свернуть</button>
+    </div>
+    <div class="wrapper" >
+        <div class="popup" :style="[showPopUp ? 'display: block' : 'display: none']">
+            <div class="object">
+                <button type="button" class="clouse" @click="closePopUp()">
+                    <img src="@/assets/img/clouse.svg" alt="">
+                </button>
+                <div class="sostav">
+                    <div class="title popup-title">Рекорды</div>
+                </div>
+                <div class="container">
+                    <div class="leftSide">
+                        <ul v-if="getExamRecords.length">
+                            <div v-for="(item, index) in getExamRecords" :key="item" class="records"
+                                @click="playVideo(item.filename, $event)">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="webcam" viewBox="0 0 16 16">
+                                    <path d="M0 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H9.269c.144.162.33.324.531.475a7 7 0 0 0 .907.57l.014.006.003.002A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.224-.947l.003-.002.014-.007a5 5 0 0 0 .268-.148 7 7 0 0 0 .639-.421c.2-.15.387-.313.531-.475H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/>
+                                    <path d="M8 6.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m7 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+                                </svg>
+                                <li ref="records">
+                                    {{`Session${index+1}` }} <br>
+                                    {{ `${getLocalTime(item.createDateTime)}` }}
+                                </li>
+                            </div>
+                        </ul>
+                        <h3 v-if="!getExamRecords.length" class="not">нечего показывать !</h3>
+                    </div>
+                    <div class="rightSide">
+                        <video :style="[isVideoPlaying ? 'display: block' : 'display: none']"
+                            controls="controls" style="width: 100%; height: auto;" ref="videoPlayer"></video>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -119,13 +145,16 @@ export default {
             subtestObj: null,
             examIndex: null,
             matrixIndex: null,
+            isVideoPlaying: false,
+            showPopUp: false,
         }
     },
     computed: {
         ...mapGetters({
             sexTypes: 'getSexTypes',
             documentTypes: 'getDocumentTypes',
-            usersExamResult: 'getUserExamResults'
+            usersExamResult: 'getUserExamResults',
+            getExamRecords: 'getExamRecords',
         }),
         sexType() {
             return this.sexTypes.find((item) => item.key === this.student?.user?.sex);
@@ -144,6 +173,7 @@ export default {
             uploadIFile: 'uploadFile',
             downloadFile: 'downloadFile',
             uploadUserExam: 'uploadUserExam',
+            reviewExamRecording: 'reviewExamRecording',
         }),
         editStudent() {
             this.changeEditStudentPopup({ show: true, student: this.student.user, group: this.examGroup })
@@ -176,6 +206,32 @@ export default {
             link.click();
             URL.revokeObjectURL(url);
         },
+        playVideo(address, event) {
+            for (let i in this.$refs.records) {
+                this.$refs.records[i].style.color = '#919191';
+            }
+            event.target.style.color = '#0079C1';
+            this.isVideoPlaying = true;
+            this.$refs.videoPlayer.src = `https://api.rudn.site:7064/${address}`;
+            this.$refs.videoPlayer.play();
+        },
+        async reviewRecords(userSubtestId) {
+            await this.reviewExamRecording(userSubtestId);
+            this.$refs.videoPlayer.src = '';
+            this.isVideoPlaying = false;
+            this.showPopUp = true;
+        },
+        closePopUp() {
+            this.showPopUp = false;
+        },
+        getLocalTime(utc) {
+            const now = new Date(`${utc} UTC`);
+            const month = ((now.getMonth() + 1) < 10 ? '0' : '') + (now.getMonth() + 1)
+            const day = ((now.getDate() + 1) < 10 ? '0' : '') + (now.getDate() + 1)
+            const date = `${now.getFullYear()}-${month}-${day}`;
+            const time = `${now.getHours()}:${now.getMinutes()}`
+            return date + ' ' + time;
+        }
     }
 }
 </script>
@@ -223,4 +279,56 @@ export default {
     padding-bottom: 20px !important;
     font-size: medium !important;
     font-weight: bold !important;
-}</style>
+}
+.object {
+    margin-top: 70px !important;
+    width: 60% !important;
+    height: 800px !important;
+}
+.popup-title {
+    color: black !important;
+    margin-top: -50px !important;
+}
+
+.container {
+    width: 100% !important;
+    height: 700px !important;
+    display: flex;
+}
+.leftSide {
+    height: 100% !important;
+    width: 20% !important;
+    margin: 0 15px 0 -15px;
+    overflow: auto;
+}
+.rightSide {
+    border-radius: 10px;
+    background-color: #E6F0F9;
+    height: 100% !important;
+    width: 80% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.records {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    margin-top: 30px;
+    cursor: pointer;
+    color: #919191;
+}
+.records:hover {
+    color: #0079C1;
+}
+.webcam {
+    color: #919191;
+    width: 18px;
+    height: 18px;
+    margin: 0 10px 0 0;
+}
+.not {
+    color: #919191;
+}
+</style>

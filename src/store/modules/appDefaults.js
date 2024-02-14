@@ -224,75 +224,75 @@ export default {
         all: 'Bсе',
         pdfErrorMessage: 'pdf не существует...',
         inputErrorMessages: {
-            name: 'Введите имя',
-            familly: 'Введите семью',
-            father: 'Введите имя отца',
-            sex: 'Введите секс',
-            birthDate: 'Введите дату рождения',
-            status: 'Введите статус',
-            examLevel: 'Введите уровень экзамена',
-            examModule: 'Введите уровень модуля',
-            shortName: 'Введите короткое имя',
-            title: 'Введите название',
+            name: 'Введите имя', // Enter Your name
+            familly: 'Введите фамилию', // Enter Your familly
+            father: 'Введите имя отца', // Enter Your father's name
+            sex: 'Введите пол', // Enter Your sex
+            birthDate: 'Введите дату рождения', // Enter Your birth date
+            status: 'Выберите статус', // select status
+            examLevel: 'Выберите уровень экзамена', // select examLevel
+            examModule: 'Выберите экзаменационный модуль', // select examModule
+            shortName: 'Введите короткое имя', // Enter short name
+            title: 'Введите название', // Enter the title
             addUser: {
-                nameMin: 'имя должно состоять более чем из 3 символов',
-                famillyMin: 'семья должна состоять более чем из 3 символов',
-                email: 'Введите адрес электронной почты',
-                emailValid: 'Значение не является действительным адресом электронной почты',
-                role: 'Введите роль',
+                nameMin: 'имя должно состоять более чем из 3 символов', // name must be more than 3 characters
+                famillyMin: 'фамилия должна состоять более чем из 3 символов', // familly must be more than 3 characters
+                email: 'Введите адрес электронной почты', // Enter Your email
+                emailValid: 'Электронная почта не действительна', // email is not valid
+                role: 'Введите роль', // Enter Your role
             },
             addBranch: {
-                name: 'Введите название филиала',
-                branchCode: 'Введите код филиала',
-                branchType: 'Введите тип филиала',
-                branchSystemUsers: 'Введите пользователя филиала',
-                city: 'Войдите в город',
-                tin: 'Введите банку',
-                actualAddress: 'Введите фактический адрес',
-                checkpoint: 'Войдите в контрольно-пропускной пункт',
-                legalAddress: 'Введите юридический адрес',
+                name: 'Введите название филиала', // Enter branch name
+                branchCode: 'Введите код филиала', // Enter brnach code
+                branchType: 'Введите тип филиала', // Enter branch type
+                branchSystemUsers: 'Введите ответственного за филиал', // Enter branch's responsible
+                city: 'Укажите город', // Enter the city
+                tin: 'Введите банку', // Enter the tin
+                actualAddress: 'Введите фактический адрес', // Enter the actual address
+                checkpoint: 'Войдите в контрольно-пропускной пункт', // Enter the check point
+                legalAddress: 'Введите юридический адрес', // Enter the legal address
             },
             addSubtest: {
-                maxScore: 'Введите максимальный балл',
-                maxScoreMin: 'минимальный балл',
-                passingScore: 'Введите проходной балл',
-                passingScoreMin: 'Mинимaльный проходной балл',
-                passingScoreMax: 'Maкcимaльный проходной балл',
-                subtestType: 'Введите тип субтеста',
-                checkType: 'Введите тип проверки',
+                maxScore: 'Введите максимальный балл', // Enter max score
+                maxScoreMin: 'Максимальный балл должен быть больше чем', // max score must be more than ...
+                passingScore: 'Введите проходной балл', // Enter passing score
+                passingScoreMin: 'Проходной балл должен быть больше чем', // passing score must be more than ...
+                passingScoreMax: 'Проходной балл должен быть ниже чем', // passing score must be lower than ...
+                subtestType: 'Выберите тип субтеста', // select subtest type
+                checkType: 'Выберите тип проверки', // select check type
             },
             addStudent: {
-                nationality: 'Введите национальность',
-                placeOfBirth: 'Введите место рождения',
-                refNumber: 'Введите реферальный номер',
-                issueDate: 'Введите дату выпуска',
-                issueBy: 'Введите проблему по',
-                migrationCard: 'Введите миграционную карту',
+                nationality: 'Введите гражданство', // Enter user nationality
+                placeOfBirth: 'Введите место рождения', // Enter user place of birth
+                refNumber: 'Введите реферальный номер', // Enter ref number
+                issueDate: 'Укажите дату выпуска', // Enter issue date
+                issueBy: 'Введите проблему по', // Enter issue by
+                migrationCard: 'Введите миграционную карту', // Enter migration card
             },
             addQuestionBase: {
-                type: 'Введите тип базы вопросов',
-                subtest: 'Введите субтест',
+                type: 'Выберите тип базы вопросов', // select question type
+                subtest: 'Выберите субтест', // select subtest
             },
             addQuestion: {
-                desc: 'Введите описание вопроса',
-                questionTitle: 'Введите название вопроса',
+                desc: 'Введите описание вопроса', // Enter desc
+                questionTitle: 'Введите название вопроса', // Enter question title
             },
             addAnswers: {
-                answers: 'Введите ответы',
-                answersMin: 'ответов должно быть более 1 вариантов',
-                answer: 'Введите ответ',
-                correctAnswer: 'выберите правильный ответ',
+                answers: 'Введите ответы', // Enter answers
+                answersMin: 'Число ответов должно быть больше 1', // answers number must more than 1
+                answer: 'Введите ответ', // Enter answer's title
+                correctAnswer: 'выберите правильный ответ', // select correct answer
             },
             correctingExam: {
-                mark: 'Введите отметку',
-                markMin: 'минимальный балл',
-                markMax: 'максимальный балл',
+                mark: 'Введите отметку', // Enter user mark
+                markMin: 'Отметка должна быть больше чем', // mark must be more than ...
+                markMax: 'Отметка должна быть меньше чем', // mark must be lower than ...
             },
             changePassword: {
-                currentPass: 'Введите текущий пароль',
-                newPass: 'Введите новый пароль',
-                newPassMin: 'поле пароля должно быть не менее 8 символов',
-                confirmPass: 'подтверждение подтверждения пароля не совпадает',
+                currentPass: 'Введите текущий пароль', // Enter Your current password
+                newPass: 'Введите новый пароль', // Enter Your new password
+                newPassMin: 'Новый пароль должен состоять более чем из 8 символов', // new password must be more than 8 characters
+                confirmPass: 'Подтверждение пароля не соответствует', // password confirmation does not match
             },
         }
     },
