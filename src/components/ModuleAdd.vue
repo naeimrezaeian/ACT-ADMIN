@@ -33,7 +33,7 @@
 
                 <div class="item">
                     <label for="mess">Описание</label>
-                    <editor id="tiny" :init="Tinyconfig" api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
+                    <editor id="tiny" :init="Tinyconfig" :api-key="tinyApiKey"
                         v-model="examModule.description"></editor>
                 </div>
                 <div class="botom">
@@ -53,20 +53,6 @@ import Editor from '@tinymce/tinymce-vue'
 import { mapGetters } from 'vuex';
 import { useVuelidate } from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
-const Tinyconfig = {
-    selector: '#tiny',
-    height: 214,
-    plugins: [
-        'advlist autolink link image lists charmap print preview hr anchor pagebreak',
-        'searchreplace wordcount visualblocks code fullscreen insertdatetime media nonbreaking',
-        'table emoticons template paste help'
-    ],
-    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
-        'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
-        'forecolor backcolor emoticons | help',
-    menubar: false
-
-}
 import { mapActions } from 'vuex';
 export default {
     name: "AdminModuleAdd",
@@ -75,7 +61,6 @@ export default {
     },
     data() {
         return {
-            Tinyconfig,
             examModule: {status:'active'}
         }
     },
@@ -106,6 +91,8 @@ export default {
             levels: 'getExamLevels',
             examModuleEdit:'getEditModule',
             getinputErrorMessages: 'getinputErrorMessages',
+            tinyApiKey: 'getTinyEditorApiKey',
+            Tinyconfig: 'getTinyEditorConfig'
         })
     },
     methods: {

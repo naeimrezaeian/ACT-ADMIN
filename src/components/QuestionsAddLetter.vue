@@ -21,7 +21,7 @@
                 <div class="item">
                     <label for="tiny">Введите текст вопроса</label>
                     <editor id="tiny" v-model="newQuestion.questionTexts[0].questionTitle" :init="Tinyconfig"
-                        api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh">
+                        :api-key="tinyApiKey">
                     </editor>
                     <div v-for="error in v$.newQuestion.questionTexts[0].questionTitle.$errors" :key="error.$uid" class="error-msg">{{ error.$message }}</div>
                 </div>
@@ -39,20 +39,7 @@ import Editor from '@tinymce/tinymce-vue'
 import { mapActions, mapGetters } from 'vuex'
 import { useVuelidate } from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
-const Tinyconfig = {
-    selector: '#tiny',
-    height: 214,
-    plugins: [
-        'advlist autolink link image lists charmap print preview hr anchor pagebreak',
-        'searchreplace wordcount visualblocks code fullscreen insertdatetime media nonbreaking',
-        'table emoticons template paste help'
-    ],
-    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
-        'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
-        'forecolor backcolor emoticons | help',
-    menubar: false
 
-}
 export default {
     name: "AdminQuestionLetter",
     setup () {
@@ -63,7 +50,6 @@ export default {
     },
     data() {
         return {
-            Tinyconfig,
             questionBase: null,
 
             newQuestion: {
@@ -102,6 +88,8 @@ export default {
             getSelectedQuestionBase: 'getSelectedQuestionBase',
             getSelectedQuestion: 'getSelectedQuestion',
             getinputErrorMessages: 'getinputErrorMessages',
+            tinyApiKey: 'getTinyEditorApiKey',
+            Tinyconfig: 'getTinyEditorConfig'
         })
     },
     methods: {

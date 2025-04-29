@@ -294,7 +294,23 @@ export default {
                 newPassMin: 'Новый пароль должен состоять более чем из 8 символов', // new password must be more than 8 characters
                 confirmPass: 'Подтверждение пароля не соответствует', // password confirmation does not match
             },
-        }
+        },
+        tinyEditorConfig: {
+            selector: '#tiny',
+            height: 214,
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks code fullscreen insertdatetime media nonbreaking',
+                'table emoticons template paste help'
+            ],
+            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
+                'forecolor backcolor emoticons | help',
+            menubar: false
+
+        },
+        tinyEditorApiKey: "ovzysuiwdu9wpixguzkhmkq8kna61nc11nsut7nd28ei2nde"
+
     },
     mutations: {
         updatePaging: (state, data) => state.paging = data,
@@ -317,5 +333,7 @@ export default {
         getAllForDropdowns: (state) => state.all,
         getPdfErrorMessage: (state) => state.pdfErrorMessage,
         getinputErrorMessages: (state) => state.inputErrorMessages,
+        getTinyEditorApiKey: (state) => state.tinyEditorApiKey,
+        getTinyEditorConfig: (state) => state.tinyEditorConfig,
     }
 }

@@ -64,7 +64,7 @@
                 </div>
                 <div class="item">
                     <label for="text">Описание</label>
-                    <editor id="tiny" :init="Tinyconfig" api-key="y2pziixksnltsc59lsigx2xoh6exhrlx403o5usmmmd8awwh"
+                    <editor id="tiny" :init="Tinyconfig" :api-key="tinyApiKey"
                         v-model="subtest.desc">
                     </editor>
                 </div>
@@ -298,20 +298,6 @@ import VueTimepicker from 'vue3-timepicker/src/VueTimepicker.vue'
 import { mapActions, mapGetters } from 'vuex'
 import { useVuelidate } from '@vuelidate/core'
 import { required, helpers, minValue, maxValue } from '@vuelidate/validators'
-const Tinyconfig = {
-    selector: '#tiny',
-    height: 214,
-    plugins: [
-        'advlist autolink link image lists charmap print preview hr anchor pagebreak',
-        'searchreplace wordcount visualblocks code fullscreen insertdatetime media nonbreaking',
-        'table emoticons template paste help'
-    ],
-    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
-        'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
-        'forecolor backcolor emoticons | help',
-    menubar: false
-
-}
 
 export default {
     name: "AdminSubjectAdd",
@@ -320,7 +306,6 @@ export default {
     },
     data() {
         return {
-            Tinyconfig,
             selectAll: false,
             subtest: {
                 cameraRecord: false,
@@ -392,6 +377,8 @@ export default {
             questionBase: 'getQuestionBase',
             subtesCheckType: 'getSubtestCheckType',
             getinputErrorMessages: 'getinputErrorMessages',
+            tinyApiKey: 'getTinyEditorApiKey',
+            Tinyconfig: 'getTinyEditorConfig'
         }),
         selectAllVariants: {
             get() {
